@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Scene1>
+	  <Component name="GameboardMesh">
+		  <Mesh filename="meshes/Plane.obj"/>
+	  </Component>
+
+	  <Component name="CheckerMesh">
+		  <Mesh filename="meshes/CheckerPiece.obj"/>
+	  </Component>
+
+	  <Component name="BoardTexture">
+		  <Material filename="textures/8x8_checkered_board.png"/>
+	  </Component>
+
+	  <Component name="RedCheckTexture">
+		  <Material filename="textures/redCheckerPiece.png"/>
+	  </Component>
+
+	  <Component name="WhiteCheckTexture">
+		  <Material filename="textures/whiteCheckerPiece.png"/>
+	  </Component>
+	  
+	  <Component name="BlackCheckTexture">
+		  <Material filename="textures/blackCheckerPiece.png"/>
+	  </Component>
+
+	  <Component name="TextureShader">
+		  <Shader vertFilename="shaders/textureVert.glsl" fragFilename="shaders/textureFrag.glsl"/>
+	  </Component>
+
+	  <Actor name="Gameboard">
+		  <Parent componentName="None"/>
+		  <Mesh componentName="GameboardMesh"/>
+		  <Material componentName="BoardTexture"/>
+		  <Shader componentName="TextureShader"/>
+	  </Actor>
+
+	  <Actor name="BlackChecker">
+		  <Parent componentName="Gameboard"/>
+		  <Mesh componentName="CheckerMesh"/>
+		  <Material componentName="BlackCheckTexture"/>
+		  <Shader componentName="TextureShader"/>
+	  </Actor>
+
+	  <Actor name="RedChecker">
+		  <Parent componentName="Gameboard"/>
+		  <Mesh componentName="CheckerMesh"/>
+		  <Material componentName="RedCheckTexture"/>
+		  <Shader componentName="TextureShader"/>
+	  </Actor>
+
+	  <Actor name="WhiteChecker">
+		  <Parent componentName="Gameboard"/>
+		  <Mesh componentName="CheckerMesh"/>
+		  <Material componentName="WhiteCheckTexture"/>
+		  <Shader componentName="TextureShader"/>
+	  </Actor>
+
+  </Scene1>
+</Root>
