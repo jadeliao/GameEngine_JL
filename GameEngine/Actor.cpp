@@ -5,6 +5,8 @@
 #include "MeshComponent.h"
 #include "ShaderComponent.h"
 #include "MaterialComponent.h"
+#include "BodyComponent.h"
+#include "AIComponent.h"
 
 Actor::Actor(Ref<Component> parent_):Component(parent_) {}
 
@@ -25,6 +27,15 @@ bool Actor::OnCreate() {
 			isCreated = false;
 		}
 	}
+	//Add body component (temp)
+	//Ref<BodyComponent> body = std::make_shared<BodyComponent>(nullptr, Kinematic,
+	//	Vec3(), Vec3(10.0f, 5.0f, 0.0f), Vec3(5.0f, 1.0f, 0.0f),
+	//	1.0f, 2.0f, 1.0f, 0.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f);
+	//AddComponent<BodyComponent>(body);
+	//if (body->OnCreate() == false) {
+	//	Debug::Error("Loading assets for Actor/Components: ", __FILE__, __LINE__);
+	//	isCreated = false;
+	//}
 	isCreated = true;
 	return isCreated;
 }
@@ -40,6 +51,10 @@ void Actor::OnDestroy() {
 }
 
 void Actor::Update(const float deltaTime) {
+	for (auto component : components) {
+		component->Update(deltaTime);
+	}
+
 	GetModelMatrix();
 }
 

@@ -83,6 +83,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -137,22 +138,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="AIComponent.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Body.cpp" />
+    <ClCompile Include="BodyComponent.cpp" />
     <ClCompile Include="CameraActor.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EMath.cpp" />
+    <ClCompile Include="KinematicBody.cpp" />
+    <ClCompile Include="KinematicSeek.cpp" />
+    <ClCompile Include="KinematicSteeringOutput.cpp" />
     <ClCompile Include="LightActor.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="MMath.cpp" />
     <ClCompile Include="QMath.cpp" />
-    <ClCompile Include="Scene0.cpp" />
-    <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="SceneActor.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Seek.cpp" />
     <ClCompile Include="ShaderComponent.cpp" />
+    <ClCompile Include="ShapeComponent.cpp" />
+    <ClCompile Include="SteeringBehaviour.cpp" />
+    <ClCompile Include="SteeringOutput.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
@@ -161,13 +171,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="AIComponent.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
+    <ClInclude Include="Body.h" />
+    <ClInclude Include="BodyComponent.h" />
     <ClInclude Include="CameraActor.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DemoScene.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="Euler.h" />
+    <ClInclude Include="KinematicBody.h" />
+    <ClInclude Include="KinematicSeek.h" />
+    <ClInclude Include="KinematicSteeringOutput.h" />
     <ClInclude Include="LightActor.h" />
     <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="Matrix.h" />
@@ -176,14 +193,17 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="QMath.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Scene0.h" />
-    <ClInclude Include="Scene1.h" />
     <ClInclude Include="Scene2.h" />
     <ClInclude Include="SceneActor.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Seek.h" />
     <ClInclude Include="ShaderComponent.h" />
+    <ClInclude Include="ShapeComponent.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="SteeringBehaviour.h" />
+    <ClInclude Include="SteeringOutput.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="tiny_obj_loader.h" />
@@ -194,7 +214,11 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="Scene1.xml" />
+    <Xml Include="DemoScene.xml" />
+    <Xml Include="Scene2.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GameEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

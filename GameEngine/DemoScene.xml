@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<DemoScene>
+
+	<Component name="CheckerMesh">
+		<Mesh filename="meshes/CheckerPiece.obj"/>
+	</Component>
+		
+	<Component name="RedCheckTexture">
+		<Material filename="textures/redCheckerPiece.png"/>
+	</Component>
+
+	<Component name="WhiteCheckTexture">
+		<Material filename="textures/whiteCheckerPiece.png"/>
+	</Component>
+
+	<Component name="TextureShader">
+		<Shader vertFilename="shaders/textureVert.glsl" fragFilename="shaders/textureFrag.glsl"/>
+	</Component>
+
+	<Component name="CheckerRedBody">
+		<Body type="Kinematic"
+			  velx="10.0" vely="1.0" velz="0.0"
+			  accelx="1.0" accely="1.0" accelz="0.0"
+			  mass="1.0" radius="0.02" orientation="0.0" rotation="0.0" angular="1.0"
+			  maxSpeed="2.0" maxAccel="2.0" maxRotation="2.0" maxAngular="10.0"/>
+	</Component>
+
+	<Component name="CheckerWhiteBody">
+		<Body type="Base"
+				velx="0.0" vely="0.0" velz="0.0"
+				accelx="0.0" accely="0.0" accelz="0.0"
+				mass="1.0" radius="0.0" orientation="0.0" rotation="0.0" angular="0.0"
+				maxSpeed="0.0" maxAccel="0.0" maxRotation="0.0" maxAngular="0.0"/>
+	</Component>
+
+	<Actor name="RedChecker">
+		<Parent componentName="Gameboard"/>
+		<Mesh componentName="CheckerMesh"/>
+		<Material componentName="RedCheckTexture"/>
+		<Shader componentName="TextureShader"/>
+		<Body componentName="CheckerRedBody"/>
+
+	</Actor>
+
+	<Actor name="WhiteChecker">
+		<Parent componentName="Gameboard"/>
+		<Mesh componentName="CheckerMesh"/>
+		<Material componentName="WhiteCheckTexture"/>
+		<Shader componentName="TextureShader"/>
+		<Body componentName="CheckerWhiteBody"/>
+
+	</Actor>		
+		
+	</DemoScene>
+</Root>

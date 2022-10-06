@@ -1,4 +1,5 @@
-#pragma once
+#ifndef COMPONENT_H
+#define COMPONENT_H
 #include <memory>
 
 template<typename T>
@@ -15,9 +16,11 @@ class Component {
 		virtual void OnDestroy() = 0;
 		virtual void Update(const float deltaTime_) = 0;
 		virtual void Render()const = 0;
+		void SetParent(Ref<Component> parent_) { parent = parent_; }
 	protected:
 		Ref<Component> parent;
 		bool isCreated;
 		Ref<Component> GetParent() const { return parent; }
 };
 
+#endif

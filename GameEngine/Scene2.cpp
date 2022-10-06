@@ -14,6 +14,7 @@
 #include "LightActor.h"
 
 Scene2::Scene2(): SceneActor(nullptr){
+	assetManager = new AssetManager("Scene2");
 	Debug::Info("Created Scene2: ", __FILE__, __LINE__);
 }
 
@@ -26,14 +27,14 @@ bool Scene2::OnCreate() {
 	Debug::Info("Loading assets Scene2: ", __FILE__, __LINE__);
 	if (isCreated) return true;
 
-	Ref<CameraActor> camera = std::make_shared<CameraActor>(nullptr);
-	camera->AddComponent<TransformComponent>(nullptr, Vec3(0.0f, 0.0f, -20.0f), Quaternion());
-	camera->OnCreate();
-	AddActor("camera", camera);
+	//Ref<CameraActor> camera = std::make_shared<CameraActor>(nullptr);
+	//camera->AddComponent<TransformComponent>(nullptr, Vec3(0.0f, 0.0f, -20.0f), Quaternion());
+	//camera->OnCreate();
+	//AddActor("camera", camera);
 
-	Ref<LightActor> light = std::make_shared<LightActor>(nullptr, LightStyle::DirectionLight, Vec3(0.0f, 5.0f, -10.0f), Vec4(0.6f, 0.6f, 0.6f, 0.0f));
-	light->OnCreate();
-	AddActor("light", light);
+	//Ref<LightActor> light = std::make_shared<LightActor>(nullptr, LightStyle::DirectionLight, Vec3(0.0f, 5.0f, -10.0f), Vec4(0.6f, 0.6f, 0.6f, 0.0f));
+	//light->OnCreate();
+	//AddActor("light", light);
 
 	//Quaternion(0.87f, -0.5f, 0.0f, 0.0f)
 	Ref<Actor> gameboard = assetManager->GetComponent<Actor>("Gameboard");
@@ -88,95 +89,97 @@ bool Scene2::OnCreate() {
 
 void Scene2::HandleEvents(const SDL_Event& sdlEvent){
 	Ref<CameraActor> camera = GetComponent<CameraActor>("camera");
-	switch (sdlEvent.type) {
-	case SDL_KEYDOWN:
-		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LEFT) {
-			std::cout << "LEFT EVENT\n";
-			//Ref<CameraActor> camera = GetComponent<CameraActor>("camera");
-			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
-			transform_->SetTransform(
-				transform_->GetPosition() + Vec3(-1.0f, 0.0f, 0.0f), transform_->GetQuaternion());
-			camera->UpdateViewMatrix();
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
-			std::cout << "RIGHT EVENT\n";
-			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
-			transform_->SetTransform(
-				transform_->GetPosition() + Vec3(1.0f, 0.0f, 0.0f), transform_->GetQuaternion());
-			camera->UpdateViewMatrix();
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_UP) {
-			std::cout << "UP EVENT\n";
-			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
-			transform_->SetTransform(
-				transform_->GetPosition() + Vec3(0.0f, 0.0f, 1.0f), transform_->GetQuaternion());
-			camera->UpdateViewMatrix();
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_DOWN) {
-			std::cout << "DOWN EVENT\n";
-			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
-			transform_->SetTransform(
-				transform_->GetPosition() + Vec3(0.0f, 0.0f, -1.0f), transform_->GetQuaternion());
-			camera->UpdateViewMatrix();
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Q) {
-			std::cout << "Q EVENT\n";
-			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
-			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
-				QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
-			camera->UpdateViewMatrix();
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
-			std::cout << "E EVENT\n";
-			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
-			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
-				QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
-			camera->UpdateViewMatrix();
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_A) {
-			std::cout << "A EVENT\n";
-			Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
-			Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
-			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
-				QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+	camera->HandleEvents(sdlEvent);
+	//Ref<CameraActor> camera = GetComponent<CameraActor>("camera");
+	//switch (sdlEvent.type) {
+	//case SDL_KEYDOWN:
+	//	if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LEFT) {
+	//		std::cout << "LEFT EVENT\n";
+	//		//Ref<CameraActor> camera = GetComponent<CameraActor>("camera");
+	//		Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(
+	//			transform_->GetPosition() + Vec3(-1.0f, 0.0f, 0.0f), transform_->GetQuaternion());
+	//		camera->UpdateViewMatrix();
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
+	//		std::cout << "RIGHT EVENT\n";
+	//		Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(
+	//			transform_->GetPosition() + Vec3(1.0f, 0.0f, 0.0f), transform_->GetQuaternion());
+	//		camera->UpdateViewMatrix();
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_UP) {
+	//		std::cout << "UP EVENT\n";
+	//		Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(
+	//			transform_->GetPosition() + Vec3(0.0f, 0.0f, 1.0f), transform_->GetQuaternion());
+	//		camera->UpdateViewMatrix();
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_DOWN) {
+	//		std::cout << "DOWN EVENT\n";
+	//		Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(
+	//			transform_->GetPosition() + Vec3(0.0f, 0.0f, -1.0f), transform_->GetQuaternion());
+	//		camera->UpdateViewMatrix();
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Q) {
+	//		std::cout << "Q EVENT\n";
+	//		Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+	//			QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+	//		camera->UpdateViewMatrix();
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
+	//		std::cout << "E EVENT\n";
+	//		Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+	//			QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+	//		camera->UpdateViewMatrix();
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_A) {
+	//		std::cout << "A EVENT\n";
+	//		Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
+	//		Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+	//			QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
 
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
-			std::cout << "D EVENT\n";
-			Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
-			Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
-			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
-				QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_W) {
-			std::cout << "W EVENT\n";
-			Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
-			Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
-			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
-				QMath::angleAxisRotation(-2.0f, Vec3(1.0f, 0.0f, 0.0f)));
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
+	//		std::cout << "D EVENT\n";
+	//		Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
+	//		Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+	//			QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_W) {
+	//		std::cout << "W EVENT\n";
+	//		Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
+	//		Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+	//			QMath::angleAxisRotation(-2.0f, Vec3(1.0f, 0.0f, 0.0f)));
 
-		}
-		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_S) {
-			std::cout << "S EVENT\n";
-			Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
-			Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
-			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
-				QMath::angleAxisRotation(2.0f, Vec3(1.0f, 0.0f, 0.0f)));
-		}
-		break;
+	//	}
+	//	else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_S) {
+	//		std::cout << "S EVENT\n";
+	//		Ref<Actor> actorControl = GetComponent<Actor>("Gameboard");
+	//		Ref<TransformComponent> transform_ = actorControl->GetComponent<TransformComponent>();
+	//		transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+	//			QMath::angleAxisRotation(2.0f, Vec3(1.0f, 0.0f, 0.0f)));
+	//	}
+	//	break;
 
-	case SDL_MOUSEMOTION:
-		break;
+	//case SDL_MOUSEMOTION:
+	//	break;
 
-	case SDL_MOUSEBUTTONDOWN:
-		break;
+	//case SDL_MOUSEBUTTONDOWN:
+	//	break;
 
-	case SDL_MOUSEBUTTONUP:
-		break;
+	//case SDL_MOUSEBUTTONUP:
+	//	break;
 
-	default:
-		break;
-	}
+	//default:
+	//	break;
+	//}
 }
 
 

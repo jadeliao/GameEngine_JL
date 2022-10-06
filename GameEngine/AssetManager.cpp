@@ -5,6 +5,8 @@
 #include "MeshComponent.h"
 #include "ShaderComponent.h"
 #include "MaterialComponent.h"
+#include "TransformComponent.h"
+#include "BodyComponent.h"
 
 using namespace tinyxml2;
 
@@ -13,14 +15,22 @@ AssetManager::AssetManager(){
 	OnCreate();
 }
 
+AssetManager::AssetManager(const char* scene_): scene(scene_) {
+	ReadManiFest();
+	OnCreate();
+}
+
 AssetManager::~AssetManager(){
-	//OnDestroy();
+	OnDestroy();
 }
 
 
 void AssetManager::ReadManiFest() {
 	//Read document
-	doc.LoadFile("Scene1.xml");
+	char sceneFile[20];
+	strcpy_s(sceneFile, scene);
+	strcat_s(sceneFile, ".xml");
+	doc.LoadFile(sceneFile);
 	bool status = doc.Error();
 	if (status) {
 		std::cout << doc.ErrorIDToName(doc.ErrorID()) << std::endl;
@@ -28,9 +38,16 @@ void AssetManager::ReadManiFest() {
 	}
 	//Loop through the document to read data
 	XMLElement* rootData = doc.RootElement();
-	XMLElement* sceneData = rootData->FirstChildElement("Scene1");
+	XMLElement* sceneData = rootData->FirstChildElement(scene);
 	//While exists a component data
 	XMLElement* componentData = sceneData->FirstChildElement("Component");
+	AddComponentData(componentData);
+	//Loop through actor data to load
+	XMLElement* actorData = sceneData->FirstChildElement("Actor");
+	AddActorData(actorData);
+}
+
+void AssetManager::AddComponentData(XMLElement* componentData) {
 	while (componentData) {
 		//Get First child element and check if it exists;
 		XMLElement* componentFirstElement = componentData->FirstChildElement();
@@ -40,7 +57,7 @@ void AssetManager::ReadManiFest() {
 		else {
 			//Get file name and add components
 			std::string componentType = componentFirstElement->Value();
-			const char *componentName = componentData->FindAttribute("name")->Value();
+			const char* componentName = componentData->FindAttribute("name")->Value();
 			//Create component accordingly and add to asset manager
 			if (componentType == "Mesh") {
 				const XMLAttribute* filenameAttribute = componentFirstElement->FindAttribute("filename");
@@ -48,7 +65,7 @@ void AssetManager::ReadManiFest() {
 					std::cerr << "No filename Attribute \n";
 				}
 				else {
-					const char *filename = componentFirstElement->FindAttribute("filename")->Value();
+					const char* filename = componentFirstElement->FindAttribute("filename")->Value();
 					AddComponent<MeshComponent>(componentName, nullptr, filename);
 				}
 			}
@@ -74,11 +91,38 @@ void AssetManager::ReadManiFest() {
 					AddComponent<ShaderComponent>(componentName, nullptr, vertFile, fragFile);
 				}
 			}
+			else if (componentType == "Body") {
+				std::string bodyType_ = componentFirstElement->FindAttribute("type")->Value();
+				const float velx = componentFirstElement->FloatAttribute("velx");
+				const float vely = componentFirstElement->FloatAttribute("vely");
+				const float velz = componentFirstElement->FloatAttribute("velz");
+				const float accelx = componentFirstElement->FloatAttribute("accelx");
+				const float accely = componentFirstElement->FloatAttribute("accely");
+				const float accelz = componentFirstElement->FloatAttribute("accelz");
+				const float mass = componentFirstElement->FloatAttribute("mass");
+				const float radius = componentFirstElement->FloatAttribute("radius");
+				const float orientation = componentFirstElement->FloatAttribute("orientation");
+				const float rotation = componentFirstElement->FloatAttribute("rotation");
+				const float angular = componentFirstElement->FloatAttribute("angular");
+				const float maxSpeed = componentFirstElement->FloatAttribute("maxSpeed");
+				const float maxAccel = componentFirstElement->FloatAttribute("maxAccel");
+				const float maxRotation = componentFirstElement->FloatAttribute("maxRotation");
+				const float maxAngular = componentFirstElement->FloatAttribute("maxAngular");
+				enum BodyType bodyType = Base;
+				if (bodyType_ == "Kinematic") {
+					bodyType = Kinematic;
+				}
+				AddComponent<BodyComponent>(componentName, nullptr, bodyType,
+					Vec3(), Vec3(velx, vely, velz), Vec3(accelx, accely, accelz),
+					mass, radius, orientation, rotation, angular,
+					maxSpeed, maxAccel, maxRotation, maxAngular);
+			}
 		}
 		componentData = componentData->NextSiblingElement("Component");
 	}
-	//Loop through actor data to load
-	XMLElement* actorData = sceneData->FirstChildElement("Actor");
+}
+
+void AssetManager::AddActorData(XMLElement* actorData) {
 	while (actorData) {
 		//Get First child element and check if it exists;
 		XMLElement* componentParentElement = actorData->FirstChildElement("Parent");
@@ -108,9 +152,22 @@ void AssetManager::ReadManiFest() {
 			if (!actorMesh || !actorMaterial || !actorShader) {
 				std::cerr << "Component not found\n";
 			}
+
+
+			Ref<TransformComponent> transform = std::make_shared<TransformComponent>(newActor);
 			newActor->AddComponent<MeshComponent>(actorMesh);
 			newActor->AddComponent<MaterialComponent>(actorMaterial);
 			newActor->AddComponent<ShaderComponent>(actorShader);
+			newActor->AddComponent<TransformComponent>(transform);
+
+			//Add body component if exists
+			XMLElement* bodyComponentElement = actorData->FirstChildElement("Body");
+			if (bodyComponentElement) {
+				const char* bodyComponentName = bodyComponentElement->FindAttribute("componentName")->Value();
+				Ref<BodyComponent> actorBody = GetComponent<BodyComponent>(bodyComponentName);
+				actorBody->SetParent(newActor);
+				newActor->AddComponent<BodyComponent>(actorBody);
+			}
 			AddComponent<Actor>(actorName, newActor);
 		}
 		actorData = actorData->NextSiblingElement("Actor");

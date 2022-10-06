@@ -13,12 +13,24 @@
 #include "MaterialComponent.h"
 #include "LightActor.h"
 
-SceneActor::SceneActor(Ref<Component> parent_) : Actor(parent_) {
-	assetManager = new AssetManager();
+SceneActor::SceneActor(Ref<Component> parent_) : Actor(parent_), assetManager(nullptr) {
+	//assetManager = nullptr;
 }
 
 bool SceneActor::OnCreate_Scene() {
 	if (isCreated) return isCreated;
+
+	Debug::Info("Loading camera for SceneActor: ", __FILE__, __LINE__);
+	Ref<CameraActor> camera = std::make_shared<CameraActor>(nullptr);
+	camera->AddComponent<TransformComponent>(nullptr, Vec3(0.0f, 0.0f, -20.0f), Quaternion());
+	camera->OnCreate();
+	AddActor("camera", camera);
+
+	Debug::Info("Loading camera for light: ", __FILE__, __LINE__);
+	Ref<LightActor> light = std::make_shared<LightActor>(nullptr, LightStyle::DirectionLight, Vec3(0.0f, 5.0f, -10.0f), Vec4(0.6f, 0.6f, 0.6f, 0.0f));
+	light->OnCreate();
+	AddActor("light", light);
+
 	Debug::Info("Loading assets for SceneActor: ", __FILE__, __LINE__);
 	for (std::pair<const char*, Ref<Actor>> actor : actorList) {
 		if (actor.second->OnCreate() == false) {

@@ -13,11 +13,16 @@ class AssetManager{
 private:
 
 	std::unordered_map<const char*, Ref<Component>> componentCatalog;
+	const char* scene;
 	void ReadManiFest();
 	XMLDocument doc;
 
+	void AddComponentData(XMLElement* componentData);
+	void AddActorData(XMLElement* actorData);
+
 public:
 	AssetManager();
+	AssetManager(const char* scene_);
 	~AssetManager();
 	bool OnCreate();
 	void OnDestroy();

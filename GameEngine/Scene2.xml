@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Root>
-  <Scene1>
+  <Scene2>
 	  <Component name="GameboardMesh">
 		  <Mesh filename="meshes/Plane.obj"/>
 	  </Component>
@@ -57,5 +57,5 @@
 		  <Shader componentName="TextureShader"/>
 	  </Actor>
 
-  </Scene1>
+  </Scene2>
 </Root>
