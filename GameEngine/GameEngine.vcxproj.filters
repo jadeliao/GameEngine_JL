@@ -40,10 +40,10 @@
     <Filter Include="XML">
       <UniqueIdentifier>{5539b641-30fa-4c21-9d91-a96a86c95885}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\AI">
+    <Filter Include="Header Files\Steering">
       <UniqueIdentifier>{cff7bd89-ad6a-4de9-a645-32fa853119c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\AI">
+    <Filter Include="Source Files\Steering">
       <UniqueIdentifier>{a21eb6b9-2756-4cd1-a71c-eae8b3f9c62e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -103,25 +103,25 @@
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Seek.cpp">
-      <Filter>Source Files\AI</Filter>
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="SteeringBehaviour.cpp">
-      <Filter>Source Files\AI</Filter>
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="KinematicBody.cpp">
-      <Filter>Source Files\AI</Filter>
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="SteeringOutput.cpp">
-      <Filter>Source Files\AI</Filter>
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="Body.cpp">
-      <Filter>Source Files\AI</Filter>
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="KinematicSeek.cpp">
-      <Filter>Source Files\AI</Filter>
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="KinematicSteeringOutput.cpp">
-      <Filter>Source Files\AI</Filter>
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
     <ClCompile Include="AIComponent.cpp">
       <Filter>Source Files\Actor\Component</Filter>
@@ -140,6 +140,12 @@
     </ClCompile>
     <ClCompile Include="ShapeComponent.cpp">
       <Filter>Source Files\Actor\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Align.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="LookWhereYoureGoing.cpp">
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,25 +231,25 @@
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SteeringBehaviour.h">
-      <Filter>Header Files\AI</Filter>
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="Seek.h">
-      <Filter>Header Files\AI</Filter>
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="KinematicBody.h">
-      <Filter>Header Files\AI</Filter>
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="SteeringOutput.h">
-      <Filter>Header Files\AI</Filter>
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="Body.h">
-      <Filter>Header Files\AI</Filter>
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="KinematicSeek.h">
-      <Filter>Header Files\AI</Filter>
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="KinematicSteeringOutput.h">
-      <Filter>Header Files\AI</Filter>
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
@@ -268,6 +274,12 @@
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Header Files\Actor\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Align.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="LookWhereYoureGoing.h">
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

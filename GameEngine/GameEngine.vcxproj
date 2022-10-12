@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AIComponent.cpp" />
+    <ClCompile Include="Align.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="BodyComponent.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="KinematicSeek.cpp" />
     <ClCompile Include="KinematicSteeringOutput.cpp" />
     <ClCompile Include="LightActor.cpp" />
+    <ClCompile Include="LookWhereYoureGoing.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
@@ -172,6 +174,7 @@
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AIComponent.h" />
+    <ClInclude Include="Align.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
     <ClInclude Include="Body.h" />
@@ -186,6 +189,7 @@
     <ClInclude Include="KinematicSeek.h" />
     <ClInclude Include="KinematicSteeringOutput.h" />
     <ClInclude Include="LightActor.h" />
+    <ClInclude Include="LookWhereYoureGoing.h" />
     <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MeshComponent.h" />

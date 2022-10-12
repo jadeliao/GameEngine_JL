@@ -67,6 +67,15 @@ void Body::Update( float deltaTime ){
         vel = VMath::normalize(vel) * maxSpeed;
     }
 
+    //std::cout << "orientation: " << orientation << std::endl;
+
+    //std::cout << "accel: ";
+    //accel.print();
+    //std::cout << "vel: ";
+    //vel.print();
+    //std::cout << "pos: ";
+    //pos.print();
+
     // Clip to maxrotation, if needed
     if (rotation > maxRotation) rotation = maxRotation;
     
@@ -92,5 +101,14 @@ void Body::HandleEvents( const SDL_Event& event )
         }
     }
     // etc
+}
+
+void Body::print() {
+    std::cout << "accel: ";
+    accel.print();
+    std::cout << "vel: ";
+    vel.print();
+    std::cout << "pos: ";
+    pos.print();
 }
 

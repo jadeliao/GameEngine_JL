@@ -30,20 +30,48 @@ bool DemoScene::OnCreate() {
 	if (isCreated) return true;
 
 	//Add actors
-	Ref<Actor> checker_red = assetManager->GetComponent<Actor>("RedChecker");
-	Ref<Actor> checker_white = assetManager->GetComponent<Actor>("WhiteChecker");
-	Vec3 red_pos(-12.0f, -7.0f, 0.0f);
-	Vec3 white_pos(0.0f, 0.0f, 0.0f);
-	Ref<TransformComponent> checker_red_transform = checker_red->GetComponent<TransformComponent>();
-	checker_red_transform->SetTransform(red_pos, Quaternion(), Vec3(0.15f, 0.15f, 0.15f));
-	Ref<TransformComponent> checker_white_transform = checker_white->GetComponent<TransformComponent>();
-	checker_white_transform->SetTransform(white_pos, Quaternion(), Vec3(0.15f, 0.15f, 0.15f));
-	checker_red->GetComponent<BodyComponent>()->setPos(red_pos);
-	checker_white->GetComponent<BodyComponent>()->setPos(white_pos);
-	Ref<AIComponent> red_ai = std::make_shared<AIComponent>(checker_red, seek, checker_white);
-	checker_red->AddComponent<AIComponent>(red_ai);
-	AddActor("redchecker", checker_red);
-	AddActor("whitechecker", checker_white);
+	//Ref<Actor> checker_red = assetManager->GetComponent<Actor>("RedChecker");
+	//Ref<Actor> checker_white = assetManager->GetComponent<Actor>("WhiteChecker");
+	//Vec3 red_pos(-12.0f, -7.0f, 0.0f);
+	//Vec3 white_pos(0.0f, 0.0f, 0.0f);
+	//Ref<TransformComponent> checker_red_transform = checker_red->GetComponent<TransformComponent>();
+	//checker_red_transform->SetTransform(red_pos, Quaternion(), Vec3(0.15f, 0.15f, 0.15f));
+	//Ref<TransformComponent> checker_white_transform = checker_white->GetComponent<TransformComponent>();
+	//checker_white_transform->SetTransform(white_pos, Quaternion(), Vec3(0.15f, 0.15f, 0.15f));
+	//AddActor("redchecker", checker_red);
+	//AddActor("whitechecker", checker_white);
+
+	Ref<Actor> mario = assetManager->GetComponent<Actor>("Mario");
+	Ref<Actor> marioblack = assetManager->GetComponent<Actor>("MarioBlack");
+
+	Vec3 mario_pos(-10.0f, -7.0f, 0.0f);
+	Vec3 mario_black_pos(0.0f, 0.0f, 0.0f);
+
+	Ref<TransformComponent> mario_transform = mario->GetComponent<TransformComponent>();
+	mario_transform->SetTransform(mario_pos, 
+		Quaternion() * QMath::angleAxisRotation(mario->GetComponent<BodyComponent>()->getBody()->getOrientation(), 
+		Vec3(0.0f, 0.0f, 1.0f)), Vec3(1.0f, 1.0f, 1.0f));
+	Ref<TransformComponent> mario_black_transform = marioblack->GetComponent<TransformComponent>();
+
+	//Set orientation and position
+	Ref<BodyComponent> black_body = marioblack->GetComponent<BodyComponent>();
+		mario_black_transform->SetTransform(mario_black_pos, 
+		Quaternion() * QMath::angleAxisRotation(black_body->getBody()->getOrientation(),
+		Vec3(0.0f, 0.0f, 1.0f)), Vec3(1.0f, 1.0f, 1.0f));
+	//checker_red->GetComponent<BodyComponent>()->setPos(red_pos);
+	//checker_white->GetComponent<BodyComponent>()->setPos(white_pos);
+	mario->GetComponent<BodyComponent>()->setPos(mario_pos);
+	//mario->GetComponent<BodyComponent>()->setOrientation(QMath::magnitude(mario_transform->GetQuaternion()));
+	marioblack->GetComponent<BodyComponent>()->setPos(mario_black_pos);
+	//marioblack->GetComponent<BodyComponent>()->setOrientation(QMath::magnitude(mario_black_transform->GetQuaternion()));
+	//Add AI Component
+	//Ref<AIComponent> red_ai = std::make_shared<AIComponent>(checker_red, seek, checker_white);
+	//checker_red->AddComponent<AIComponent>(red_ai);
+	
+	Ref<AIComponent> mario_ai = std::make_shared<AIComponent>(mario, marioblack);
+	mario->AddComponent<AIComponent>(mario_ai);
+	AddActor("Mario", mario);
+	AddActor("MarioBlack", marioblack);
 
 
 	if (!OnCreate_Scene()) return false;
@@ -53,16 +81,97 @@ bool DemoScene::OnCreate() {
 
 void DemoScene::Update(const float deltaTime) {
 	SceneActor::Update(deltaTime);
-	//Ref<Actor> red_checker = assetManager->GetComponent<Actor>("RedChecker");
-	//Ref<Body> red_checker_body = red_checker->GetComponent<BodyComponent>()->getBody();
-	//Ref<Body> target = assetManager->GetComponent<Actor>("WhiteChecker")->GetComponent<BodyComponent>()->getBody();
-	//Ref<KinematicSeek> steering_algorithm;
-	//steering_algorithm = std::make_shared<KinematicSeek>(red_checker_body, target);
-	//Ref<KinematicSteeringOutput> steering;
-	//steering = steering_algorithm->getSteering();
-	//red_checker_body->Update();;
-
+	//Ref<Actor> mario = assetManager->GetComponent<Actor>("Mario");
+	//Ref<Actor> marioblack = assetManager->GetComponent<Actor>("MarioBlack");
+	//marioblack->GetComponent<TransformComponent>()->GetQuaternion().print();
+	//mario->GetComponent<TransformComponent>()->GetQuaternion().print();
+	//cout << "orientation: " << mario->GetComponent<BodyComponent>()->getBody()->getOrientation() << endl;
 }
 
 void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
+
+	Ref<CameraActor> camera = GetComponent<CameraActor>("camera");
+	switch (sdlEvent.type) {
+	case SDL_KEYDOWN:
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LEFT) {
+			std::cout << "LEFT EVENT\n";
+			//Ref<CameraActor> camera = GetComponent<CameraActor>("camera");
+			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+			transform_->SetTransform(
+				transform_->GetPosition() + Vec3(-1.0f, 0.0f, 0.0f), transform_->GetQuaternion());
+			camera->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
+			std::cout << "RIGHT EVENT\n";
+			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+			transform_->SetTransform(
+				transform_->GetPosition() + Vec3(1.0f, 0.0f, 0.0f), transform_->GetQuaternion());
+			camera->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_UP) {
+			std::cout << "UP EVENT\n";
+			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+			transform_->SetTransform(
+				transform_->GetPosition() + Vec3(0.0f, 0.0f, 1.0f), transform_->GetQuaternion());
+			camera->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_DOWN) {
+			std::cout << "DOWN EVENT\n";
+			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+			transform_->SetTransform(
+				transform_->GetPosition() + Vec3(0.0f, 0.0f, -1.0f), transform_->GetQuaternion());
+			camera->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Q) {
+			std::cout << "Q EVENT\n";
+			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+				QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+			camera->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
+			std::cout << "E EVENT\n";
+			Ref<TransformComponent> transform_ = camera->GetComponent<TransformComponent>();
+			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+				QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+			camera->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Z) {
+			Ref<Actor> mario_black = GetComponent<Actor>("MarioBlack");
+			Ref<BodyComponent> body_ = mario_black->GetComponent<BodyComponent>();
+			body_->setOrientation(body_->getBody()->getOrientation() + -2.0f);
+
+			//std::cout << body_->getBody()->getOrientation() << std::endl;
+
+			Ref<TransformComponent> transform_ = mario_black->GetComponent<TransformComponent>();
+			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+				QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 0.0f, 1.0f)));
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_X) {
+			Ref<Actor> mario_black = GetComponent<Actor>("MarioBlack");
+			Ref<BodyComponent> body_ = mario_black->GetComponent<BodyComponent>();
+			body_->setOrientation(body_->getBody()->getOrientation() + 2.0f);
+
+			//std::cout << body_->getBody()->getOrientation() << std::endl;
+
+			Ref<TransformComponent> transform_ = mario_black->GetComponent<TransformComponent>();
+			transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion() *
+				QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 0.0f, 1.0f)));
+		}
+
+
+		break;
+
+	case SDL_MOUSEMOTION:
+		break;
+
+	case SDL_MOUSEBUTTONDOWN:
+		break;
+
+	case SDL_MOUSEBUTTONUP:
+		break;
+
+	default:
+		break;
+	}
 }

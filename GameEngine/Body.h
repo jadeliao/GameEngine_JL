@@ -61,7 +61,9 @@ public:
     virtual void setPos(Vec3 pos_) { pos = pos_; }
     virtual void setVel(Vec3 vel_) { vel = vel_; }
     virtual void setAccel(Vec3 accel_) { accel = accel_; }
+    virtual void setOrientation(float orientation_) { orientation = orientation_; }
 
+    void print();
 	// Added this as public to deal with my demo 
 	// so that mouse position can be copied into a Body.
     //virtual void setPos( Vec3 pos );

@@ -54,14 +54,15 @@ void BodyComponent::OnDestroy(){
 
 
 void BodyComponent::Update(float deltaTime){
+	float oldOrientation = body->getOrientation();
 	Ref<Actor> parentActor = std::dynamic_pointer_cast<Actor>(GetParent());
 	if (parentActor) {
 		Ref<AIComponent> AIComp = parentActor->GetComponent<AIComponent>();
 		switch (bodyType) {
 		case Kinematic:
 			if (AIComp) {
-				//cout << "AI in effect\n";
-				AIComp->Update(deltaTime, body);
+				AIComp->Update(deltaTime, body, aligning);
+				//AIComp->Update(deltaTime, body, aligning);
 				std::dynamic_pointer_cast<KinematicBody>(body)->Update(deltaTime, AIComp->getSteering());
 			}
 			else {
@@ -74,10 +75,16 @@ void BodyComponent::Update(float deltaTime){
 		}
 		Ref<TransformComponent> transform = parentActor->GetComponent<TransformComponent>();
 		Vec3 newPos = body->getPos();
-		float newOrientation = body->getOrientation();
-		transform->SetTransform(newPos, 
-								transform->GetQuaternion() * QMath::angleAxisRotation(newOrientation, 
-								Vec3(0.0f, 0.0f, 1.0f)), transform->GetScale());
+		float newOrientation = body->getOrientation(); //
+		if (oldOrientation != newOrientation) {
+			transform->SetTransform(newPos,
+				transform->GetQuaternion() * QMath::angleAxisRotation(newOrientation * 180.0f / M_PI,
+					Vec3(0.0f, 0.0f, 1.0f)), transform->GetScale());
+		}
+		else {
+			transform->SetTransform(newPos, transform->GetQuaternion(), transform->GetScale());
+		}
+
 	}
 
 }
@@ -86,5 +93,9 @@ void BodyComponent::Render() const{}
 
 void BodyComponent::HandleEvents( const SDL_Event& event ){
     // etc
+}
+
+void BodyComponent::print(){
+	body->print();
 }
 

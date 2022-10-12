@@ -44,7 +44,10 @@ public:
     void setPos(Vec3 pos_) { body->setPos(pos_); }
     void setVel(Vec3 vel_) { body->setVel(vel_); }
     void setAccel(Vec3 accel_) { body->setAccel(accel_); }
+    void setOrientation(float orientation_) { body->setOrientation(orientation_); }
     Ref<Body> getBody() { return body; }
+
+    void print();
 };
 
 #endif /* BODY_H */
