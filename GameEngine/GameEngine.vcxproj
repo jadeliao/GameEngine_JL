@@ -144,6 +144,7 @@
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="BodyComponent.cpp" />
     <ClCompile Include="CameraActor.cpp" />
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EMath.cpp" />
@@ -156,11 +157,13 @@
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="MMath.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="SceneActor.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Seek.cpp" />
+    <ClCompile Include="Server.cpp" />
     <ClCompile Include="ShaderComponent.cpp" />
     <ClCompile Include="ShapeComponent.cpp" />
     <ClCompile Include="SteeringBehaviour.cpp" />
@@ -168,6 +171,7 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="User.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -180,6 +184,7 @@
     <ClInclude Include="Body.h" />
     <ClInclude Include="BodyComponent.h" />
     <ClInclude Include="CameraActor.h" />
+    <ClInclude Include="Client.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DemoScene.h" />
@@ -194,6 +199,7 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="MMath.h" />
+    <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="QMath.h" />
     <ClInclude Include="Quaternion.h" />
@@ -203,6 +209,7 @@
     <ClInclude Include="SceneActor.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Seek.h" />
+    <ClInclude Include="Server.h" />
     <ClInclude Include="ShaderComponent.h" />
     <ClInclude Include="ShapeComponent.h" />
     <ClInclude Include="Sphere.h" />
@@ -213,6 +220,7 @@
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UBO_Padding.h" />
+    <ClInclude Include="User.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Window.h" />
