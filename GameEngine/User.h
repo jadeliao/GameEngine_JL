@@ -17,7 +17,6 @@
 class User {
 protected:
 	int iResult;
-	SOCKET ClientSocket;
 	struct addrinfo *result;
 	struct addrinfo hints;
 	char sendbuf[DEFAULT_BUFLEN];

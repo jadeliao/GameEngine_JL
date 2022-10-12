@@ -44,12 +44,6 @@ bool NetworkManager::Initialize() {
 		return 1;
 	}
 
-	//struct addrinfo hints = user->getHints();
-	//ZeroMemory(&hints, sizeof(hints));
-	//hints.ai_family = AF_UNSPEC;
-	//hints.ai_socktype = SOCK_STREAM;
-	//hints.ai_protocol = IPPROTO_TCP;
-
 	//Start connecting user
 	if (user->OnCreate()) {
 		isRunning = true;

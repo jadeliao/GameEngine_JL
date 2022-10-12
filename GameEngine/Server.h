@@ -7,6 +7,7 @@ class Server :public User {
 
 protected:
 	SOCKET ListenSocket;
+	SOCKET ClientSocket;
 public:
 	Server();
 	bool OnCreate() override;
