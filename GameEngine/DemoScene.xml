@@ -32,17 +32,17 @@
 
 	<Component name="MarioBody">
 		<Body type="Kinematic"
-				velx="0.0" vely="0.0" velz="0.0"
+				velx="1.0" vely="1.0" velz="0.0"
 				accelx="0.0" accely="0.0" accelz="0.0"
-				mass="1.0" radius="0.0" orientation="0.0" rotation="0.0" angular="0.0"
-				maxSpeed="4.0" maxAccel="2.0" maxRotation="0.1" maxAngular="0.1"/>
+				mass="1.0" radius="0.5" orientation="0.0" rotation="0.0" angular="0.0"
+				maxSpeed="4.0" maxAccel="2.0" maxRotation="1.0" maxAngular="1.0"/>
 	</Component>
 
 	<Component name="MarioBlackBody">
 		<Body type="Base"
 				velx="0.0" vely="0.0" velz="0.0"
 				accelx="0.0" accely="0.0" accelz="0.0"
-				mass="1.0" radius="0.0" orientation="20.0" rotation="0.0" angular="0.0"
+				mass="1.0" radius="0.0" orientation="1.0" rotation="0.0" angular="0.0"
 				maxSpeed="0.0" maxAccel="0.0" maxRotation="0.0" maxAngular="0.0"/>
 	</Component>
 		

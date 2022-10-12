@@ -54,15 +54,13 @@ void BodyComponent::OnDestroy(){
 
 
 void BodyComponent::Update(float deltaTime){
-	float oldOrientation = body->getOrientation();
 	Ref<Actor> parentActor = std::dynamic_pointer_cast<Actor>(GetParent());
 	if (parentActor) {
 		Ref<AIComponent> AIComp = parentActor->GetComponent<AIComponent>();
 		switch (bodyType) {
 		case Kinematic:
 			if (AIComp) {
-				AIComp->Update(deltaTime, body, aligning);
-				//AIComp->Update(deltaTime, body, aligning);
+				AIComp->getSteeringOutputs(body, looking);
 				std::dynamic_pointer_cast<KinematicBody>(body)->Update(deltaTime, AIComp->getSteering());
 			}
 			else {
@@ -73,18 +71,14 @@ void BodyComponent::Update(float deltaTime){
 			body->Update(deltaTime);
 			break;
 		}
+		//Set the new values
 		Ref<TransformComponent> transform = parentActor->GetComponent<TransformComponent>();
 		Vec3 newPos = body->getPos();
-		float newOrientation = body->getOrientation(); //
-		if (oldOrientation != newOrientation) {
-			transform->SetTransform(newPos,
-				transform->GetQuaternion() * QMath::angleAxisRotation(newOrientation * 180.0f / M_PI,
-					Vec3(0.0f, 0.0f, 1.0f)), transform->GetScale());
-		}
-		else {
-			transform->SetTransform(newPos, transform->GetQuaternion(), transform->GetScale());
-		}
-
+		float newOrientation = body->getOrientation(); 
+		newOrientation *= 180.0f / M_PI; // transfer to degree
+		transform->SetTransform(newPos,
+			Quaternion() * QMath::angleAxisRotation(newOrientation, //pass in origin rotate in degree for orientation
+				Vec3(0.0f, 0.0f, 1.0f)), transform->GetScale());
 	}
 
 }

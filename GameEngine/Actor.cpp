@@ -21,6 +21,7 @@ Actor::Actor(const Actor& actor_){
 
 bool Actor::OnCreate() {
 	if (isCreated) return isCreated;
+
 	for (auto component : components) {
 		if (component->OnCreate() == false) {
 			Debug::Error("Loading assets for Actor/Components: ", __FILE__, __LINE__);

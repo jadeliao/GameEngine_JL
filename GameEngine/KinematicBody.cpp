@@ -23,4 +23,5 @@ void KinematicBody::Update( float deltaTime, Ref<SteeringOutput> steering)
 
     angular = angular > maxAngular ? maxAngular : angular;
 
+
 }

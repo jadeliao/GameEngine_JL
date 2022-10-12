@@ -11,7 +11,7 @@ protected:
 	float targetRadius;
 	float slowRadius;
 	float timeToTarget = 0.1f;
-	double mapToRange(double degree_);
+	float mapToRange(float degree_);
 
 public:
 	Align(Ref<Body> character_, Ref<Body> target_);
