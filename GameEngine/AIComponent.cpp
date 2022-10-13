@@ -6,7 +6,7 @@
 
 
 AIComponent::AIComponent(Ref<Component> parent_, Ref<Actor> target_): 
-	Component(parent_), target(target_) {
+	Component(parent_), target(target_), targetName("none") {
 	steering = std::make_shared<SteeringOutput>();
 }
 
@@ -48,9 +48,12 @@ void AIComponent::getSteeringOutputs(Ref<Body> self_, SteeringType steeringType_
 			default:
 				break;
 			}
+			//Add the output to vector
 			steering_outputs.push_back(steering_algorithm->getSteering());
+			//Reset steering
 			steering->linear = Vec3();
 			steering->angular = 0.0f;
+			//Combines the steerings
 			for (unsigned i = 0; i < steering_outputs.size(); i++) {
 				if (steering_outputs[i]) {
 					//Add steering outputs to the steering reference (pass in the address)
@@ -58,7 +61,6 @@ void AIComponent::getSteeringOutputs(Ref<Body> self_, SteeringType steeringType_
 				}
 			}
 			if (steering_algorithm) delete steering_algorithm;
-			//cout << "steering->angular: " << steering->angular << "\n";
 		}
 	}
 	else {

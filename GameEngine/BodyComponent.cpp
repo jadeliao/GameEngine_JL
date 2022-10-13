@@ -45,6 +45,8 @@ BodyComponent::~BodyComponent(){
 bool BodyComponent::OnCreate(){
 	if (isCreated) return isCreated;
 	isCreated = true;
+	//Set the transform component
+	setTransform();
 	return isCreated;
 }
 
@@ -71,25 +73,32 @@ void BodyComponent::Update(float deltaTime){
 			body->Update(deltaTime);
 			break;
 		}
-		//Set the new values
-		Ref<TransformComponent> transform = parentActor->GetComponent<TransformComponent>();
-		Vec3 newPos = body->getPos();
-		float newOrientation = body->getOrientation(); 
-		newOrientation *= 180.0f / M_PI; // transfer to degree
-		transform->SetTransform(newPos,
-			Quaternion() * QMath::angleAxisRotation(newOrientation, //pass in origin rotate in degree for orientation
-				Vec3(0.0f, 0.0f, 1.0f)), transform->GetScale());
 	}
-
+	setTransform();
 }
 
 void BodyComponent::Render() const{}
 
 void BodyComponent::HandleEvents( const SDL_Event& event ){
-    // etc
+
 }
 
 void BodyComponent::print(){
 	body->print();
 }
 
+void BodyComponent::setTransform() {
+
+	//Set the new values to transform component
+	Ref<Actor> parentActor = std::dynamic_pointer_cast<Actor>(GetParent());
+	if (parentActor) {
+		Ref<TransformComponent> transform = parentActor->GetComponent<TransformComponent>();
+		Vec3 newPos = body->getPos();
+		float newOrientation = body->getOrientation();
+		newOrientation *= 180.0f / M_PI; // transfer to degree
+		transform->SetTransform(newPos,
+			Quaternion() * QMath::angleAxisRotation(newOrientation, //rotate orientation from origin in z axis (only for 2D)
+				Vec3(0.0f, 0.0f, 1.0f)), transform->GetScale());
+	}
+
+}

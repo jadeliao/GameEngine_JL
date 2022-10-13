@@ -24,6 +24,7 @@ private:
 	Ref<SteeringOutput> steering;
 	vector<SteeringType> steeringBehaviours;
 	Ref<Actor> target;
+	std::string targetName;
 
 public:
 	AIComponent(Ref<Component> parent_, Ref<Actor> target_);
@@ -36,6 +37,7 @@ public:
 	void addSteeringBehaviour(SteeringType steeringType_);
 
 	void setTarget(Ref<Actor> target_);
+	void setTarget(std::string targetName_) { targetName = targetName_; }
 	Ref<Actor> getTarget() { return target; }
 	Ref<SteeringOutput> getSteering() { return steering; }
 

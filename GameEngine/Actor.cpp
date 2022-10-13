@@ -24,19 +24,12 @@ bool Actor::OnCreate() {
 
 	for (auto component : components) {
 		if (component->OnCreate() == false) {
+			cout << typeid(this).name() << "\n";
 			Debug::Error("Loading assets for Actor/Components: ", __FILE__, __LINE__);
 			isCreated = false;
 		}
 	}
-	//Add body component (temp)
-	//Ref<BodyComponent> body = std::make_shared<BodyComponent>(nullptr, Kinematic,
-	//	Vec3(), Vec3(10.0f, 5.0f, 0.0f), Vec3(5.0f, 1.0f, 0.0f),
-	//	1.0f, 2.0f, 1.0f, 0.0f, 3.0f, 3.0f, 3.0f, 3.0f, 3.0f);
-	//AddComponent<BodyComponent>(body);
-	//if (body->OnCreate() == false) {
-	//	Debug::Error("Loading assets for Actor/Components: ", __FILE__, __LINE__);
-	//	isCreated = false;
-	//}
+
 	isCreated = true;
 	return isCreated;
 }
