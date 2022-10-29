@@ -56,13 +56,13 @@ void Actor::HandleEvents(const SDL_Event& sdlEvent){
 }
 
 void Actor::Render()const {
-	//Ref<MaterialComponent> texture = GetComponent<MaterialComponent>();
-	//Ref<ShaderComponent> shader = GetComponent<ShaderComponent>();
-	//Ref<MeshComponent> mesh = GetComponent<MeshComponent>();
-	//glUseProgram(shader->GetProgram());
-	//glUniformMatrix4fv(shader->GetUniformID("modelMatrix"), 1, GL_FALSE, modelMatrix);
-	//glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
-	//mesh->Render(GL_TRIANGLES);
+	Ref<MaterialComponent> texture = GetComponent<MaterialComponent>();
+	Ref<ShaderComponent> shader = GetComponent<ShaderComponent>();
+	Ref<MeshComponent> mesh = GetComponent<MeshComponent>();
+	glUseProgram(shader->GetProgram());
+	glUniformMatrix4fv(shader->GetUniformID("modelMatrix"), 1, GL_FALSE, modelMatrix);
+	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
+	mesh->Render(GL_TRIANGLES);
 }
 
 void Actor::RemoveAllComponents() {
