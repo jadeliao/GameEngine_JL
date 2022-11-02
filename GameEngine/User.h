@@ -26,9 +26,12 @@ protected:
 public:
 	virtual ~User(){}
 	virtual bool OnCreate();
+	virtual bool Send() = 0;
 	virtual void OnDestroy() = 0;
+	virtual void Run() = 0;
 	virtual void Update(const float deltaTime) = 0;
 	struct addrinfo getHints() { return hints; }
+	int getResult() { return iResult; }
 };
 
 #endif

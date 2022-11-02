@@ -11,6 +11,8 @@ public:
 	Client();
 	bool OnCreate() override;
 	void OnDestroy() override;
+	bool Send() override;
+	void Run() override;
 	void Update(const float deltaTime) override;
 };
 

@@ -72,6 +72,25 @@ void Server::OnDestroy() {
 	WSACleanup();
 }
 
+bool Server::Send() {
+	// Send an initial buffer
+	iResult = send(ClientSocket, sendbuf, (int)strlen(sendbuf), 0);
+	if (iResult == SOCKET_ERROR) {
+		printf("send failed with error: %d\n", WSAGetLastError());
+		closesocket(ClientSocket);
+		WSACleanup();
+		system("pause");
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+void Server::Run() {
+
+}
+
 void Server::Update(const float deltaTime) {
 
 }

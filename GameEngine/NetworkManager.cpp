@@ -11,7 +11,9 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::Run() {
-
+	do {
+		user->Run();
+	} while (user->getResult() > 0);
 }
 
 bool NetworkManager::Initialize() {

@@ -59,6 +59,32 @@ void Client::OnDestroy() {
 	WSACleanup();
 }
 
+bool Client::Send() {
+	// Send an initial buffer
+	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
+	if (iResult == SOCKET_ERROR) {
+		printf("send failed with error: %d\n", WSAGetLastError());
+		closesocket(ConnectSocket);
+		WSACleanup();
+		system("pause");
+		return false;
+	}
+	else {
+		return true;
+	}
+} 
+
+void Client::Run() {
+	iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+	if (iResult > 0)
+		printf("Bytes received: %d\n", iResult);
+	else if (iResult == 0)
+		printf("Connection closed\n");
+	else
+		printf("recv failed with error: %d\n", WSAGetLastError());
+
+}
+
 void Client::Update(const float deltaTime) {
 
 }

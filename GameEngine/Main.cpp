@@ -24,7 +24,6 @@ int main(int argc, char* args[]) {
 				game->Run();
 			}
 		}
-
 	}
 	/// This writes out memory leaks to the output window not the console window
 	_CrtDumpMemoryLeaks();
