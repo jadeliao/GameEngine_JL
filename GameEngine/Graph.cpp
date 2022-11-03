@@ -99,6 +99,7 @@ std::vector<int> Graph::Dijkstra(int startNode, int goalNode) {
 		for (int next : neighbourList) {
 			//calculate new cost
 			float new_cost = cost_so_far[current] + cost[current][next];
+			//if neighbour is not in cost_so_far or new cost is lower
 			if (cost_so_far.find(next) != cost_so_far.end() || new_cost < cost_so_far[next]) {
 				cost_so_far[next] = new_cost;
 				currentNodeAndPriority->priority = new_cost;

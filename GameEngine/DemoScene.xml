@@ -35,6 +35,18 @@
 				mass="1.0" radius="0.0" orientation="1.0" rotation="0.0" angular="0.0"
 				maxSpeed="0.0" maxAccel="0.0" maxRotation="0.0" maxAngular="0.0"/>
 	</Component>
+		
+	<Component name="MarioCollision">
+		<Collision	shape="sphere"
+			   		posx="0.0" posy="0.0" posz="0.0"
+					radius="1.0"/>
+	</Component>
+
+	<Component name="MarioBlackCollision">
+		<Collision	shape="sphere"
+					posx="0.0" posy="0.0" posz="0.0"
+					radius="1.0"/>
+	</Component>
 
 	<Component name="MarioAI">
 		<AI/>
@@ -48,6 +60,7 @@
 		<Material componentName="MarioTexture"/>
 		<Shader componentName="TextureShader"/>
 		<Body componentName="MarioBody"/>
+		<Collision componentName="MarioCollision"/>
 		<AI componentName="MarioAI" targetName="MarioBlack"/>
 	</Actor>
 
@@ -57,6 +70,7 @@
 		<Material componentName="MarioBlackTexture"/>
 		<Shader componentName="TextureShader"/>
 		<Body componentName="MarioBlackBody"/>
+		<Collision componentName="MarioBlackCollision"/>
 	</Actor>
 		
 	</DemoScene>

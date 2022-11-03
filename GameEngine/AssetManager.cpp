@@ -6,6 +6,7 @@
 #include "TransformComponent.h"
 #include "BodyComponent.h"
 #include "AIComponent.h"
+#include "CollisionComponent.h"
 
 using namespace tinyxml2;
 
@@ -35,10 +36,10 @@ void AssetManager::ReadManiFest() {
 		std::cout << doc.ErrorIDToName(doc.ErrorID()) << std::endl;
 		return;
 	}
-	//Loop through the document to read data
+	//Loop through document to read data
 	XMLElement* rootData = doc.RootElement();
 	XMLElement* sceneData = rootData->FirstChildElement(scene);
-	//While exists a component data
+	//Loop through component data to load
 	XMLElement* componentData = sceneData->FirstChildElement("Component");
 	AddComponentData(componentData);
 	//Loop through actor data to load
@@ -54,8 +55,7 @@ void AssetManager::AddComponentData(XMLElement* componentData) {
 			std::cerr << "No First Element \n";
 		}
 		else {
-			//Get file name and add components
-			
+			//Get file name and add components			
 			std::string componentType = componentFirstElement->Value();
 			const char* componentName = componentData->FindAttribute("name")->Value();
 			//Create component accordingly and add to asset manager
@@ -121,6 +121,51 @@ void AssetManager::AddComponentData(XMLElement* componentData) {
 					mass, radius, orientation, rotation, angular,
 					maxSpeed, maxAccel, maxRotation, maxAngular);
 			}
+			else if (componentType == "Collision") {
+				std::string collisionType = componentFirstElement->FindAttribute("shape")->Value();
+				Ref<GEOMETRY::Shape> shape_;
+				if (collisionType == "Sphere") {
+					const float posx = componentFirstElement->FloatAttribute("posx");
+					const float posy = componentFirstElement->FloatAttribute("posy");
+					const float posz = componentFirstElement->FloatAttribute("posz");
+					const float radius = componentFirstElement->FloatAttribute("radius");
+					shape_ = std::make_shared<GEOMETRY::Sphere>(posx, posy, posz, radius);
+				}
+				else if (collisionType == "Cylinder") {
+					const float posxA = componentFirstElement->FloatAttribute("posxA");
+					const float posyA = componentFirstElement->FloatAttribute("posyA");
+					const float poszA = componentFirstElement->FloatAttribute("poszA");
+					const float posxB = componentFirstElement->FloatAttribute("posxB");
+					const float posyB = componentFirstElement->FloatAttribute("posyB");
+					const float poszB = componentFirstElement->FloatAttribute("poszB");
+					const float radius = componentFirstElement->FloatAttribute("radius");
+					shape_ = std::make_shared<GEOMETRY::Cylinder>(radius, 
+						Vec3(posxA, posyA, poszA), Vec3(posxB, posyB, poszB));
+				}
+				else if (collisionType == "Capsule") {
+					const float posxA = componentFirstElement->FloatAttribute("posxA");
+					const float posyA = componentFirstElement->FloatAttribute("posyA");
+					const float poszA = componentFirstElement->FloatAttribute("poszA");
+					const float posxB = componentFirstElement->FloatAttribute("posxB");
+					const float posyB = componentFirstElement->FloatAttribute("posyB");
+					const float poszB = componentFirstElement->FloatAttribute("poszB");
+					const float radius = componentFirstElement->FloatAttribute("radius");
+					shape_ = std::make_shared<GEOMETRY::Capsule>(radius,
+						Vec3(posxA, posyA, poszA), Vec3(posxB, posyB, poszB));
+				}
+				else if (collisionType == "Box") {
+					const float posx = componentFirstElement->FloatAttribute("posx");
+					const float posy = componentFirstElement->FloatAttribute("posy");
+					const float posz = componentFirstElement->FloatAttribute("posz");
+					const float halfExtentX = componentFirstElement->FloatAttribute("halfExtentX");
+					const float halfExtentY = componentFirstElement->FloatAttribute("halfExtentY");
+					const float halfExtentZ = componentFirstElement->FloatAttribute("halfExtentZ");
+					shape_ = std::make_shared<GEOMETRY::Box>(Vec3(posx, posy, posz), 
+						Vec3(halfExtentX, halfExtentY, halfExtentZ), Quaternion());
+
+				}
+				AddComponent<CollisionComponent>(componentName, nullptr, collisionType, shape_);
+			}
 			else if (componentType == "AI") {
 				XMLElement* AIData = componentData->FirstChildElement("Steering");
 				AddComponent<AIComponent>(componentName, nullptr, nullptr);
@@ -156,9 +201,10 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 		XMLElement* componentMaterialElement = actorData->FirstChildElement("Material");
 		XMLElement* componentShaderElement = actorData->FirstChildElement("Shader");
 		XMLElement* componentBodyElement = actorData->FirstChildElement("Body");
+		XMLElement* componentCollisionElement = actorData->FirstChildElement("Collision");
 		XMLElement* componentAIElement = actorData->FirstChildElement("AI");
 		if (!componentMeshElement || !componentMaterialElement || !componentShaderElement || 
-			!componentBodyElement) {
+			!componentBodyElement || !componentCollisionElement) {
 			std::cerr << "Component Element not found\n";
 		}
 		else {
@@ -179,11 +225,13 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 			const char* materialName = componentMaterialElement->FindAttribute("componentName")->Value();
 			const char* shaderName = componentShaderElement->FindAttribute("componentName")->Value();
 			const char* bodyComponentName = componentBodyElement->FindAttribute("componentName")->Value();
+			const char* collisionName = componentCollisionElement->FindAttribute("componentName")->Value();
 			Ref<MeshComponent> actorMesh = GetComponent<MeshComponent>(meshName);
 			Ref<MaterialComponent> actorMaterial = GetComponent<MaterialComponent>(materialName);
 			Ref<ShaderComponent> actorShader = GetComponent<ShaderComponent>(shaderName);
 			Ref<BodyComponent> actorBody = GetComponent<BodyComponent>(bodyComponentName);
-			if (!actorMesh || !actorMaterial || !actorShader || !actorBody) {
+			Ref<CollisionComponent> actorCollision = GetComponent<CollisionComponent>(collisionName);
+			if (!actorMesh || !actorMaterial || !actorShader || !actorBody || !actorCollision) {
 				std::cerr << "Component not found\n";
 			}
 
@@ -192,6 +240,7 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 			actorMaterial->SetParent(newActor);
 			actorShader->SetParent(newActor);
 			actorBody->SetParent(newActor);
+			actorCollision->SetParent(newActor);
 
 			//Add all components to actor
 			Ref<TransformComponent> transform = std::make_shared<TransformComponent>(newActor);
@@ -200,6 +249,7 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 			newActor->AddComponent<ShaderComponent>(actorShader);
 			newActor->AddComponent<TransformComponent>(transform);
 			newActor->AddComponent<BodyComponent>(actorBody);
+			newActor->AddComponent<CollisionComponent>(actorCollision);
 
 			if (componentAIElement) {
 				const char* aiComponentName = componentAIElement->FindAttribute("componentName")->Value();

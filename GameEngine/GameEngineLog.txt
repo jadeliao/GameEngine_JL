@@ -1,16 +1,16 @@
-Sat Oct 29 19:23:45 2022
+Thu Nov  3 13:14:04 2022
 [INFO]: Starting the SceneManager
-[INFO]: OpenGL version: 4.6.14802 Compatibility Profile Context 21.12.1 30.0.14011.3017
-[INFO]: Graphics card vendor ATI Technologies Inc.
-[INFO]: Graphics card name Radeon RX 570 Series
-[INFO]: GLSL Version 4.60
+[INFO]: OpenGL version: 4.6.0 - Build 31.0.101.2111
+[INFO]: Graphics card vendor Intel
+[INFO]: Graphics card name Intel(R) HD Graphics 630
+[INFO]: GLSL Version 4.60 - Build 31.0.101.2111
 [INFO]: Uniforms:
 "projection" loc:-1
 "view" loc:-1
 "position" loc:-1
 "colour" loc:-1
 "modelMatrix" loc:2
-"myTexture" loc:3
+"myTexture" loc:0
 
 [INFO]: Created DemoScene: 
 [INFO]: Loading assets DemoScene: 
@@ -18,3 +18,9 @@ Sat Oct 29 19:23:45 2022
 [INFO]: Creating values for CameraActor: 
 [INFO]: Loading camera for light: 
 [INFO]: Loading assets for SceneActor: 
+[INFO]: Deleting assets for SceneActor: 
+[INFO]: Deleted DemoScene: 
+[INFO]: Deleting assets for Actor: 
+[INFO]: Deleting assets for Actor: 
+[INFO]: Deleting assets for Actor: 
+[INFO]: Deleting the SceneManager
