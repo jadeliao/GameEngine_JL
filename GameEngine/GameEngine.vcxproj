@@ -147,6 +147,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EMath.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="KinematicBody.cpp" />
     <ClCompile Include="KinematicSeek.cpp" />
     <ClCompile Include="KinematicSteeringOutput.cpp" />
@@ -156,6 +157,8 @@
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="MMath.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NodeAndPriority.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="SceneActor.cpp" />
@@ -185,6 +188,7 @@
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="Euler.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="KinematicBody.h" />
     <ClInclude Include="KinematicSeek.h" />
     <ClInclude Include="KinematicSteeringOutput.h" />
@@ -194,6 +198,8 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="MMath.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeAndPriority.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="QMath.h" />
     <ClInclude Include="Quaternion.h" />
