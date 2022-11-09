@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "Component.h"
+#include "Actor.h"
 #include "Debug.h"
 #include "tinyxml2.h"
 
@@ -11,7 +12,7 @@ using namespace tinyxml2;
 
 class AssetManager{
 private:
-
+	std::unordered_map<const char*, Ref<Actor>> actorList;
 	std::unordered_map<const char*, Ref<Component>> componentCatalog;
 	const char* scene;
 	void ReadManiFest();
@@ -26,8 +27,24 @@ public:
 	~AssetManager();
 	bool OnCreate();
 	void OnDestroy();
+	std::unordered_map<const char*, Ref<Actor>> getActors() { return actorList; }
 
 	void RemoveAllComponents();
+
+	template<typename ActorTemplate>
+	void AddActor(const char* name_, Ref<ActorTemplate> actor_) {
+		if (std::dynamic_pointer_cast<Actor>(actor_)) {
+			//Need to check memory for the string
+			std::string* temp_name = new std::string();
+			*temp_name = name_;
+			actorList[temp_name->c_str()] = actor_;
+		}
+		else {
+#ifdef _DEBUG
+			std::cerr << "WARNING: Trying to add a component type to actor list - ignored\n";
+#endif
+		}
+	}
 
 	template<typename ComponentTemplate, typename ... Args>
 	void AddComponent(const char* name_, Args&& ... args_) {

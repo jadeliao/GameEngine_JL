@@ -1,11 +1,10 @@
 #ifndef DEMOSCENE_H
 #define DEMOSCENE_H
-#include "Scene.h"
-#include "Vector.h"
-#include "Matrix.h"
-#include "Component.h"
+
+
 #include "SceneActor.h"
 #include <vector>
+#include <iostream>
 
 using namespace MATH;
 

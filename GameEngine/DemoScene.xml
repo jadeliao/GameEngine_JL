@@ -6,10 +6,6 @@
 		<Mesh filename="meshes/Mario.obj"/>
 	</Component>
 		
-	<Component name="CheckerMesh">
-		<Mesh filename="meshes/CheckerPiece.obj"/>
-	</Component>
-		
 	<Component name="MarioTexture">
 		<Material filename="textures/mario_main.png"/>
 	</Component>
@@ -17,83 +13,65 @@
 	<Component name="MarioBlackTexture">
 		<Material filename="textures/mario_mime.png"/>
 	</Component>
-		
-	<Component name="RedCheckTexture">
-		<Material filename="textures/redCheckerPiece.png"/>
-	</Component>
-
-	<Component name="WhiteCheckTexture">
-		<Material filename="textures/whiteCheckerPiece.png"/>
-	</Component>
 
 	<Component name="TextureShader">
 		<Shader vertFilename="shaders/textureVert.glsl" fragFilename="shaders/textureFrag.glsl"/>
 	</Component>
 
 	<Component name="MarioBody">
-		<Body type="Kinematic"
-				velx="0.0" vely="0.0" velz="0.0"
+		<Body	type="Kinematic"
+				posx="-10.0" posy="-7.0" posz="0.0"
+				velx="1.0" vely="1.0" velz="0.0"
 				accelx="0.0" accely="0.0" accelz="0.0"
-				mass="1.0" radius="0.0" orientation="0.0" rotation="0.0" angular="0.0"
-				maxSpeed="4.0" maxAccel="2.0" maxRotation="0.1" maxAngular="0.1"/>
+				mass="1.0" radius="0.5" orientation="0.0" rotation="0.0" angular="0.0"
+				maxSpeed="2.0" maxAccel="2.0" maxRotation="1.0" maxAngular="1.0"/>
 	</Component>
 
 	<Component name="MarioBlackBody">
-		<Body type="Base"
+		<Body	type="Base"
+			  	posx="0.0" posy="0.0" posz="0.0"
 				velx="0.0" vely="0.0" velz="0.0"
 				accelx="0.0" accely="0.0" accelz="0.0"
-				mass="1.0" radius="0.0" orientation="20.0" rotation="0.0" angular="0.0"
+				mass="1.0" radius="0.0" orientation="1.0" rotation="0.0" angular="0.0"
 				maxSpeed="0.0" maxAccel="0.0" maxRotation="0.0" maxAngular="0.0"/>
 	</Component>
 		
-	<Component name="CheckerRedBody">
-		<Body type="Kinematic"
-			  velx="10.0" vely="1.0" velz="0.0"
-			  accelx="1.0" accely="1.0" accelz="0.0"
-			  mass="1.0" radius="0.02" orientation="0.0" rotation="0.0" angular="1.0"
-			  maxSpeed="2.0" maxAccel="2.0" maxRotation="2.0" maxAngular="10.0"/>
+	<Component name="MarioCollision">
+		<Collision	shape="sphere"
+			   		posx="0.0" posy="0.0" posz="0.0"
+					radius="1.0"/>
 	</Component>
 
-	<Component name="CheckerWhiteBody">
-		<Body type="Base"
-				velx="0.0" vely="0.0" velz="0.0"
-				accelx="0.0" accely="0.0" accelz="0.0"
-				mass="1.0" radius="0.0" orientation="20.0" rotation="0.0" angular="0.0"
-				maxSpeed="0.0" maxAccel="0.0" maxRotation="0.0" maxAngular="0.0"/>
+	<Component name="MarioBlackCollision">
+		<Collision	shape="sphere"
+					posx="0.0" posy="0.0" posz="0.0"
+					radius="1.0"/>
 	</Component>
 
+	<Component name="MarioAI">
+		<AI/>
+		<Steering type="seeking"/>
+		<Steering type="aligning"/>		
+	</Component>
+		
 	<Actor name="Mario">
-		<Parent componentName="none"/>
+		<Parent componentName="None"/>
 		<Mesh componentName="MarioMesh"/>
 		<Material componentName="MarioTexture"/>
 		<Shader componentName="TextureShader"/>
 		<Body componentName="MarioBody"/>
+		<Collision componentName="MarioCollision"/>
+		<AI componentName="MarioAI" targetName="MarioBlack"/>
 	</Actor>
 
 	<Actor name="MarioBlack">
-		<Parent componentName="none"/>
+		<Parent componentName="None"/>
 		<Mesh componentName="MarioMesh"/>
 		<Material componentName="MarioBlackTexture"/>
 		<Shader componentName="TextureShader"/>
 		<Body componentName="MarioBlackBody"/>
+		<Collision componentName="MarioBlackCollision"/>
 	</Actor>
-		
-	<Actor name="RedChecker">
-		<Parent componentName="Gameboard"/>
-		<Mesh componentName="CheckerMesh"/>
-		<Material componentName="RedCheckTexture"/>
-		<Shader componentName="TextureShader"/>
-		<Body componentName="CheckerRedBody"/>
-	</Actor>
-
-	<Actor name="WhiteChecker">
-		<Parent componentName="Gameboard"/>
-		<Mesh componentName="CheckerMesh"/>
-		<Material componentName="WhiteCheckTexture"/>
-		<Shader componentName="TextureShader"/>
-		<Body componentName="CheckerWhiteBody"/>
-
-	</Actor>		
 		
 	</DemoScene>
 </Root>

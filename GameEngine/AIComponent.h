@@ -7,6 +7,8 @@
 #include "SteeringOutput.h"
 #include "SteeringBehaviour.h"
 #include "Actor.h"
+#include <iostream>
+#include <vector>
 
 using namespace MATH;
 using namespace std;
@@ -20,9 +22,9 @@ enum SteeringType {
 class AIComponent : public Component {
 private:
 	Ref<SteeringOutput> steering;
-	SteeringType steeringType;
+	vector<SteeringType> steeringBehaviours;
 	Ref<Actor> target;
-	//Ref<SteeringBehaviour> steering_algorithm;
+	std::string targetName;
 
 public:
 	AIComponent(Ref<Component> parent_, Ref<Actor> target_);
@@ -30,11 +32,12 @@ public:
 	bool OnCreate();
 	void OnDestroy();
 	void Update(const float deltaTime_);
-	void Update(const float deltaTime_, Ref<Body> self_, SteeringType steeringType_);
 	void Render()const;
-	void addSteeringBehaviour(Ref<Body> self, SteeringType steeringType_);
+	void getSteeringOutputs(Ref<Body> self, SteeringType steeringType_);
+	void addSteeringBehaviour(SteeringType steeringType_);
 
-	void setTarget(Ref<Actor> target_) { target = target_; }
+	void setTarget(Ref<Actor> target_);
+	void setTarget(std::string targetName_) { targetName = targetName_; }
 	Ref<Actor> getTarget() { return target; }
 	Ref<SteeringOutput> getSteering() { return steering; }
 

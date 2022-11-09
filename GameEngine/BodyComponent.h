@@ -19,6 +19,7 @@ class BodyComponent : public Component {
 private:
     Ref<Body> body;
     BodyType bodyType;
+    void setTransform();
 
 public:
     BodyComponent(Ref<Component> parent_, BodyType bodyType_);

@@ -32,6 +32,7 @@ public:
 	SceneActor(Ref<Component> parent_);
 	~SceneActor();
 	void OnDestroy();
+	bool OnCreate();
 	void Update(const float deltaTime_);
 	void Render() const;
 	virtual void HandleEvents(const SDL_Event& sdlEvent);
@@ -55,7 +56,7 @@ public:
 	Ref<ComponentTemplate> GetComponent(const char* name_) const {
 		Ref<Component> id;
 		//Find only compares the address, therefore need to use the actual value to compare
-		for (std::pair<const char*, Ref<Component>> c : actorList) {
+		for (std::pair<const char*, Ref<Actor>> c : actorList) {
 			std::string key = c.first;
 			std::string givenkey = name_;
 			if (key == givenkey) {
@@ -64,16 +65,13 @@ public:
 		}
 #ifdef _DEBUG
 		if (!id) {
+			std::cout << name_ << "\n";
 			Debug::Error("Cannot find component", __FILE__, __LINE__);
 			return Ref<ComponentTemplate>(nullptr);
 		}
 #endif
 		return std::dynamic_pointer_cast<ComponentTemplate>(id);
 	}
-
-	//void AddCamera(Ref<CameraActor> camera_) {camera = camera_;	}
-	//void AddLight(Ref<LightActor> light_) { light = light_; }
-
 
 };
 

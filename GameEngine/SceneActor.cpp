@@ -14,11 +14,17 @@
 #include "LightActor.h"
 
 SceneActor::SceneActor(Ref<Component> parent_) : Actor(parent_), assetManager(nullptr) {
-	//assetManager = nullptr;
+
+}
+
+bool SceneActor::OnCreate() {
+	if (isCreated) return isCreated;
+	actorList = assetManager->getActors();
+	isCreated = true;
+	return isCreated;
 }
 
 bool SceneActor::OnCreate_Scene() {
-	if (isCreated) return isCreated;
 
 	Debug::Info("Loading camera for SceneActor: ", __FILE__, __LINE__);
 	Ref<CameraActor> camera = std::make_shared<CameraActor>(nullptr);
@@ -38,7 +44,7 @@ bool SceneActor::OnCreate_Scene() {
 			isCreated = false;
 		}
 	}
-	isCreated = true;
+
 	return isCreated;
 }
 

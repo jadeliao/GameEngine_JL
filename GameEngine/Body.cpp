@@ -61,6 +61,9 @@ void Body::Update( float deltaTime ){
     orientation += rotation * deltaTime;
     rotation += angular * deltaTime;
 
+    //std::cout << "orientation: " << orientation << "\n";
+    //std::cout << "rotation: " << rotation << "\n";
+    //std::cout << "angular: " << angular << "\n";
     // Clip to maxspeed, if speed exceeds max
     if (VMath::mag(vel) > maxSpeed)
     {

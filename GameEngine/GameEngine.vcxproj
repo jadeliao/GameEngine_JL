@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -143,11 +143,15 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="BodyComponent.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraActor.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Capsule.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EMath.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="KinematicBody.cpp" />
     <ClCompile Include="KinematicSeek.cpp" />
     <ClCompile Include="KinematicSteeringOutput.cpp" />
@@ -158,6 +162,9 @@
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="MMath.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="NodeAndPriority.cpp" />
+    <ClCompile Include="PhysicsCollision.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="SceneActor.cpp" />
@@ -165,7 +172,9 @@
     <ClCompile Include="Seek.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ShaderComponent.cpp" />
-    <ClCompile Include="ShapeComponent.cpp" />
+    <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="SteeringBehaviour.cpp" />
     <ClCompile Include="SteeringOutput.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -183,13 +192,15 @@
     <ClInclude Include="AxisAngle.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="BodyComponent.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="CameraActor.h" />
-    <ClInclude Include="Client.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="Euler.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="KinematicBody.h" />
     <ClInclude Include="KinematicSeek.h" />
     <ClInclude Include="KinematicSteeringOutput.h" />
@@ -200,9 +211,14 @@
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="MMath.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeAndPriority.h" />
+    <ClInclude Include="PhysicsCollision.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="QMath.h" />
+    <ClInclude Include="QuadraticSolution.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene2.h" />
@@ -211,7 +227,9 @@
     <ClInclude Include="Seek.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ShaderComponent.h" />
-    <ClInclude Include="ShapeComponent.h" />
+    <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="SteeringBehaviour.h" />
     <ClInclude Include="SteeringOutput.h" />
