@@ -1,12 +1,11 @@
 #include <SDL.h>
 #include "SceneManager.h"
-#include "NetworkManager.h"
 #include "Timer.h"
 #include "Window.h"
 #include "Scene2.h"
 #include "DemoScene.h"
 
-SceneManager::SceneManager():
+SceneManager::SceneManager(): 
 	currentScene(nullptr), window(nullptr), timer(nullptr),
 	fps(60), isRunning(false), fullScreen(false) {
 	Debug::Info("Starting the SceneManager", __FILE__, __LINE__);

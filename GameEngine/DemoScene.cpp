@@ -29,6 +29,18 @@ bool DemoScene::OnCreate() {
 	Debug::Info("Loading assets DemoScene: ", __FILE__, __LINE__);
 	if (isCreated) return true;
 
+	//Add actors
+	//Ref<Actor> checker_red = assetManager->GetComponent<Actor>("RedChecker");
+	//Ref<Actor> checker_white = assetManager->GetComponent<Actor>("WhiteChecker");
+	//Vec3 red_pos(-12.0f, -7.0f, 0.0f);
+	//Vec3 white_pos(0.0f, 0.0f, 0.0f);
+	//Ref<TransformComponent> checker_red_transform = checker_red->GetComponent<TransformComponent>();
+	//checker_red_transform->SetTransform(red_pos, Quaternion(), Vec3(0.15f, 0.15f, 0.15f));
+	//Ref<TransformComponent> checker_white_transform = checker_white->GetComponent<TransformComponent>();
+	//checker_white_transform->SetTransform(white_pos, Quaternion(), Vec3(0.15f, 0.15f, 0.15f));
+	//AddActor("redchecker", checker_red);
+	//AddActor("whitechecker", checker_white);
+
 	Ref<Actor> mario = assetManager->GetComponent<Actor>("Mario");
 	Ref<Actor> marioblack = assetManager->GetComponent<Actor>("MarioBlack");
 

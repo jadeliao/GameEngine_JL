@@ -26,7 +26,7 @@ protected:
 public:
 	virtual ~User(){}
 	virtual bool OnCreate();
-	virtual bool Send(char sendbuf[]) = 0;
+	virtual bool Send() = 0;
 	virtual void OnDestroy() = 0;
 	virtual void Run() = 0;
 	virtual void Update(const float deltaTime) = 0;

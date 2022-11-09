@@ -16,7 +16,7 @@ int main(int argc, char* args[]) {
 
 	Debug::DebugInit("GameEngineLog.txt");
 	{
-		std::shared_ptr<NetworkManager> netManager = NetworkManager::getInstance();
+		std::unique_ptr<NetworkManager> netManager = std::make_unique<NetworkManager>();
 
 		if (netManager->Initialize()) {
 			std::unique_ptr<SceneManager> game = std::make_unique<SceneManager>();
