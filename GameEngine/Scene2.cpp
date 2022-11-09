@@ -7,6 +7,7 @@
 #include "Debug.h"
 #include "CameraActor.h"
 #include "AssetManager.h"
+#include "NetworkManager.h"
 #include "TransformComponent.h"
 #include "MeshComponent.h"
 #include "ShaderComponent.h"

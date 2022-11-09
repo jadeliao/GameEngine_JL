@@ -72,7 +72,7 @@ void Server::OnDestroy() {
 	WSACleanup();
 }
 
-bool Server::Send() {
+bool Server::Send(char sendbuf[]) {
 	// Send an initial buffer
 	iResult = send(ClientSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult == SOCKET_ERROR) {

@@ -14,19 +14,23 @@ using namespace std;
 
 class NetworkManager {
 private:
+	static shared_ptr<NetworkManager> _instance;
 	WSADATA wsaData;
 	class User* user;
 	int iResult;
 	bool isRunning;
-public:
+
 	NetworkManager();
+
+public:
+	static shared_ptr<NetworkManager> getInstance();
 	~NetworkManager();
 	void Run();
 	bool Initialize();
 	void Shutdown();
+	bool Send(char sendbuf[]);
 	
 };
-
 
 
 #endif

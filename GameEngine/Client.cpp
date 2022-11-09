@@ -59,7 +59,7 @@ void Client::OnDestroy() {
 	WSACleanup();
 }
 
-bool Client::Send() {
+bool Client::Send(char sendbuf[]) {
 	// Send an initial buffer
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult == SOCKET_ERROR) {

@@ -3,7 +3,18 @@
 #include "Server.h"
 #include "Client.h"
 
+shared_ptr<NetworkManager> NetworkManager::_instance = nullptr;
+
 NetworkManager::NetworkManager(): user(nullptr), isRunning(false) {
+}
+
+shared_ptr<NetworkManager> NetworkManager::getInstance() {
+
+	if (!_instance.get()) {
+		_instance.reset(new NetworkManager);
+	}
+
+	return _instance;
 }
 
 NetworkManager::~NetworkManager() {
@@ -54,4 +65,12 @@ bool NetworkManager::Initialize() {
 }
 
 void NetworkManager::Shutdown() {
+}
+
+bool NetworkManager::Send(char sendbuf[]){
+	if (!user->Send(sendbuf)) {
+		return false;
+	}
+	std::cout << "Data sent\n";
+	return true;
 }
