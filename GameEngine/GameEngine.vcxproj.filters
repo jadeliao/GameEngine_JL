@@ -162,7 +162,6 @@
     <ClCompile Include="LookWhereYoureGoing.cpp">
       <Filter>Source Files\Steering</Filter>
     </ClCompile>
-
     <ClCompile Include="Client.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
@@ -207,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Source Files\Math\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsCollision.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -345,10 +347,6 @@
     <ClInclude Include="LookWhereYoureGoing.h">
       <Filter>Header Files\Steering</Filter>
     </ClInclude>
-
-    <ClInclude Include="Client.h">
-      <Filter>Header Files\Network</Filter>
-    </ClInclude>
     <ClInclude Include="User.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
@@ -370,9 +368,6 @@
     <ClInclude Include="Box.h">
       <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Capsule.h">
-      <Filter>Header Files\Math\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="Cylinder.h">
       <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
@@ -384,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Math\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsCollision.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

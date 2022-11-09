@@ -12,6 +12,7 @@
 #include "ShaderComponent.h"
 #include "MaterialComponent.h"
 #include "LightActor.h"
+#include "NetworkManager.h"
 
 SceneActor::SceneActor(Ref<Component> parent_) : Actor(parent_), assetManager(nullptr) {
 
@@ -59,6 +60,7 @@ void SceneActor::OnDestroy() {
 
 
 void SceneActor::Update(const float deltaTime) {
+
 	for (std::pair<const char*, Ref<Actor>> actor : actorList) {
 		actor.second->Update(deltaTime);
 	}

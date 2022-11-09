@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Scene2.h"
 #include "DemoScene.h"
+#include "NetworkManager.h"
 
 SceneManager::SceneManager(): 
 	currentScene(nullptr), window(nullptr), timer(nullptr),

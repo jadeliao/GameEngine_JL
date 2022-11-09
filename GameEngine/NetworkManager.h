@@ -9,24 +9,29 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include <memory>
+#include "TransformComponent.h"
 
 using namespace std;
 
 class NetworkManager {
 private:
+	static shared_ptr<NetworkManager> _instance;
 	WSADATA wsaData;
 	class User* user;
 	int iResult;
 	bool isRunning;
-public:
 	NetworkManager();
+
+public:
+	static shared_ptr<NetworkManager> getInstance();
 	~NetworkManager();
-	void Run();
+	bool Receive();
 	bool Initialize();
 	void Shutdown();
-	
+	bool Send(std::shared_ptr<TransformComponent>);
+	Vec3 getReceive();
 };
-
 
 
 #endif

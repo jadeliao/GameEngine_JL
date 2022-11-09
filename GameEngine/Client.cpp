@@ -2,10 +2,24 @@
 
 Client::Client() {
 	ConnectSocket = INVALID_SOCKET;
+
 }
 
 bool Client::OnCreate() {
-	User::OnCreate();
+
+	ZeroMemory(&hints, sizeof(hints));
+	hints.ai_family = AF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_protocol = IPPROTO_TCP;
+
+	// Resolve the server address and port
+	iResult = getaddrinfo("localhost", DEFAULT_PORT, &hints, &result);
+	if (iResult != 0) {
+		printf("getaddrinfo failed with error: %d\n", iResult);
+		WSACleanup();
+		system("pause");
+		return 1;
+	}
 
 	// Attempt to connect to an address until one succeeds
 	for (struct addrinfo *ptr = result; ptr != NULL; ptr = ptr->ai_next) {
@@ -13,6 +27,7 @@ bool Client::OnCreate() {
 		// Create a SOCKET for connecting to server
 		ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype,
 			ptr->ai_protocol);
+
 		if (ConnectSocket == INVALID_SOCKET) {
 			printf("socket failed with error: %ld\n", WSAGetLastError());
 			WSACleanup();
@@ -27,6 +42,7 @@ bool Client::OnCreate() {
 			ConnectSocket = INVALID_SOCKET;
 			continue;
 		}
+
 		break;
 	}
 
@@ -39,9 +55,14 @@ bool Client::OnCreate() {
 		return false;
 	}
 	else {
+		u_long mode = 1;
+		iResult = ioctlsocket(ConnectSocket, FIONBIO, &mode);
+		if (iResult != NO_ERROR) {
+			printf("ioctlsocket failed with error: %ld\n", iResult);
+		}
 		printf("Connect to Server!\n");
 	}
-
+	iResult = 1;
 	return true;
 }
 
@@ -59,8 +80,9 @@ void Client::OnDestroy() {
 	WSACleanup();
 }
 
-bool Client::Send() {
+bool Client::Send(std::shared_ptr<TransformComponent> transform_) {
 	// Send an initial buffer
+	processSendData(transform_->GetPosition(), transform_->GetQuaternion());
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult == SOCKET_ERROR) {
 		printf("send failed with error: %d\n", WSAGetLastError());
@@ -70,19 +92,33 @@ bool Client::Send() {
 		return false;
 	}
 	else {
+		//Clear the text buffer
+		memset(sendbuf, 0, sizeof(sendbuf));
+		std::cout << "Client Message sent\n";
 		return true;
 	}
 } 
 
-void Client::Run() {
-	iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
-	if (iResult > 0)
-		printf("Bytes received: %d\n", iResult);
-	else if (iResult == 0)
-		printf("Connection closed\n");
-	else
-		printf("recv failed with error: %d\n", WSAGetLastError());
+bool Client::Receive() {
 
+	if (getStatus(ConnectSocket, STATUS_READ) == 1) {
+		std::cout << "Client Receiving...\n";
+		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
+		if (iResult > 0) {
+			if (!processRecvData()) {
+				std::cout << "Client Incorrent Recveive Data: " << recvbuf << std::endl;
+				return false;
+			}
+			printf("Client received: %d\n", iResult);
+			std::cout << "Client received: " << recvbuf << std::endl;
+			return true;
+		}
+		else if (iResult == 0)
+			printf("Connection closed\n");
+		else
+			printf("recv failed with error: %d\n", WSAGetLastError());
+	}
+	return false;
 }
 
 void Client::Update(const float deltaTime) {

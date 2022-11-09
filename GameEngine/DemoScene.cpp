@@ -10,6 +10,7 @@
 #include "TransformComponent.h"
 #include "BodyComponent.h"
 #include "AIComponent.h"
+#include "NetworkManager.h"
 
 DemoScene::DemoScene() : SceneActor(nullptr) {
 	assetManager = new AssetManager("DemoScene");
@@ -38,6 +39,12 @@ bool DemoScene::OnCreate() {
 }
 
 void DemoScene::Update(const float deltaTime) {
+	Ref<Actor> marioblack = GetComponent<Actor>("MarioBlack");
+	Ref<BodyComponent> body_ = marioblack->GetComponent<BodyComponent>();
+	if (NetworkManager::getInstance()->Receive()) {
+		Vec3 newPos = NetworkManager::getInstance()->getReceive();
+		body_->setPos(newPos);
+	}
 	SceneActor::Update(deltaTime);
 }
 
@@ -92,21 +99,33 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 			Ref<Actor> mario_black = GetComponent<Actor>("MarioBlack");
 			Ref<BodyComponent> body_ = mario_black->GetComponent<BodyComponent>();
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.0f, 0.1f, 0.0));
+			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
+			Vec3 actorPos = actorTransform->GetPosition();
+			NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_A) {
 			Ref<Actor> mario_black = GetComponent<Actor>("MarioBlack");
 			Ref<BodyComponent> body_ = mario_black->GetComponent<BodyComponent>();
 			body_->setPos(body_->getBody()->getPos() + Vec3(-0.1f, 0.0f, 0.0));
+			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
+			Vec3 actorPos = actorTransform->GetPosition();
+			NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_S) {
 			Ref<Actor> mario_black = GetComponent<Actor>("MarioBlack");
 			Ref<BodyComponent> body_ = mario_black->GetComponent<BodyComponent>();
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.0f, -0.1f, 0.0));
+			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
+			Vec3 actorPos = actorTransform->GetPosition();
+			NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
 			Ref<Actor> mario_black = GetComponent<Actor>("MarioBlack");
 			Ref<BodyComponent> body_ = mario_black->GetComponent<BodyComponent>();
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.1f, 0.0f, 0.0));
+			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
+			Vec3 actorPos = actorTransform->GetPosition();
+			NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Z) {
 			Ref<Actor> mario_black = GetComponent<Actor>("MarioBlack");
@@ -118,6 +137,7 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 			Ref<BodyComponent> body_ = mario_black->GetComponent<BodyComponent>();
 			body_->setOrientation(body_->getBody()->getOrientation() + 0.1f);
 		}
+
 		break;
 
 	case SDL_MOUSEMOTION:

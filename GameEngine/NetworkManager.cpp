@@ -3,17 +3,27 @@
 #include "Server.h"
 #include "Client.h"
 
-NetworkManager::NetworkManager(): user(nullptr), isRunning(false) {
+shared_ptr<NetworkManager> NetworkManager::_instance = nullptr;
+
+NetworkManager::NetworkManager() : user(nullptr), isRunning(false) {
+}
+
+shared_ptr<NetworkManager> NetworkManager::getInstance() {
+
+	if (!_instance.get()) {
+		_instance.reset(new NetworkManager);
+	}
+
+	return _instance;
 }
 
 NetworkManager::~NetworkManager() {
 	if (user) user->OnDestroy(), delete user;
 }
 
-void NetworkManager::Run() {
-	do {
-		user->Run();
-	} while (user->getResult() > 0);
+bool NetworkManager::Receive() {
+	if (user->getResult() > 0)
+		return user->Receive();
 }
 
 bool NetworkManager::Initialize() {
@@ -55,3 +65,16 @@ bool NetworkManager::Initialize() {
 
 void NetworkManager::Shutdown() {
 }
+
+bool NetworkManager::Send(std::shared_ptr<TransformComponent> transform_){
+	if (!user->Send(transform_)) {
+		return false;
+	}
+
+	return true;
+}
+
+Vec3 NetworkManager::getReceive() {
+	return user->getRecvPos();
+}
+

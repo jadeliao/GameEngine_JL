@@ -12,9 +12,10 @@ public:
 	Server();
 	bool OnCreate() override;
 	void OnDestroy() override;
-	bool Send() override;
-	void Run() override;
+	bool Send(std::shared_ptr<TransformComponent>) override;
+	bool Receive() override;
 	void Update(const float deltaTime) override;
+
 };
 
 #endif
