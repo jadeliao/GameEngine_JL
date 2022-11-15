@@ -27,6 +27,7 @@ private:
 	class Scene* currentScene;
 	class Timer* timer;
 	class Window* window;
+	class UserInterface* currentUI;
 
 	unsigned int fps;
 	bool isRunning;

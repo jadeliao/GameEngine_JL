@@ -1,13 +1,18 @@
 #include <SDL.h>
 #include "SceneManager.h"
+#include "UserInterface.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
 #include "Timer.h"
 #include "Window.h"
 #include "Scene2.h"
+#include "DemoSceneUI.h"
 #include "DemoScene.h"
 
 SceneManager::SceneManager(): 
 	currentScene(nullptr), window(nullptr), timer(nullptr),
-	fps(60), isRunning(false), fullScreen(false) {
+	fps(60), isRunning(false), fullScreen(false), currentUI(nullptr) {
 	Debug::Info("Starting the SceneManager", __FILE__, __LINE__);
 }
 
@@ -26,6 +31,12 @@ SceneManager::~SceneManager() {
 	if (window) {
 		delete window;
 		window = nullptr;
+	}
+
+	if (currentUI) {
+		currentUI->OnDestroy();
+		delete currentUI;
+		currentUI = nullptr;
 	}
 	Debug::Info("Deleting the SceneManager", __FILE__, __LINE__);
 }
@@ -46,7 +57,8 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 
 	/********************************   Default first scene   ***********************/
 	BuildNewScene(SCENE_NUMBER::DemoScene);
-	
+
+
 	return true;
 }
 
@@ -56,9 +68,11 @@ void SceneManager::Run() {
 	isRunning = true;
 	while (isRunning) {
 		timer->UpdateFrameTicks();
-		currentScene->Update(timer->GetDeltaTime());
-		currentScene->Render();
 		HandleEvents();
+		currentScene->Update(timer->GetDeltaTime());
+		currentUI->Update(timer->GetDeltaTime());
+		currentScene->Render();
+		currentUI->Render();
 		SDL_GL_SwapWindow(window->getWindow());
 		SDL_Delay(timer->GetSleepTime(fps));
 	}
@@ -99,6 +113,12 @@ void SceneManager::BuildNewScene(SCENE_NUMBER scene) {
 		currentScene = nullptr;
 	}
 
+	if (currentUI != nullptr) {
+		currentUI->OnDestroy();
+		delete currentUI;
+		currentUI = nullptr;
+	}
+
 	switch (scene) {
 	case SCENE_NUMBER::SCENE2:
 		currentScene = new Scene2();
@@ -108,6 +128,8 @@ void SceneManager::BuildNewScene(SCENE_NUMBER scene) {
 	case SCENE_NUMBER::DemoScene:
 		currentScene = new DemoScene();
 		status = currentScene->OnCreate();
+		currentUI = new DemoSceneUI();
+		status = currentUI->OnCreate(window);
 		break;
 
 	default:
