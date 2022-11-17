@@ -15,6 +15,8 @@
 #include "Graph.h"
 #include "Node.h"
 
+#define START 0
+#define GOAL 133
 
 DemoScene::DemoScene() : SceneActor(nullptr) {
 	assetManager = new AssetManager("DemoScene");
@@ -45,14 +47,20 @@ bool DemoScene::OnCreate() {
 	//transform_->SetTransform(Vec3(5.0f, 2.0f, 1.0f), Quaternion());
 
 	//Set the target for AI
-	//Ref<Actor> mario = GetComponent<Actor>("Mario");
-	//Ref<Actor> marioblack = GetComponent<Actor>("MarioBlack");
 	//Ref<AIComponent> mario_ai = mario->GetComponent<AIComponent>();
 	//mario_ai->setTarget(marioblack);
 
-
-
 	if (!OnCreate_Scene()) return false;
+	//Set black mario to goal location
+	Ref<Actor> marioblack = GetComponent<Actor>("MarioBlack");
+	Vec3 newPos = graph->getNode(GOAL)->getPos();
+	Ref<BodyComponent> blackBody_ = marioblack->GetComponent<BodyComponent>();
+	blackBody_->setPos(newPos);
+	//Set mario to start location
+	Ref<Actor> mario = GetComponent<Actor>("Mario");
+	newPos = graph->getNode(START)->getPos();
+	Ref<BodyComponent> body_ = mario->GetComponent<BodyComponent>();
+	body_->setPos(newPos);
 
 	return true;
 }
@@ -149,7 +157,7 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 			body_->setOrientation(body_->getBody()->getOrientation() + 0.1f);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_G) {
-			pathList = graph->AStar(0, 133);
+			pathList = graph->AStar(START, GOAL);
 			for (int i : pathList) {
 				std::cout << i << " ";
 			}

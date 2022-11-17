@@ -127,12 +127,12 @@ std::vector<int> Graph::AStar(int startNode, int goalNode)
 	frontier.push(currentNodeAndPriority);
 
 	//track solution path
-	vector<int> came_from;
+	map<int, int> came_from;
 	//came_from.resize(numNodes());
 	//store cost
 	map<int, float> cost_so_far;
 	cost_so_far[startNode] = 0.0f;
-
+	came_from[startNode] = 0;
 	//Start looping through frontier
 	while (!frontier.empty()) {
 		//Get the node from the top of  the frontier and pop it off
@@ -148,21 +148,27 @@ std::vector<int> Graph::AStar(int startNode, int goalNode)
 		for (int next : neighbourList) {
 			//Calculate new cost
 			float new_cost = cost_so_far[current] + cost[current][next];
-			std::map<int, float>::iterator it = cost_so_far.find(next);
-			if (it == cost_so_far.end() || new_cost < cost_so_far[next]) {
+			if (cost_so_far.find(next) == cost_so_far.end() || 
+				new_cost < cost_so_far[next]) {
 				cost_so_far[next] = new_cost;
 				//Use Manhattan Heuristic for 4 direction movement  + manhattanHeuristic(node[next], node[goalNode])
 				Ref<NodeAndPriority> tempNodeAndPriority = 
 					std::make_shared<NodeAndPriority>(node[next], new_cost);
 				frontier.push(tempNodeAndPriority);
 				//Only push back when the current node does not exist in list
-				if (std::find(came_from.begin(), came_from.end(), current) == came_from.end()) {
-					came_from.push_back(current);
-				}
+				came_from[next] = current;
 			}
 		}
 	}
-	return came_from;
+	std::vector<int> path;
+	current = goalNode;
+	while (current != startNode) {
+		path.push_back(current);
+		current = came_from[current];
+	}
+	path.push_back(startNode);
+	std::reverse(path.begin(), path.end());
+	return path;
 
 }
 
