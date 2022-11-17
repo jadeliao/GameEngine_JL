@@ -10,7 +10,7 @@
 
 #include "NodeAndPriority.h"
 
-NodeAndPriority::NodeAndPriority( Node *node_, float priority_ )
+NodeAndPriority::NodeAndPriority(Ref<Node> node_, float priority_ )
 {
     node = node_;
     priority = priority_;

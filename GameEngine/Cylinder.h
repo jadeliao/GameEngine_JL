@@ -18,6 +18,7 @@ namespace GEOMETRY {
 		void set(float r_, Vec3 capCentrePosA_, Vec3 capCentrePosB_);
 		void generateVerticesAndNormals() override;
 		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
+		void setPos(Vec3 pos_) override {}
 
 	};
 }

@@ -5,8 +5,11 @@
 #include <string>
 #include "Component.h"
 #include "Actor.h"
+#include "WallActor.h"
 #include "Debug.h"
 #include "tinyxml2.h"
+#include "Node.h"
+
 
 using namespace tinyxml2;
 
@@ -14,12 +17,16 @@ class AssetManager{
 private:
 	std::unordered_map<const char*, Ref<Actor>> actorList;
 	std::unordered_map<const char*, Ref<Component>> componentCatalog;
+	std::vector<std::vector<Ref<Node>>> wallList; //double vector for walls
+
+	Ref<WallActor> wallActor;
 	const char* scene;
 	void ReadManiFest();
 	XMLDocument doc;
 
 	void AddComponentData(XMLElement* componentData);
 	void AddActorData(XMLElement* actorData);
+	void AddWallData(XMLElement* wallData);
 
 public:
 	AssetManager();
@@ -28,7 +35,7 @@ public:
 	bool OnCreate();
 	void OnDestroy();
 	std::unordered_map<const char*, Ref<Actor>> getActors() { return actorList; }
-
+	std::vector<std::vector<Ref<Node>>> getWalls() { return wallList; }
 	void RemoveAllComponents();
 
 	template<typename ActorTemplate>
@@ -45,6 +52,27 @@ public:
 #endif
 		}
 	}
+
+	template<typename ActorTemplate>
+	Ref<ActorTemplate> GetActor(const char* name_) const {
+		Ref<Actor> id;
+		//Find only compares the address, therefore need to use the actual value to compare
+		for (std::pair<const char*, Ref<Actor>> c : actorList) {
+			std::string key = c.first;
+			std::string givenkey = name_;
+			if (key == givenkey) {
+				id = c.second;
+			}
+		}
+#ifdef _DEBUG
+		if (!id) {
+			Debug::Error("Cannot find actor", __FILE__, __LINE__);
+			return Ref<ActorTemplate>(nullptr);
+		}
+#endif
+		return std::dynamic_pointer_cast<ActorTemplate>(id);
+	}
+
 
 	template<typename ComponentTemplate, typename ... Args>
 	void AddComponent(const char* name_, Args&& ... args_) {
@@ -76,6 +104,8 @@ public:
 #endif
 		return std::dynamic_pointer_cast<ComponentTemplate>(id);
 	}
+
+
 
 };
 

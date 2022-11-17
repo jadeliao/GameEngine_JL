@@ -16,11 +16,11 @@ class NodeAndPriority
 public:
     
     // member variables
-    Node *node;
+    Ref<Node> node;
     float priority;
     
     // constructors
-    NodeAndPriority( Node *node_, float priority);
+    NodeAndPriority(Ref<Node> node_, float priority);
     
     // useful functions
     void print();
@@ -29,10 +29,9 @@ public:
 
 struct ComparePriority
 {
-    bool operator()(NodeAndPriority const& lhs, NodeAndPriority const& rhs)
-    {
+    bool operator()(Ref<NodeAndPriority> const& lhs, Ref<NodeAndPriority> const& rhs)    {
         // make it a min queue
-        return lhs.priority > rhs.priority;
+        return lhs->priority > rhs->priority;
     }
 };
 

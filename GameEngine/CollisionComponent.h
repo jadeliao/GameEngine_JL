@@ -15,7 +15,8 @@ enum class ShapeType {
 	sphere,
 	cylinder,
 	capsule,
-	box
+	box,
+	plane
 };
 
 class CollisionComponent: public Component{
@@ -26,9 +27,6 @@ class CollisionComponent: public Component{
 
 public:
 	CollisionComponent(Ref<Component> parnet_, std::string shpaeType, Ref<GEOMETRY::Shape>);
-	//CollisionComponent(Ref<Component> parnet_, Ref<GEOMETRY::Cylinder>);
-	//CollisionComponent(Ref<Component> parnet_, Ref<GEOMETRY::Capsule>);
-	//CollisionComponent(Ref<Component> parnet_, Ref<GEOMETRY::Box>);
 
 	Ref<GEOMETRY::Shape> shape;
 	ShapeType shapeType;
@@ -37,6 +35,8 @@ public:
 	virtual void OnDestroy();
 	virtual void Update(const float deltaTime_);
 	virtual void Render()const;
+	ShapeType getShapeType() { return shapeType; }
+	Ref<GEOMETRY::Shape> getShape() { return shape; }
 };
 
 #endif

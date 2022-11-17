@@ -8,8 +8,11 @@
 #include <vector>
 #include "Vector.h"
 #include "Ray.h"
+
 namespace GEOMETRY {
 	struct Shape {
+		virtual void setPos(Vec3 pos_) = 0;
+		
 		// Anything that can be hit by a ray needs to be part of this class heirachy
 		virtual RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const = 0;
 

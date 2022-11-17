@@ -165,9 +165,6 @@
     <ClCompile Include="NodeAndPriority.cpp">
       <Filter>Source Files\Pathfinding</Filter>
     </ClCompile>
-    <ClCompile Include="Seek.cpp">
-      <Filter>Source Files\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="CollisionComponent.cpp">
       <Filter>Source Files\Actor\Component</Filter>
     </ClCompile>
@@ -188,6 +185,24 @@
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Source Files\Math\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsCollision.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WallActor.cpp">
+      <Filter>Source Files\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrive.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="Seek.cpp">
+      <Filter>Source Files\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="FollowPath.cpp">
+      <Filter>Source Files\Steering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +237,6 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="MMath.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="QMath.h">
@@ -352,6 +364,21 @@
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Math\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsCollision.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Header Files\Math\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="WallActor.h">
+      <Filter>Header Files\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrive.h">
+      <Filter>Header Files\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowPath.h">
+      <Filter>Header Files\Steering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

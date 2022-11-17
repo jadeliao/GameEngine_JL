@@ -6,13 +6,18 @@
 #include "Matrix.h"
 #include "Scene.h"
 
+
 using namespace MATH;
+
 template<typename T>
 using Ref = std::shared_ptr<T>;
 
 class CameraActor;
 class LightActor;
 class AssetManager;
+class WallActor;
+class Node;
+class Graph;
 
 class SceneActor : public Actor, public Scene {
 	/// Unless you know what these do don't allow them
@@ -25,9 +30,11 @@ class SceneActor : public Actor, public Scene {
 protected:
 	bool OnCreate_Scene();
 	AssetManager* assetManager;
-
+	Ref<Graph> graph;
 private:
 	std::unordered_map<const char*, Ref<Actor>> actorList;
+	std::vector<std::vector<Ref<Node>>> wallList;
+	void graphConnection();
 public:
 	SceneActor(Ref<Component> parent_);
 	~SceneActor();

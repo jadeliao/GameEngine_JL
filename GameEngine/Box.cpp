@@ -16,6 +16,14 @@ void GEOMETRY::Box::set(Vec3 centre_, Vec3 halfExtents_, Quaternion orientation_
 	centre = centre_;
 	halfExtents = halfExtents_;
 	orientation = orientation_;
+	//Set six sides
+	sides[0] = std::make_shared<Plane>(1.0f, 0.0f, 0.0f, centre_.x + halfExtents_.x);
+	sides[1] = std::make_shared<Plane>(0.0f, 1.0f, 0.0f, centre_.y + halfExtents_.y);
+	sides[2] = std::make_shared<Plane>(0.0f, 0.0f, 1.0f, centre_.z + halfExtents_.z);
+	sides[3] = std::make_shared<Plane>(-1.0f, 0.0f, 0.0f, centre_.x + -halfExtents_.x);
+	sides[4] = std::make_shared<Plane>(0.0f, -1.0f, 0.0f, centre_.y + -halfExtents_.y);
+	sides[5] = std::make_shared<Plane>(0.0f, 0.0f, -1.0f, centre_.z + -halfExtents_.z);
+
 	generateVerticesAndNormals();
 	StoreMeshData(GL_TRIANGLES);
 }

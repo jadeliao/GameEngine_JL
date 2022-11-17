@@ -7,16 +7,19 @@
 #include "MaterialComponent.h"
 #include "BodyComponent.h"
 #include "AIComponent.h"
+#include "CollisionComponent.h"
 
 Actor::Actor(Ref<Component> parent_):Component(parent_) {}
 
 //Deep Copy constructor
 Actor::Actor(const Actor& actor_){
-	std::cout << "Copying actor\n";
 	std::vector<Ref<Component>> new_List = std::vector<Ref<Component>>();
 	new_List = actor_.GetComponentsList();
 	components = new_List;
 	parent = actor_.GetParent();
+	//Remove the transform component
+	RemoveComponent<TransformComponent>();
+
 }
 
 bool Actor::OnCreate() {
@@ -63,6 +66,10 @@ void Actor::Render()const {
 	glUniformMatrix4fv(shader->GetUniformID("modelMatrix"), 1, GL_FALSE, modelMatrix);
 	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
 	mesh->Render(GL_TRIANGLES);
+	Ref<CollisionComponent> shape = GetComponent<CollisionComponent>();
+	if (shape) {
+		shape->Render();
+	}
 }
 
 void Actor::RemoveAllComponents() {

@@ -48,8 +48,6 @@ namespace MATH {
 		/// Get the distance between two Vec3s 
 		static float distance(const Vec3 &a, const Vec3 &b);
 
-		
-
 		/// This is a basic Linear Interpolation function.  It takes v1 and moves it 
 		/// to v2 in a linear fashion based on the value of t which goes from 
 		/// 0.0 - 1.0.  This is a simple example of a parametric equation. The parameter
