@@ -119,7 +119,48 @@ void GEOMETRY::Box::generateVerticesAndNormals(){
 
 }
 
-RayIntersectionInfo GEOMETRY::Box::rayIntersectionInfo(const Ray& ray) const
-{
+RayIntersectionInfo GEOMETRY::Box::rayIntersectionInfo(const Ray& ray) const {
+
+	const int slabNum = 3;
+
+	// Imagine a box is just made up of three infinite slabs
+	Slab slabX;
+	slabX.normal = Vec3(1.0f, 0.0f, 0.0f);
+	slabX.distNear = -halfExtents.x;
+	slabX.distFar = halfExtents.x;
+
+	Slab slabY;
+	slabY.normal = Vec3(0.0f, 1.0f, 0.0f);
+	slabX.distNear = -halfExtents.y;
+	slabX.distFar = halfExtents.y;
+
+	Slab slabZ;
+	slabY.normal = Vec3(0.0f, 0.0f, 1.0f);
+	slabX.distNear = -halfExtents.z;
+	slabX.distFar = halfExtents.z;
+
+	Slab slabs[slabNum] = { Slab{Vec3(1.0f, 0.0f, 0.0f), -halfExtents.x, halfExtents.x},
+						Slab{Vec3(0.0f, 1.0f, 0.0f), -halfExtents.y, halfExtents.y},
+						Slab{Vec3(0.0f, 0.0f, 1.0f), -halfExtents.z, halfExtents.z} };
+
+	float tMin = 0.0f;
+	float tMax = FLT_MAX;
+
+	RayIntersectionInfo rayInfo;
+	for (int i = 0; i < slabNum; i++) {
+		float t1 = (slabs[i].distNear - ray.start[i]) / ray.dir[i];
+		float t2 = (slabs[i].distFar - ray.start[i]) / ray.dir[i];
+
+		if (t1 > t2) { std::swap(t1, t2); }
+		tMin = std::max(tMin, t1);
+		tMax = std::min(tMax, t2);
+
+		if (tMin > tMax) return rayInfo;
+	}
+	rayInfo.isIntersected = true;
+	rayInfo.t = tMin;
+	rayInfo.intersectionPoint = ray.currentPosition(tMin);
+	return rayInfo;
+
 	return RayIntersectionInfo();
 }

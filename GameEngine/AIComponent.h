@@ -7,6 +7,7 @@
 #include "SteeringOutput.h"
 #include "SteeringBehaviour.h"
 #include "Actor.h"
+#include "Path.h"
 #include <iostream>
 #include <vector>
 
@@ -16,7 +17,8 @@ using namespace std;
 enum SteeringType {
 	seeking,
 	aligning,
-	looking
+	looking,
+	pathfollowing
 };
 
 class AIComponent : public Component {
@@ -24,7 +26,8 @@ private:
 	Ref<SteeringOutput> steering;
 	vector<SteeringType> steeringBehaviours;
 	Ref<Actor> target;
-	std::string targetName;
+	//std::string targetName;
+	Ref<Path> path;
 
 public:
 	AIComponent(Ref<Component> parent_, Ref<Actor> target_);
@@ -37,10 +40,10 @@ public:
 	void addSteeringBehaviour(SteeringType steeringType_);
 
 	void setTarget(Ref<Actor> target_);
-	void setTarget(std::string targetName_) { targetName = targetName_; }
+	//void setTarget(std::string targetName_) { targetName = targetName_; }
 	Ref<Actor> getTarget() { return target; }
 	Ref<SteeringOutput> getSteering() { return steering; }
-
+	void setPath(Ref<Path> path_) { path = path_; }
 };
 
 

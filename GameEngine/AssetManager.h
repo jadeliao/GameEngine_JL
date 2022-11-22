@@ -10,6 +10,7 @@
 #include "tinyxml2.h"
 #include "Node.h"
 
+class AIComponent;
 
 using namespace tinyxml2;
 
@@ -17,6 +18,8 @@ class AssetManager{
 private:
 	std::unordered_map<const char*, Ref<Actor>> actorList;
 	std::unordered_map<const char*, Ref<Component>> componentCatalog;
+	std::unordered_map<Ref<AIComponent>, const char*> aiList;
+
 	std::vector<std::vector<Ref<Node>>> wallList; //double vector for walls
 
 	Ref<WallActor> wallActor;
@@ -24,9 +27,11 @@ private:
 	void ReadManiFest();
 	XMLDocument doc;
 
+
 	void AddComponentData(XMLElement* componentData);
 	void AddActorData(XMLElement* actorData);
 	void AddWallData(XMLElement* wallData);
+	void SetAITarget();
 
 public:
 	AssetManager();
@@ -53,8 +58,7 @@ public:
 		}
 	}
 
-	template<typename ActorTemplate>
-	Ref<ActorTemplate> GetActor(const char* name_) const {
+	Ref<Actor> GetActor(const char* name_) const {
 		Ref<Actor> id;
 		//Find only compares the address, therefore need to use the actual value to compare
 		for (std::pair<const char*, Ref<Actor>> c : actorList) {
@@ -67,10 +71,10 @@ public:
 #ifdef _DEBUG
 		if (!id) {
 			Debug::Error("Cannot find actor", __FILE__, __LINE__);
-			return Ref<ActorTemplate>(nullptr);
+			return Ref<Actor>(nullptr);
 		}
 #endif
-		return std::dynamic_pointer_cast<ActorTemplate>(id);
+		return id;
 	}
 
 

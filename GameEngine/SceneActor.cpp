@@ -72,7 +72,6 @@ bool SceneActor::OnCreate_Scene() {
 		Debug::Error("Fail loading graph for SceneActor: ", __FILE__, __LINE__);
 		isCreated = false;
 	}
-
 	graphConnection();
 
 
@@ -86,41 +85,52 @@ void SceneActor::graphConnection(){
 	float width = 2.0f;
 	float height = 2.0f;
 
-
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			int from = wallList[i][j]->getLabel();
+			//Only set connections when current node is a valid path
+			if (!wallList[i][j]->getTile()->getVisible()) {
 
-			if (j > 0) {
-				Ref<Node> toNode = wallList[i][j - 1];
-				//Only add the node connection when it is valid
-				if (!toNode->getTile()->getVisible()) {
-					graph->addWeightConnection(from, toNode->getLabel(), width);
+				if (j > 0) {
+					float weight = 0.0f;
+					Ref<Node> toNode = wallList[i][j - 1];
+					//Only set weight when the node is valid
+					if (!toNode->getTile()->getVisible()) {
+						weight = width;
+					}
+					graph->addWeightConnection(from, toNode->getLabel(), weight);
 				}
-			}
-			if (j < columns - 1) {
-				Ref<Node> toNode = wallList[i][j + 1];
-				//Only add the node connection when it is valid
-				if (!toNode->getTile()->getVisible()) {
-					graph->addWeightConnection(from, toNode->getLabel(), width);
+				if (j < columns - 1) {
+					float weight = 0.0f;
+					Ref<Node> toNode = wallList[i][j + 1];
+					//Only set weight when the node is valid
+					if (!toNode->getTile()->getVisible()) {
+						weight = width;
+					}
+					graph->addWeightConnection(from, toNode->getLabel(), weight);
 				}
-			}
 
-			if (i < rows - 1) {
-				Ref<Node> toNode = wallList[i + 1][j];
-				//Only add the node connection when it is valid
-				if (!toNode->getTile()->getVisible()) {
-					graph->addWeightConnection(from, toNode->getLabel(), width);
+				if (i < rows - 1) {
+					float weight = 0.0f;
+					Ref<Node> toNode = wallList[i + 1][j];
+					//Only set weight when the node is valid
+					if (!toNode->getTile()->getVisible()) {
+						weight = width;
+					}
+					graph->addWeightConnection(from, toNode->getLabel(), weight);
 				}
-			}
 
-			if (i > 0) {
-				Ref<Node> toNode = wallList[i - 1][j];
-				//Only add the node connection when it is valid
-				if (!toNode->getTile()->getVisible()) {
-					graph->addWeightConnection(from, toNode->getLabel(), width);
+				if (i > 0) {
+					float weight = 0.0f;
+					Ref<Node> toNode = wallList[i - 1][j];
+					//Only set weight when the node is valid
+					if (!toNode->getTile()->getVisible()) {
+						weight = width;
+					}
+					graph->addWeightConnection(from, toNode->getLabel(), weight);
 				}
 			}
+	
 		}
 	}
 

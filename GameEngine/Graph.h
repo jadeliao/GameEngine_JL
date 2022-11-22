@@ -22,8 +22,8 @@ public:
 
 	int numNodes();
 	std::vector<int> neighbours(int fromNode);
-	std::vector<int> Dijkstra(int startNode, int goalNode);
-	std::vector<int> AStar(int startNode, int goalNode);
+	std::vector<Ref<Node>> Dijkstra(int startNode, int goalNode);
+	std::vector<Ref<Node>> AStar(int startNode, int goalNode);
 
 	Ref<Node> getNode(int label);
 };

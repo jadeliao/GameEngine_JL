@@ -2,7 +2,7 @@
 // Original code from/taught by Dr. Scott Fielder
 
 #ifndef COLLISIONCOMPONENT_H
-#define COLLISIONOMPONENT_H
+#define COLLISIONCOMPONENT_H
 
 #include "Component.h"
 #include "Shape.h"

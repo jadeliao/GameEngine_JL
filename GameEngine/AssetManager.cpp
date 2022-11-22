@@ -51,6 +51,9 @@ void AssetManager::ReadManiFest() {
 	//Loop through wall data to set up scene walls
 	XMLElement* wallData = sceneData->FirstChildElement("Wall");
 	AddWallData(wallData);
+
+	//Set target for AI
+	SetAITarget();
 }
 
 void AssetManager::AddComponentData(XMLElement* componentData) {
@@ -196,6 +199,9 @@ void AssetManager::AddComponentData(XMLElement* componentData) {
 					else if (strcmp(type, "looking") == 0) {
 						ai_component->addSteeringBehaviour(looking);
 					}
+					else if (strcmp(type, "pathfollowing") == 0) {
+						ai_component->addSteeringBehaviour(pathfollowing);
+					}
 					else {
 						std::cerr << "Steering type not supported\n";
 					}
@@ -283,7 +289,8 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 				const char* targetName = componentAIElement->FindAttribute("targetName")->Value();
 				Ref<AIComponent> actorAI = GetComponent<AIComponent>(aiComponentName);
 				actorAI->SetParent(newActor);
-				actorAI->setTarget(targetName);
+				//actorAI->setTarget(targetName);
+				aiList[actorAI] = targetName;
 				newActor->AddComponent<AIComponent>(actorAI);
 			}
 
@@ -304,11 +311,14 @@ void AssetManager::AddWallData(XMLElement* wallData){
 	//Get labels to determine the visibility of the walls
 	std::vector<int> wallLocation;
 	while (wallData) {
-		const float locLabel = wallData->IntAttribute("label");
+		const int locLabel = wallData->IntAttribute("label");
 		wallLocation.push_back(locLabel);
 		wallData = wallData->NextSiblingElement("Wall");
 	}
 
+	//Ref<Box> wallBox_ = std::dynamic_pointer_cast<Box>(wallActor->GetComponent<CollisionComponent>()->getShape());
+	//Vec3 boxSize = wallBox_->halfExtents;
+	//Default size for now
 	float maxRow = 15.0f;
 	float maxColumn = 8.5f;
 	float row_start = -14.0f;
@@ -329,7 +339,7 @@ void AssetManager::AddWallData(XMLElement* wallData){
 		for (float x = row_start; x < maxRow; x += tileWidth) {
 			wallList[i].resize(columnNum);
 			//Resize to avoid exception thrown
-			Vec3 pos = Vec3(x, y, 0.5f);
+			Vec3 pos = Vec3(x, y, 0.0f);
 			//Use copy contructor to setup wall with different transform component
 			Ref<WallActor> wall_ = std::make_shared<WallActor>(*(wallActor.get()));
 			wall_->AddComponent<TransformComponent>(wall_, pos, Quaternion());
@@ -349,6 +359,13 @@ void AssetManager::AddWallData(XMLElement* wallData){
 	}
 	
 
+}
+
+void AssetManager::SetAITarget(){
+	for (auto ai : aiList) {
+		Ref<Actor> actor_ = GetActor(ai.second);
+		ai.first->setTarget(actor_);
+	}
 }
 
 bool AssetManager::OnCreate(){

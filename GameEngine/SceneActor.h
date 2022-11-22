@@ -31,10 +31,13 @@ protected:
 	bool OnCreate_Scene();
 	AssetManager* assetManager;
 	Ref<Graph> graph;
+	void graphConnection();
+	std::vector<std::vector<Ref<Node>>> wallList;
+
 private:
 	std::unordered_map<const char*, Ref<Actor>> actorList;
-	std::vector<std::vector<Ref<Node>>> wallList;
-	void graphConnection();
+
+
 public:
 	SceneActor(Ref<Component> parent_);
 	~SceneActor();

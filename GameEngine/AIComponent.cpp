@@ -3,10 +3,11 @@
 #include "Seek.h"
 #include "Align.h"
 #include "LookWhereYoureGoing.h"
+#include "FollowPath.h"
 
 
 AIComponent::AIComponent(Ref<Component> parent_, Ref<Actor> target_): 
-	Component(parent_), target(target_), targetName("none") {
+	Component(parent_), target(target_), path(nullptr) {
 	steering = std::make_shared<SteeringOutput>();
 }
 
@@ -44,6 +45,9 @@ void AIComponent::getSteeringOutputs(Ref<Body> self_, SteeringType steeringType_
 				break;
 			case looking:
 				steering_algorithm = new LookWhereYoureGoing(self_, targetBody->getBody());
+				break;
+			case pathfollowing:
+				steering_algorithm = new FollowPath(self_, targetBody->getBody(), path);
 				break;
 			default:
 				break;

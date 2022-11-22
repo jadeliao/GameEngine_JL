@@ -27,6 +27,12 @@ namespace GEOMETRY {
 		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
 		void setPos(Vec3 pos_) override { centre = pos_; }
 	};
+
+	struct Slab {
+		MATH::Vec3 normal;
+		float distNear; // Signed distance from origin for near plane 
+		float distFar; // Signed distance from origin for far plane 
+	};
 }
 
 

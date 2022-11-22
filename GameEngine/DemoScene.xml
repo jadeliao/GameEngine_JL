@@ -32,7 +32,7 @@
 				velx="0.0" vely="0.0" velz="0.0"
 				accelx="0.0" accely="0.0" accelz="0.0"
 				mass="1.0" radius="0.5" orientation="0.0" rotation="0.0" angular="0.0"
-				maxSpeed="2.0" maxAccel="2.0" maxRotation="1.0" maxAngular="1.0"/>
+				maxSpeed="3.0" maxAccel="3.0" maxRotation="1.0" maxAngular="1.0"/>
 	</Component>
 
 	<Component name="MarioBlackBody">
@@ -59,13 +59,14 @@
 	<Component name="WallCollision">
 		<Collision	shape="box"
 					posx="0.0" posy="0.0" posz="0.0"
-					halfExtentX="0.7" halfExtentY="0.7" halfExtentZ="0.7"
+					halfExtentX="1.01" halfExtentY="1.01" halfExtentZ="0.9"
 					angleDeg="0.0" axisX="1.0" axisY="0.0" axisZ="0.0"/>
 	</Component>
 
 	<Component name="MarioAI">
 		<AI/>
-		<Steering type="seeking"/>
+		<Steering type="pathfollowing"/>
+		<Steering type="looking"/>
 	</Component>
 
 	<Actor name="Mario">
@@ -75,7 +76,7 @@
 		<Shader componentName="TextureShader"/>
 		<Body componentName="MarioBody"/>
 		<Collision componentName="MarioCollision"/>
-		<!--<AI componentName="MarioAI" targetName="MarioBlack"/>-->
+		<AI componentName="MarioAI" targetName="MarioBlack"/>
 	</Actor>
 
 	<Actor name="MarioBlack">
@@ -110,7 +111,7 @@
 	<Wall posx="10.5" posy="-4.5" posz="0.0"/>
 	<Wall posx="12.5" posy="-4.5" posz="0.0"/>
 	<Wall posx="14.5" posy="-4.5" posz="0.0"/> -->
-
+		
 	<Wall label="32"/>
 	<Wall label="33"/>
 	<Wall label="34"/>
@@ -138,6 +139,7 @@
 	<Wall label="87"/>
 	<Wall label="88"/>
 	<Wall label="89"/>
+		
 
 	<Wall label="122"/>
 	<Wall label="123"/>

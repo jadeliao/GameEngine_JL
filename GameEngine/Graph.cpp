@@ -18,7 +18,7 @@ bool Graph::OnCreate(std::vector<Ref<Node>> nodes_)
 
 	for (int i = 0; i < numNodes; i++)
 	{
-		// Add nodes to internal 
+		// Add nodes to internal, matches index of internel nodes and nodes_ temp vector
 		//if (i != nodes_[i]->getLabel()) {
 		//	std::cout << "false label " << nodes_[i]->getLabel() << endl;
 		//	return false;
@@ -65,7 +65,7 @@ std::vector<int> Graph::neighbours(int fromNode)
 	return result;
 }
 
-std::vector<int> Graph::Dijkstra(int startNode, int goalNode) {
+std::vector<Ref<Node>> Graph::Dijkstra(int startNode, int goalNode) {
 	//Declare helper variables
 	float new_cost;
 	int current = startNode;
@@ -110,21 +110,28 @@ std::vector<int> Graph::Dijkstra(int startNode, int goalNode) {
 			}
 		}
 	}
-	//Reconstruct the path
-	std::vector<int> path;
-	current = goalNode;
-	while (current != startNode) {
-		path.push_back(current);
-		current = came_from[current];
+
+	//Reconstruct the path fron goal to start
+	std::vector<Ref<Node>> path;
+	//If the path never reaches goal node, return an empty list
+	if (came_from.find(goalNode) == came_from.end()) {
+		//GoalNode not found
+		path.clear();
 	}
-	path.push_back(startNode);
-	std::reverse(path.begin(), path.end());
+	else {
+		current = goalNode;
+		while (current != startNode) {
+			path.push_back(getNode(current));
+			current = came_from[current];
+		}
+		std::reverse(path.begin(), path.end());
+	}
 	return path;
-	
+
 }
 
 //Passing in label
-std::vector<int> Graph::AStar(int startNode, int goalNode)
+std::vector<Ref<Node>> Graph::AStar(int startNode, int goalNode)
 {
 	//Declare helper variables
 	float new_cost;
@@ -159,27 +166,36 @@ std::vector<int> Graph::AStar(int startNode, int goalNode)
 		for (int next : neighbourList) {
 			//Calculate new cost
 			float new_cost = cost_so_far[current] + cost[current][next];
-			if (cost_so_far.find(next) == cost_so_far.end() || 
+			if (cost_so_far.find(next) == cost_so_far.end() ||
 				new_cost < cost_so_far[next]) {
 				cost_so_far[next] = new_cost;
 				//Use Manhattan Heuristic for 4 direction movement  
 				float priority = new_cost + manhattanHeuristic(node[next], node[goalNode]);
-				Ref<NodeAndPriority> tempNodeAndPriority = 
+				Ref<NodeAndPriority> tempNodeAndPriority =
 					std::make_shared<NodeAndPriority>(node[next], priority);
 				frontier.push(tempNodeAndPriority);
 				came_from[next] = current;
 			}
 		}
 	}
-	//Reconstruct the path
-	std::vector<int> path;
-	current = goalNode;
-	while (current != startNode) {
-		path.push_back(current);
-		current = came_from[current];
+
+	//Reconstruct the path from goal to start
+	std::vector<Ref<Node>> path;
+
+	//If the path never reaches goal node, return an empty list
+	if (came_from.find(goalNode) == came_from.end()) {
+		//GoalNode not found, return an empty list
+		path.clear();
 	}
-	path.push_back(startNode);
-	std::reverse(path.begin(), path.end());
+	else {
+		current = goalNode;
+		while (current != startNode) {
+			path.push_back(getNode(current));
+			current = came_from[current];
+		}
+		std::reverse(path.begin(), path.end());
+	}
+
 	return path;
 
 }

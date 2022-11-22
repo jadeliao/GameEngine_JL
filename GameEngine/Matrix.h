@@ -123,6 +123,18 @@ namespace  MATH {
 			return Vec4(x / w, y / w, z / w, w / w);
 		}
 
+		/// 2022-04-18 UN
+		/// Creating a Matrix4 * Vec4 method that doesn't divide out by w
+		/// Helpful when our Vec4 represents a vector and we don't want to translate (ie w = 0)
+		Vec4 multiplyWithoutDividingOutW(const Vec4& v) const {
+			float x = v.x * m[0] + v.y * m[4] + v.z * m[8] + v.w * m[12];
+			float y = v.x * m[1] + v.y * m[5] + v.z * m[9] + v.w * m[13];
+			float z = v.x * m[2] + v.y * m[6] + v.z * m[10] + v.w * m[14];
+			float w = v.x * m[3] + v.y * m[7] + v.z * m[11] + v.w * m[15];
+			return Vec4(x, y, z, w);
+
+		}
+
 		/// Multiply a Vec3 by this matrix and return the resulting Vec3
 		/// Mathematicians would say this is impossible but this is just 
 		/// code.  I will assume the w-component of the Vec3 is 1.0.

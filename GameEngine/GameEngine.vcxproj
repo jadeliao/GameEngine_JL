@@ -164,6 +164,7 @@
     <ClCompile Include="MMath.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="NodeAndPriority.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="PhysicsCollision.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="QMath.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="MMath.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeAndPriority.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="PhysicsCollision.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="QMath.h" />

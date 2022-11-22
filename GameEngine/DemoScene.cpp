@@ -11,12 +11,14 @@
 #include "BodyComponent.h"
 #include "AIComponent.h"
 #include "PhysicsCollision.h"
+#include "CollisionComponent.h"
 #include "WallActor.h"
 #include "Graph.h"
 #include "Node.h"
+#include "Path.h"
 
 #define START 0
-#define GOAL 133
+#define GOAL 133 //133
 
 DemoScene::DemoScene() : SceneActor(nullptr) {
 	assetManager = new AssetManager("DemoScene");
@@ -56,6 +58,7 @@ bool DemoScene::OnCreate() {
 	Vec3 newPos = graph->getNode(GOAL)->getPos();
 	Ref<BodyComponent> blackBody_ = marioblack->GetComponent<BodyComponent>();
 	blackBody_->setPos(newPos);
+
 	//Set mario to start location
 	Ref<Actor> mario = GetComponent<Actor>("Mario");
 	newPos = graph->getNode(START)->getPos();
@@ -72,17 +75,17 @@ void DemoScene::Update(const float deltaTime) {
 	Ref<BodyComponent> mariobody = mario->GetComponent<BodyComponent>();
 
 	//Make actor move
-	if (actInterval < 0.0f) {
-		if (!pathList.empty()) {
-			//Get the first item in the list
-			int i = pathList.front();
-			Ref<Node> node_ = graph->getNode(i);
-			Vec3 newPos = node_->getPos();
-			mariobody->setPos(newPos);
-			actInterval = 0.5f;
-			pathList.erase(pathList.begin());
-		}
-	}
+	//if (actInterval < 0.0f) {
+	//	if (!pathList.empty()) {
+	//		//Get the first item in the list
+	//		int i = pathList.front();
+	//		Ref<Node> node_ = graph->getNode(i);
+	//		Vec3 newPos = node_->getPos();
+	//		mariobody->setPos(newPos);
+	//		actInterval = 0.5f;
+	//		pathList.erase(pathList.begin());
+	//	}
+	//}
 }
 
 void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
@@ -157,13 +160,25 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 			body_->setOrientation(body_->getBody()->getOrientation() + 0.1f);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_G) {
-			pathList = graph->AStar(START, GOAL);
-			for (int i : pathList) {
-				std::cout << i << " ";
+			//Set the position
+			Ref<Actor> mario = GetComponent<Actor>("Mario");
+			Ref<AIComponent> mario_AI = mario->GetComponent<AIComponent>();
+			Ref<BodyComponent> marioBody_ = mario->GetComponent<BodyComponent>();
+			Vec3 newPos = graph->getNode(START)->getPos();
+			marioBody_->setPos(newPos);
+			//Start path finding with AStar
+			graphConnection();
+			std::vector<Ref<Node>> pathList_ = graph->AStar(START, GOAL);
+
+			if (pathList_.empty()) {
+				std::cout << "No Path is found";
 			}
-			std::cout << endl;
+			else {
+				//Set Path for path following
 
-
+				Ref<Path> path_ = std::make_shared<Path>(pathList_);
+				mario_AI->setPath(path_);
+			}
 		}
 		break;
 
@@ -171,6 +186,60 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 		break;
 
 	case SDL_MOUSEBUTTONDOWN:
+		if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+			//Get mouse coordinates
+			Vec3 mouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y), 0.0f);
+			//Get the matrix used to transform mouse coordinates to world space
+			int viewport[4];
+			glGetIntegerv(GL_VIEWPORT, viewport);
+			Matrix4 ndc = MMath::viewportNDC(viewport[2], viewport[3]);
+			Matrix4 projection = camera->GetProjectionMatrix();
+			Matrix4 view = camera->GetViewMatrix();
+			Matrix4 rayTransform = MMath::inverse(ndc * projection * view);
+
+			//Tranform mouse coordinates into world coorinates using above matrix
+			//Then normalize the vector to get the ray direction in world space
+
+			Vec3 mouseWorldCoords = rayTransform * Vec3(mouseCoords.x, mouseCoords.y, 1.0f);
+			//Set ray
+			Vec3 rayWorldStart = rayTransform * mouseCoords;
+			Vec3 rayWorldDir = VMath::normalize(mouseWorldCoords);
+			Ray ray(rayWorldStart, rayWorldDir);
+
+			// Loop through all the actors and check if the ray has collided with them
+			// Pick the one with the smallest positive t value
+			int rows = wallList.size();
+			int columns = wallList[0].size();
+			for (int i = 0; i < rows; i++) {
+				for (int j = 0; j < columns; j++) {
+
+					Ref<WallActor> actor = wallList[i][j]->getTile();
+					Ref<TransformComponent> transformComponent = actor->GetComponent<TransformComponent>();
+					Ref<CollisionComponent> collisionComponent = actor->GetComponent<CollisionComponent>();
+					if (collisionComponent->shapeType == ShapeType::sphere
+						|| collisionComponent->shapeType == ShapeType::cylinder
+						|| collisionComponent->shapeType == ShapeType::capsule
+						|| collisionComponent->shapeType == ShapeType::box
+						) {
+						// Transform the ray into the local space of the object and check if a collision occured
+						Vec3 rayLocalStart = MMath::inverse(actor->GetModelMatrix()) * ray.start;
+						Vec3 rayLocalDir = MMath::inverse(actor->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(ray.dir, 0.0f));
+						Ray rayLocal(rayLocalStart, rayLocalDir);
+						RayIntersectionInfo rayInfo = collisionComponent->shape->rayIntersectionInfo(rayLocal);
+
+						if (rayInfo.isIntersected) {
+							//Transform world intersection point into object related coordinates
+							actor->setVisible(!actor->getVisible());
+							std::cout << "Intersect: " << wallList[i][j]->getLabel() << endl;
+			
+						}
+						else {
+							//std::cout << "You picked nothing\n";
+						}
+					}
+				}
+			}
+		}
 		break;
 
 	case SDL_MOUSEBUTTONUP:
