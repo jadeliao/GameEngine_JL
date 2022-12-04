@@ -1,19 +1,20 @@
 #ifndef PLANE_H
 #define PLANE_H
 #include <iostream>
-#include "VMath.h"
+#include "Shape.h"
+#include "Vector.h"
+#include <vector>
 
 ///http://www.songho.ca/math/plane/plane.html
 ///http://mathworld.wolfram.com/HessianNormalForm.html
-namespace  MATH {
-	struct Plane : public Vec3 {
+namespace  GEOMETRY {
+	struct Plane : public Vec3, public Shape{
 		float d;
 
 		/// Just a little utility to populate a Plane
 		inline void set(float x_, float y_, float z_, float d_) {
 			x = x_; y = y_; z = z_, d = d_;
 		}
-
 	  
 		/// Here's a set of constructors:
 		///http://www.songho.ca/math/plane/plane.html
@@ -68,6 +69,14 @@ namespace  MATH {
 			printf("%f %f %f %f\n", x, y, z, d);
 		}
 	
+		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
+		void generateVerticesAndNormals() override;
+
+		void setPos(Vec3 pos_) override {
+			x = pos_.x;
+			y = pos_.y;
+			z = pos_.z;
+		}
 	};
 }
 

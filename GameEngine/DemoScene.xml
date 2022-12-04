@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Root>
 	<DemoScene>
-
+		
 	<Component name="MarioMesh">
 		<Mesh filename="meshes/Mario.obj"/>
 	</Component>
+		
+	<Component name="CubeMesh">
+		<Mesh filename="meshes/Cube.obj"/>
+	</Component>	
 		
 	<Component name="MarioTexture">
 		<Material filename="textures/mario_main.png"/>
@@ -14,17 +18,21 @@
 		<Material filename="textures/mario_mime.png"/>
 	</Component>
 
+	<Component name="CubeTexture">
+		<Material filename="textures/8x8_checkered_board.png"/>
+	</Component>
+
 	<Component name="TextureShader">
 		<Shader vertFilename="shaders/textureVert.glsl" fragFilename="shaders/textureFrag.glsl"/>
 	</Component>
 
 	<Component name="MarioBody">
 		<Body	type="Kinematic"
-				posx="-10.0" posy="-7.0" posz="0.0"
-				velx="1.0" vely="1.0" velz="0.0"
+				posx="-14.0" posy="-8.0" posz="0.0"
+				velx="0.0" vely="0.0" velz="0.0"
 				accelx="0.0" accely="0.0" accelz="0.0"
 				mass="1.0" radius="0.5" orientation="0.0" rotation="0.0" angular="0.0"
-				maxSpeed="2.0" maxAccel="2.0" maxRotation="1.0" maxAngular="1.0"/>
+				maxSpeed="3.0" maxAccel="3.0" maxRotation="1.0" maxAngular="1.0"/>
 	</Component>
 
 	<Component name="MarioBlackBody">
@@ -35,25 +43,32 @@
 				mass="1.0" radius="0.0" orientation="1.0" rotation="0.0" angular="0.0"
 				maxSpeed="0.0" maxAccel="0.0" maxRotation="0.0" maxAngular="0.0"/>
 	</Component>
-		
+	
 	<Component name="MarioCollision">
 		<Collision	shape="sphere"
 			   		posx="0.0" posy="0.0" posz="0.0"
 					radius="1.0"/>
 	</Component>
-
+		
 	<Component name="MarioBlackCollision">
 		<Collision	shape="sphere"
 					posx="0.0" posy="0.0" posz="0.0"
 					radius="1.0"/>
 	</Component>
 
+	<Component name="WallCollision">
+		<Collision	shape="box"
+					posx="0.0" posy="0.0" posz="0.0"
+					halfExtentX="1.01" halfExtentY="1.01" halfExtentZ="0.9"
+					angleDeg="0.0" axisX="1.0" axisY="0.0" axisZ="0.0"/>
+	</Component>
+
 	<Component name="MarioAI">
 		<AI/>
-		<Steering type="seeking"/>
-		<Steering type="aligning"/>		
+		<Steering type="pathfollowing"/>
+		<Steering type="looking"/>
 	</Component>
-		
+
 	<Actor name="Mario">
 		<Parent componentName="None"/>
 		<Mesh componentName="MarioMesh"/>
@@ -72,6 +87,72 @@
 		<Body componentName="MarioBlackBody"/>
 		<Collision componentName="MarioBlackCollision"/>
 	</Actor>
+
+	<Actor name="Wall">
+		<Parent componentName="None"/>
+		<Mesh componentName="CubeMesh"/>
+		<Material componentName="CubeTexture"/>
+		<Shader componentName="TextureShader"/>
+		<Collision componentName="WallCollision"/>
+	</Actor>
+
+
+	<!--<Wall posx="-10.0" posy="-4.5" posz="0.0"/>
+	<Wall posx="-8.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="-6.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="-4.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="-2.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="-4.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="-2.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="-0.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="1.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="3.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="8.5" posy="4.5" posz="0.0"/>
+	<Wall posx="10.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="12.5" posy="-4.5" posz="0.0"/>
+	<Wall posx="14.5" posy="-4.5" posz="0.0"/> -->
 		
+	<Wall label="32"/>
+	<Wall label="33"/>
+	<Wall label="34"/>
+	<Wall label="35"/>
+	<Wall label="36"/>
+	<Wall label="37"/>
+	<Wall label="38"/>
+	<Wall label="42"/>
+	<Wall label="43"/>
+	<Wall label="44"/>
+	<Wall label="47"/>
+	<Wall label="62"/>
+	
+	<Wall label="75"/>
+	<Wall label="76"/>
+	<Wall label="77"/>
+	<Wall label="78"/>
+	<Wall label="79"/>
+	<Wall label="80"/>
+
+	<Wall label="83"/>
+	<Wall label="84"/>
+	<Wall label="85"/>
+	<Wall label="86"/>
+	<Wall label="87"/>
+	<Wall label="88"/>
+	<Wall label="89"/>
+		
+
+	<Wall label="122"/>
+	<Wall label="123"/>
+	<Wall label="124"/>
+	<Wall label="125"/>
+	<Wall label="126"/>
+	<Wall label="127"/>
+	<Wall label="128"/>
+	<Wall label="129"/>
+	<Wall label="130"/>
+	<Wall label="131"/>
+	<Wall label="132"/>		
+		
+
 	</DemoScene>
 </Root>

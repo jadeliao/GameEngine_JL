@@ -20,6 +20,7 @@ private:
     Ref<Body> body;
     BodyType bodyType;
     void setTransform();
+    bool collide = false;
 
 public:
     BodyComponent(Ref<Component> parent_, BodyType bodyType_);
@@ -42,11 +43,13 @@ public:
     virtual void HandleEvents( const SDL_Event& event );
    
     BodyType getType() { return bodyType; }
+    void setCollide(bool collide_) { collide = collide_; }
     void setPos(Vec3 pos_) { body->setPos(pos_); }
     void setVel(Vec3 vel_) { body->setVel(vel_); }
     void setAccel(Vec3 accel_) { body->setAccel(accel_); }
     void setOrientation(float orientation_) { body->setOrientation(orientation_); }
     Ref<Body> getBody() { return body; }
+    bool getCollide() { return collide; }
 
     void print();
 };

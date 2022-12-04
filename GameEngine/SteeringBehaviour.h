@@ -17,7 +17,6 @@ public:
 	virtual ~SteeringBehaviour() {
 		//if (result) delete result;
 	}
-
 };
 
 #endif

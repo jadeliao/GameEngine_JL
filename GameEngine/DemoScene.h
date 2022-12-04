@@ -15,6 +15,10 @@ class LightActor;
 class Actor;
 
 class DemoScene : public SceneActor{
+
+private:
+	float actInterval = 0.0f;
+	std::vector<int> pathList;
 public:
 
 	explicit DemoScene();

@@ -7,6 +7,7 @@
 #include "Shape.h"
 #include "Vector.h"
 #include <vector>
+
 namespace GEOMETRY {
 	struct Sphere : public MATH::Vec3, public Shape {
 		float r = 1.0f;
@@ -38,8 +39,16 @@ namespace GEOMETRY {
 			printf("%f %f %f %f\n", x, y, z, r);
 		}
 
+		Vec3 getPos() { return Vec3(x, y, z); }
+
 		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
 		void generateVerticesAndNormals() override;
+
+		void setPos(Vec3 pos_) override {
+			x = pos_.x;
+			y = pos_.y;
+			z = pos_.z;
+		}
 	};
 }
 #endif

@@ -56,8 +56,10 @@ void BodyComponent::OnDestroy(){
 
 
 void BodyComponent::Update(float deltaTime){
+	setTransform();
 	Ref<Actor> parentActor = std::dynamic_pointer_cast<Actor>(GetParent());
 	if (parentActor) {
+	
 		Ref<AIComponent> AIComp = parentActor->GetComponent<AIComponent>();
 		switch (bodyType) {
 		case Kinematic:
@@ -74,7 +76,7 @@ void BodyComponent::Update(float deltaTime){
 			break;
 		}
 	}
-	setTransform();
+
 }
 
 void BodyComponent::Render() const{}

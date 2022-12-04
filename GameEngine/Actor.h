@@ -16,8 +16,9 @@ class Actor: public Component {
 	Actor& operator=(const Actor&) = delete;
 	Actor& operator=(Actor&&) = delete;
 
-private:
+protected:
 	std::vector <Ref<Component>> components;
+private:
 	Matrix4 modelMatrix;
 
 public:
@@ -74,9 +75,9 @@ public:
 	template<typename ComponentTemplate>
 	void RemoveComponent() {
 		for (unsigned int i = 0; i < components.size(); i++) {
-			if (dynamic_cast<ComponentTemplate*>(components[i]) != nullptr) {
+			if (dynamic_cast<ComponentTemplate*>(components[i].get()) != nullptr) {
 				components[i]->OnDestroy();
-				delete components[i];
+				components[i].reset();
 				components[i] = nullptr;
 				///This removes the component from the vector list
 				components.erase(components.begin() + i);

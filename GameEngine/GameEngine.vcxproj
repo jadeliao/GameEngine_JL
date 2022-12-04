@@ -140,6 +140,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AIComponent.cpp" />
     <ClCompile Include="Align.cpp" />
+    <ClCompile Include="Arrive.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="BodyComponent.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="EMath.cpp" />
+    <ClCompile Include="FollowPath.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="KinematicBody.cpp" />
     <ClCompile Include="KinematicSeek.cpp" />
@@ -164,7 +166,9 @@
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="NodeAndPriority.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="PhysicsCollision.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene2.cpp" />
     <ClCompile Include="SceneActor.cpp" />
@@ -182,12 +186,14 @@
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="VMath.cpp" />
+    <ClCompile Include="WallActor.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AIComponent.h" />
     <ClInclude Include="Align.h" />
+    <ClInclude Include="Arrive.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
     <ClInclude Include="Body.h" />
@@ -200,6 +206,7 @@
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="Euler.h" />
+    <ClInclude Include="FollowPath.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="KinematicBody.h" />
     <ClInclude Include="KinematicSeek.h" />
@@ -213,6 +220,7 @@
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeAndPriority.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="PhysicsCollision.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="QMath.h" />
@@ -241,6 +249,7 @@
     <ClInclude Include="User.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
+    <ClInclude Include="WallActor.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>

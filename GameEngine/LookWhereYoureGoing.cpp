@@ -1,6 +1,8 @@
 #include "LookWhereYoureGoing.h"
 
 LookWhereYoureGoing::LookWhereYoureGoing(Ref<Body> character_, Ref<Body> target_): Align(character_, target_) {
+	targetRadius = 1.0f;
+	slowRadius = 0.8f;
 }
 
 LookWhereYoureGoing::~LookWhereYoureGoing(){

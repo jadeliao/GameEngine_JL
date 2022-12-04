@@ -62,6 +62,11 @@ public:
     virtual void setVel(Vec3 vel_) { vel = vel_; }
     virtual void setAccel(Vec3 accel_) { accel = accel_; }
     virtual void setOrientation(float orientation_) { orientation = orientation_; }
+    virtual void setMaxSpeed(float maxSpeed_) { maxSpeed = maxSpeed_; }
+    virtual void setMaxAcceleration(float maxAccel_) { maxAcceleration = maxAccel_; }
+    virtual void setMaxRotation(float maxRotation_) { maxRotation = maxRotation_; }
+    virtual void setMaxAngular(float maxAngular_) { maxAngular = maxAngular_; }
+
 
     void print();
 	// Added this as public to deal with my demo 

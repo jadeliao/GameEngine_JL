@@ -25,14 +25,10 @@ Ref<SteeringOutput> Align::getSteering() {
 	else {
 		targetRotation = character->getMaxRotation() * rotationSize / slowRadius;
 	}
-	//cout << "rotation " << rotation << endl;
-	//cout << "rotationSize " << rotationSize << endl;
 	if (rotationSize > 0.0f) {
 		targetRotation *= rotation / rotationSize;
-		//cout << "if targetRotation " << targetRotation << endl;
 	}
 	result->angular = targetRotation - character->getRotation();
-	//cout << "targetRotation = " <<targetRotation << " characterRo " << character->getRotation() << "\n";
 	result->angular /= timeToTarget;
 
 	return result;

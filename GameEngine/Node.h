@@ -10,9 +10,12 @@
 #define NODE_H
 
 #include "MMath.h"
-//#include "Tile.h"
+#include "WallActor.h"
 using namespace std;
 using namespace MATH;
+
+template<typename T>
+using Ref = std::shared_ptr<T>;
 
 class Node
 {
@@ -20,7 +23,7 @@ private:
     // member variables
     int label;
     Vec3 position;
-    //Tile* tile;
+    Ref<WallActor> tile;
 
 public:
     // constructors
@@ -28,15 +31,15 @@ public:
     Node(int label_, Vec3 position_ = Vec3()) {
         label = label_;
         position = position_;
-        //tile = nullptr;
+        tile = nullptr;
     }
     ~Node(){}
     // useful functions
     void print();
     int getLabel() { return label; }
     Vec3 getPos() { return position; }
-    //void setTile(Tile* tile_) { tile = tile_; }
-    //Tile* getTile() { return tile; }
+    Ref<WallActor> getTile() { return tile; }
+    void setTile(Ref<WallActor> tile_) { tile = tile_; }
 };
 
 #endif /* NODE_H */
