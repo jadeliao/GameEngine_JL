@@ -1,5 +1,6 @@
 #include <glew.h>
 #include <SDL.h>
+#include <thread>
 #include "Debug.h"
 #include "DemoScene.h"
 #include "MMath.h"
@@ -17,6 +18,9 @@
 #include "Graph.h"
 #include "Node.h"
 #include "Path.h"
+#include "User.h"
+#include "LightActor.h"
+#include "CameraActor.h"
 
 #define START 0
 #define GOAL 133 //133
@@ -72,14 +76,37 @@ bool DemoScene::OnCreate() {
 void DemoScene::Update(const float deltaTime) {
 	Ref<Actor> marioblack = GetComponent<Actor>("MarioBlack");
 	Ref<BodyComponent> body_ = marioblack->GetComponent<BodyComponent>();
-	if (NetworkManager::getInstance()->Receive()) {
-		Vec3 newPos = NetworkManager::getInstance()->getReceive();
-		body_->setPos(newPos);
+
+	for (auto actor_ : actorList) {
+		if (NetworkManager::getInstance()->isConnect()) {
+			//Don't update position for camera and light
+			if (strcmp(actor_.first, "camera") == 0 || strcmp(actor_.first, "light") == 0) {
+				continue;
+			}
+			if (NetworkManager::getInstance()->Receive()) {
+				ActorData* actorData = NetworkManager::getInstance()->getReceive();
+				if (!actorData) continue;
+				if (strcmp(actorData->actorName, actor_.first) == 0) {
+					Ref<BodyComponent> actorbody = actor_.second->GetComponent<BodyComponent>();
+					actorbody->setPos(actorData->actorPos);
+				}
+			}
+			//if (NetworkManager::getInstance()->getUserType() == UserType::CLIENT) {
+				//NetworkManager::getInstance()->Send(actor_.first, actor_.second);
+			//}
+			std::thread send_thread(&NetworkManager::Send, NetworkManager::getInstance(), actor_.first, actor_.second);
+			send_thread.detach();
+		}
 	}
+
+	//Ref<Actor> actor_ = std::dynamic_pointer_cast<Actor>(component_);
+
+
 	SceneActor::Update(deltaTime);
 	actInterval -= deltaTime;
 	Ref<Actor> mario = GetComponent<Actor>("Mario");
-	Ref<BodyComponent> mariobody = mario->GetComponent<BodyComponent>();
+	Ref<TransformComponent> marioTransform = mario->GetComponent<TransformComponent>();
+
 
 	//Make actor move
 	//if (actInterval < 0.0f) {
@@ -149,25 +176,25 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.0f, 0.1f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			NetworkManager::getInstance()->Send(actorTransform);
+			//NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_A) {
 			body_->setPos(body_->getBody()->getPos() + Vec3(-0.1f, 0.0f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			NetworkManager::getInstance()->Send(actorTransform);
+			//NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_S) {
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.0f, -0.1f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			NetworkManager::getInstance()->Send(actorTransform);
+			//NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.1f, 0.0f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			NetworkManager::getInstance()->Send(actorTransform);
+			//NetworkManager::getInstance()->Send(actorTransform);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Z) {
 			body_->setOrientation(body_->getBody()->getOrientation() + -0.1f);

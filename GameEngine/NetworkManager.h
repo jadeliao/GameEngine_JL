@@ -10,9 +10,12 @@
 #include <stdio.h>
 #include <iostream>
 #include <memory>
-#include "TransformComponent.h"
 
 using namespace std;
+
+struct ActorData;
+class Actor;
+enum UserType;
 
 class NetworkManager {
 private:
@@ -29,8 +32,10 @@ public:
 	bool Receive();
 	bool Initialize();
 	void Shutdown();
-	bool Send(std::shared_ptr<TransformComponent>);
-	Vec3 getReceive();
+	bool Send(const char* actorName_, std::shared_ptr<Actor> actor_);
+	ActorData* getReceive();
+	UserType getUserType();
+	bool isConnect();
 };
 
 

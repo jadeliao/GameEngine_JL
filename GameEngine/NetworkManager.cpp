@@ -1,7 +1,8 @@
 #include "NetworkManager.h"
-#include "User.h"
 #include "Server.h"
 #include "Client.h"
+#include "Actor.h"
+#include <thread>
 
 shared_ptr<NetworkManager> NetworkManager::_instance = nullptr;
 
@@ -22,6 +23,9 @@ NetworkManager::~NetworkManager() {
 }
 
 bool NetworkManager::Receive() {
+
+	if (!user) return false;
+
 	if (user->getResult() > 0)
 		return user->Receive();
 }
@@ -56,25 +60,45 @@ bool NetworkManager::Initialize() {
 		return 1;
 	}
 
+	//Detach user oncreate
+	std::thread user_create(&User::OnCreate, user);
+	user_create.detach();
 	//Start connecting user
-	if (user->OnCreate()) {
-		isRunning = true;
-	}
+	//if (user->OnCreate()) {
+	//	isRunning = true;
+	//}
+	isRunning = true;
 	return isRunning;
 }
 
 void NetworkManager::Shutdown() {
 }
 
-bool NetworkManager::Send(std::shared_ptr<TransformComponent> transform_){
-	if (!user->Send(transform_)) {
+bool NetworkManager::Send(const char* actorName_, std::shared_ptr<Actor> actor_){
+
+	if (!user) return false;
+
+	if (!user->Send(actorName_, actor_)) {
 		return false;
 	}
 
 	return true;
 }
 
-Vec3 NetworkManager::getReceive() {
-	return user->getRecvPos();
+ActorData* NetworkManager::getReceive() {
+	return user->getActorData();
+	//return nullptr;
+}
+
+UserType NetworkManager::getUserType(){
+	if (user) return user->getUserType();
+	return UserType::NONE;
+}
+
+bool NetworkManager::isConnect(){
+	if (user) {
+		return user->isConnected();
+	}
+	return false;
 }
 

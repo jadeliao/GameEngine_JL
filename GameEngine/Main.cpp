@@ -3,7 +3,7 @@
 #include <stdlib.h>  
 #include <crtdbg.h>
 #include <memory>
-
+#include <thread>
 #include <string>
 #include "SceneManager.h"
 #include "NetworkManager.h"
@@ -18,6 +18,8 @@ int main(int argc, char* args[]) {
 	{
 		std::shared_ptr<NetworkManager> netManager = NetworkManager::getInstance();
 
+		//std::thread net_thread(&NetworkManager::Initialize, netManager);
+		//net_thread.detach();
 		if (netManager->Initialize()) {
 			std::unique_ptr<SceneManager> game = std::make_unique<SceneManager>();
 			if (game->Initialize("Game Engine", 1280, 720) == true) {

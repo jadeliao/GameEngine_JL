@@ -3,7 +3,6 @@
 
 #include "User.h"
 
-
 class Client : public User{
 protected:
 	SOCKET ConnectSocket;
@@ -11,7 +10,7 @@ public:
 	Client();
 	bool OnCreate() override;
 	void OnDestroy() override;
-	bool Send(std::shared_ptr<TransformComponent>) override;
+	bool Send(const char* actorName_, std::shared_ptr<Actor>) override;
 	bool Receive() override;
 	void Update(const float deltaTime) override;
 };

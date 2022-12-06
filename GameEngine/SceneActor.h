@@ -33,9 +33,9 @@ protected:
 	Ref<Graph> graph;
 	void graphConnection();
 	std::vector<std::vector<Ref<Node>>> wallList;
-
-private:
 	std::unordered_map<const char*, Ref<Actor>> actorList;
+private:
+
 
 
 public:

@@ -1,8 +1,7 @@
 #include "Client.h"
 
-Client::Client() {
+Client::Client(): User(UserType::CLIENT) {
 	ConnectSocket = INVALID_SOCKET;
-
 }
 
 bool Client::OnCreate() {
@@ -61,6 +60,7 @@ bool Client::OnCreate() {
 			printf("ioctlsocket failed with error: %ld\n", iResult);
 		}
 		printf("Connect to Server!\n");
+		isConnect = true;
 	}
 	iResult = 1;
 	return true;
@@ -80,9 +80,9 @@ void Client::OnDestroy() {
 	WSACleanup();
 }
 
-bool Client::Send(std::shared_ptr<TransformComponent> transform_) {
+bool Client::Send(const char* actorName_, std::shared_ptr<Actor> actor_) {
 	// Send an initial buffer
-	processSendData(transform_->GetPosition(), transform_->GetQuaternion());
+	processSendData(actorName_, actor_.get());
 	iResult = send(ConnectSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult == SOCKET_ERROR) {
 		printf("send failed with error: %d\n", WSAGetLastError());
@@ -94,23 +94,26 @@ bool Client::Send(std::shared_ptr<TransformComponent> transform_) {
 	else {
 		//Clear the text buffer
 		memset(sendbuf, 0, sizeof(sendbuf));
-		std::cout << "Client Message sent\n";
+		//std::cout << "Client Message sent\n";
 		return true;
 	}
+	memset(sendbuf, 0, sizeof(sendbuf));
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
 } 
 
 bool Client::Receive() {
 
 	if (getStatus(ConnectSocket, STATUS_READ) == 1) {
-		std::cout << "Client Receiving...\n";
+		//std::cout << "Client Receiving...\n";
 		iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
 			if (!processRecvData()) {
 				std::cout << "Client Incorrent Recveive Data: " << recvbuf << std::endl;
 				return false;
 			}
-			printf("Client received: %d\n", iResult);
-			std::cout << "Client received: " << recvbuf << std::endl;
+			//printf("Client received: %d\n", iResult);
+			//std::cout << "Client received: " << recvbuf << std::endl;
 			return true;
 		}
 		else if (iResult == 0)

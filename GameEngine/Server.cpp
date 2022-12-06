@@ -1,6 +1,6 @@
 #include "Server.h"
 
-Server::Server() {
+Server::Server():User(UserType::SERVER) {
 	ClientSocket = INVALID_SOCKET;
 	ListenSocket = INVALID_SOCKET;
 }
@@ -68,6 +68,7 @@ bool Server::OnCreate() {
 	else {
 		printf("Client Found!\n");
 		//Make it non-blocking
+		isConnect = true;
 		u_long mode = 1;
 		iResult = ioctlsocket(ClientSocket, FIONBIO, &mode);
 		if (iResult != NO_ERROR) {
@@ -94,10 +95,10 @@ void Server::OnDestroy() {
 	WSACleanup();
 }
 
-bool Server::Send(std::shared_ptr<TransformComponent> transform_) {
+bool Server::Send(const char* actorName_, Ref<Actor> actor_) {
 	
 	// Send an initial buffer
-	processSendData(transform_->GetPosition(), transform_->GetQuaternion());
+	processSendData(actorName_, actor_.get());
 	iResult = send(ClientSocket, sendbuf, (int)strlen(sendbuf), 0);
 	if (iResult == SOCKET_ERROR) {
 		printf("send failed with error: %d\n", WSAGetLastError());
@@ -109,7 +110,7 @@ bool Server::Send(std::shared_ptr<TransformComponent> transform_) {
 	else {
 		//Clear the text buffer
 		memset(sendbuf, 0, sizeof(sendbuf));
-		std::cout << "Server Message sent\n";
+		//std::cout << "Server Message sent\n";
 		return true;
 	}
 
@@ -117,7 +118,7 @@ bool Server::Send(std::shared_ptr<TransformComponent> transform_) {
 
 bool Server::Receive() {
 	if (getStatus(ClientSocket, STATUS_READ) == 1) {
-		std::cout << "Server Running...\n";
+		//std::cout << "Server Running...\n";
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
 			std::string recvStr(recvbuf);
@@ -125,14 +126,15 @@ bool Server::Receive() {
 				std::cout << "Server Incorrent Recveive Data: " << recvbuf << std::endl;
 				return false;
 			}
-			printf("Server received: %d\n", iResult);
-			std::cout << "Server received: " << recvbuf << std::endl;
+			//printf("Server received: %d\n", iResult);
+			//std::cout << "Server received: " << recvbuf << std::endl;
 			return true;
 		}
 		else if (iResult == 0)
 			printf("Connection closed\n");
 		else
 			printf("recv failed with error: %d\n", WSAGetLastError());
+
 	}
 	return false;
 }
