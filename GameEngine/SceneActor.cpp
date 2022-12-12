@@ -72,8 +72,9 @@ bool SceneActor::OnCreate_Scene() {
 	if (!graph->OnCreate(nodes)) {
 		Debug::Error("Fail loading graph for SceneActor: ", __FILE__, __LINE__);
 		isCreated = false;
+		return isCreated;
 	}
-	graphConnection();
+	if (!wallList.empty()) graphConnection();
 
 
 	return isCreated;

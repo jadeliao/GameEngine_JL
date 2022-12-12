@@ -74,6 +74,11 @@ bool DemoScene::OnCreate() {
 }
 
 void DemoScene::Update(const float deltaTime) {
+	SceneActor::Update(deltaTime);
+	actInterval -= deltaTime;
+	Ref<Actor> mario = GetComponent<Actor>("Mario");
+	Ref<TransformComponent> marioTransform = mario->GetComponent<TransformComponent>();
+
 	Ref<Actor> marioblack = GetComponent<Actor>("MarioBlack");
 	Ref<BodyComponent> body_ = marioblack->GetComponent<BodyComponent>();
 
@@ -91,35 +96,16 @@ void DemoScene::Update(const float deltaTime) {
 					actorbody->setPos(actorData->actorPos);
 				}
 			}
-			//if (NetworkManager::getInstance()->getUserType() == UserType::CLIENT) {
-				//NetworkManager::getInstance()->Send(actor_.first, actor_.second);
-			//}
-			std::thread send_thread(&NetworkManager::Send, NetworkManager::getInstance(), actor_.first, actor_.second);
-			send_thread.detach();
+			//Only server should send data frequently
+			//Client should only send data when their character make a movement
+			//NPC control is server's responsibility
+			if (NetworkManager::getInstance()->getUserType() == UserType::SERVER) {
+				NetworkManager::getInstance()->Send(actor_.first, actor_.second);
+			}
 		}
 	}
 
 	//Ref<Actor> actor_ = std::dynamic_pointer_cast<Actor>(component_);
-
-
-	SceneActor::Update(deltaTime);
-	actInterval -= deltaTime;
-	Ref<Actor> mario = GetComponent<Actor>("Mario");
-	Ref<TransformComponent> marioTransform = mario->GetComponent<TransformComponent>();
-
-
-	//Make actor move
-	//if (actInterval < 0.0f) {
-	//	if (!pathList.empty()) {
-	//		//Get the first item in the list
-	//		int i = pathList.front();
-	//		Ref<Node> node_ = graph->getNode(i);
-	//		Vec3 newPos = node_->getPos();
-	//		mariobody->setPos(newPos);
-	//		actInterval = 0.5f;
-	//		pathList.erase(pathList.begin());
-	//	}
-	//}
 }
 
 void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
@@ -176,25 +162,25 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.0f, 0.1f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			//NetworkManager::getInstance()->Send(actorTransform);
+			NetworkManager::getInstance()->Send("MarioBlack", mario_black);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_A) {
 			body_->setPos(body_->getBody()->getPos() + Vec3(-0.1f, 0.0f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			//NetworkManager::getInstance()->Send(actorTransform);
+			NetworkManager::getInstance()->Send("MarioBlack", mario_black);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_S) {
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.0f, -0.1f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			//NetworkManager::getInstance()->Send(actorTransform);
+			NetworkManager::getInstance()->Send("MarioBlack", mario_black);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_D) {
 			body_->setPos(body_->getBody()->getPos() + Vec3(0.1f, 0.0f, 0.0));
 			Ref<TransformComponent> actorTransform = mario_black->GetComponent<TransformComponent>();
 			Vec3 actorPos = actorTransform->GetPosition();
-			//NetworkManager::getInstance()->Send(actorTransform);
+			NetworkManager::getInstance()->Send("MarioBlack", mario_black);
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Z) {
 			body_->setOrientation(body_->getBody()->getOrientation() + -0.1f);
@@ -249,7 +235,7 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 
 			Vec3 mouseWorldCoords = rayTransform * Vec3(mouseCoords.x, mouseCoords.y, 1.0f);
 			//Set ray
-			Vec3 rayWorldStart = rayTransform * mouseCoords;
+			Vec3 rayWorldStart = camera->GetComponent<TransformComponent>()->GetPosition();
 			Vec3 rayWorldDir = VMath::normalize(mouseWorldCoords);
 			Ray ray(rayWorldStart, rayWorldDir);
 
@@ -277,8 +263,7 @@ void DemoScene::HandleEvents(const SDL_Event& sdlEvent){
 						if (rayInfo.isIntersected) {
 							//Transform world intersection point into object related coordinates
 							actor->setVisible(!actor->getVisible());
-							std::cout << "Intersect: " << wallList[i][j]->getLabel() << endl;
-			
+							std::cout << "Intersect: " << wallList[i][j]->getLabel() << endl;		
 						}
 						else {
 							//std::cout << "You picked nothing\n";

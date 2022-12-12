@@ -54,6 +54,7 @@ protected:
 	Vec3 recvVec;
 	ActorData* recvActor;
 	bool isConnect;
+	std::queue<std::string> recvBufList;
 	std::queue<ActorData*> recvList;
 
 	void processSendData(const char* actorName_, Actor* actor_);
@@ -75,6 +76,13 @@ public:
 	Vec3 getRecvPos() { return recvVec; }
 	ActorData* getActorData() {
 
+		if (!recvBufList.empty()) {
+			//Process data
+			if (!processRecvData()) {
+				//std::cout << "Client Incorrect Recveive Data: " << recvbuf << std::endl;
+				return nullptr;
+			}
+		}
 		if (!recvList.empty()) {
 			ActorData* data_ = recvList.front();
 			recvList.pop();

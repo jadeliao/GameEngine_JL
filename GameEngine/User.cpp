@@ -46,8 +46,13 @@ int User::getStatus(const SOCKET socket_, int check_){
 }
 
 bool User::processRecvData() {
+
+	//Grab the first data from the list
+	std::string actorData(recvBufList.front());
+	recvBufList.pop();
+	std::cout << actorData << std::endl;
+	//Transform the data into vector
 	ActorData* actorData_ = new ActorData;
-	std::string actorData(recvbuf);
 	int nameIndex = actorData.find("\n");
 	char* actorName = new char[DEFAULT_BUFLEN];
 	strcpy_s(actorName, DEFAULT_BUFLEN, actorData.substr(0, nameIndex).c_str());
@@ -72,7 +77,6 @@ bool User::processRecvData() {
 	std::cout << "Receive Actor name " << actorData_->actorName;
 	actorData_->actorPos.print();
 	std::cout << "\n";
-	memset(recvbuf, 0, sizeof(recvbuf));
 		//std::string posStr(recvbuf);
 		//int posxIndex = posStr.find(",");
 		//if (posStr.length() <= posxIndex) return false;

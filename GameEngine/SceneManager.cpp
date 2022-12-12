@@ -5,6 +5,7 @@
 #include "Scene2.h"
 #include "DemoScene.h"
 #include "NetworkManager.h"
+#include <thread>
 
 SceneManager::SceneManager(): 
 	currentScene(nullptr), window(nullptr), timer(nullptr),
@@ -46,7 +47,7 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 	}
 
 	/********************************   Default first scene   ***********************/
-	BuildNewScene(SCENE_NUMBER::DemoScene);
+	BuildNewScene(SCENE_NUMBER::SCENE2);
 	
 	return true;
 }
@@ -55,6 +56,7 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 void SceneManager::Run() {
 	timer->Start();
 	isRunning = true;
+	std::thread updateThread(&Scene::Update, currentScene, timer->GetDeltaTime());
 	while (isRunning) {
 		timer->UpdateFrameTicks();
 		currentScene->Update(timer->GetDeltaTime());

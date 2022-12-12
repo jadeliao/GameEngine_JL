@@ -307,7 +307,7 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 }
 
 void AssetManager::AddWallData(XMLElement* wallData){
-	
+	if (!wallActor) return;
 	//Get labels to determine the visibility of the walls
 	std::vector<int> wallLocation;
 	while (wallData) {

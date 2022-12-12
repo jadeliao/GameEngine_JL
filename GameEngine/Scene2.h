@@ -18,11 +18,15 @@ class LightActor;
 class Actor;
 
 class Scene2 : public SceneActor{
+private:
+	const char* playerName;
+
 public:
 	explicit Scene2();
 	virtual ~Scene2();
 
 	virtual bool OnCreate();
+	virtual void Update(const float deltaTime);
 	virtual void HandleEvents(const SDL_Event& sdlEvent);
 
 };

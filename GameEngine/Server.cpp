@@ -113,6 +113,8 @@ bool Server::Send(const char* actorName_, Ref<Actor> actor_) {
 		//std::cout << "Server Message sent\n";
 		return true;
 	}
+	memset(sendbuf, 0, sizeof(sendbuf));
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
 }
 
@@ -121,13 +123,14 @@ bool Server::Receive() {
 		//std::cout << "Server Running...\n";
 		iResult = recv(ClientSocket, recvbuf, recvbuflen, 0);
 		if (iResult > 0) {
-			std::string recvStr(recvbuf);
-			if (!processRecvData()) {
-				std::cout << "Server Incorrent Recveive Data: " << recvbuf << std::endl;
-				return false;
-			}
-			//printf("Server received: %d\n", iResult);
-			//std::cout << "Server received: " << recvbuf << std::endl;
+			//if (!processRecvData()) {
+			//	std::cout << "Client Incorrect Recveive Data: " << recvbuf << std::endl;
+			//	return false;
+			//}
+			recvBufList.push(std::string(recvbuf));
+			//printf("Client received: %d\n", iResult);
+			std::cout << "Client received: " << recvBufList.front() << std::endl;
+			memset(recvbuf, 0, sizeof(recvbuf));
 			return true;
 		}
 		else if (iResult == 0)
