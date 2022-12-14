@@ -8,8 +8,10 @@
 #include "BodyComponent.h"
 #include "AIComponent.h"
 #include "CollisionComponent.h"
+#include "AnimationComponent.h"
+#include "StateMachine.h"
 
-Actor::Actor(Ref<Component> parent_):Component(parent_) {}
+Actor::Actor(Ref<Component> parent_):Component(parent_), stateMachine(nullptr) {}
 
 //Deep Copy constructor
 Actor::Actor(const Actor& actor_){
@@ -52,24 +54,45 @@ void Actor::Update(const float deltaTime) {
 		component->Update(deltaTime);
 	}
 
+	if (stateMachine) {
+		stateMachine->Update();
+	}
+
 	GetModelMatrix();
 }
 
 void Actor::HandleEvents(const SDL_Event& sdlEvent){
+
 }
 
 void Actor::Render()const {
-	Ref<MaterialComponent> texture = GetComponent<MaterialComponent>();
+
 	Ref<ShaderComponent> shader = GetComponent<ShaderComponent>();
 	Ref<MeshComponent> mesh = GetComponent<MeshComponent>();
+	Ref<AnimationComponent> animation = GetComponent<AnimationComponent>();
 	glUseProgram(shader->GetProgram());
 	glUniformMatrix4fv(shader->GetUniformID("modelMatrix"), 1, GL_FALSE, modelMatrix);
-	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
-	mesh->Render(GL_TRIANGLES);
-	Ref<CollisionComponent> shape = GetComponent<CollisionComponent>();
-	if (shape) {
-		shape->Render();
+
+	Ref<MaterialComponent> texture;
+	if (animation) {
+		texture = animation->getAnimation();
+		if (!texture) {
+			texture = GetComponent<MaterialComponent>();
+		}
 	}
+	else {
+		texture = GetComponent<MaterialComponent>();
+	}
+
+	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
+
+	if (mesh) {
+		mesh->Render(GL_TRIANGLES);
+	}
+	Ref<CollisionComponent> shape = GetComponent<CollisionComponent>();
+	//if (shape) {
+	//	shape->Render();
+	//}
 }
 
 void Actor::RemoveAllComponents() {

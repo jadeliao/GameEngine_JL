@@ -11,8 +11,66 @@
 #include "Node.h"
 
 class AIComponent;
+class StateMachine;
+class State;
+class Action;
+class Transition;
+class Condition;
 
 using namespace tinyxml2;
+
+
+struct StateTransition {
+	Ref<State> state;
+	std::vector<const char*> transitionList;
+};
+
+struct StateMachineAsset {
+	const char* initialState;
+	Ref<StateMachine> stateMachine;
+	std::unordered_map<const char*, Ref<StateTransition>> stateList;
+	std::unordered_map<const char*, Ref<Action>> actionList;
+	std::unordered_map<const char*, Ref<Transition>> transitionList;
+	std::unordered_map<const char*, Ref<Condition>> conditionList;
+
+	Ref<Action> getAction(const char* name_) {
+		for (auto action_ : actionList) {
+			if (strcmp(name_, action_.first) == 0) {
+				return action_.second;
+			}
+		}
+		return nullptr;
+	}
+
+	Ref<State> getState(const char* name_) {
+		for (auto state_ : stateList) {
+			if (strcmp(name_, state_.first) == 0) {
+				return state_.second->state;
+			}
+		}
+		return nullptr;
+	}
+
+	Ref<Condition> getCondition(const char* name_) {
+		for (auto condition_ : conditionList) {
+			if (strcmp(name_, condition_.first) == 0) {
+				return condition_.second;
+			}
+		}
+		return nullptr;
+	}
+
+	Ref<Transition> getTransition(const char* name_) {
+		for (auto transition_ : transitionList) {
+			if (strcmp(name_, transition_.first) == 0) {
+				return transition_.second;
+			}
+		}
+		return nullptr;
+	}
+
+};
+
 
 class AssetManager{
 private:
@@ -22,14 +80,20 @@ private:
 
 	std::vector<std::vector<Ref<Node>>> wallList; //double vector for walls
 
+	std::unordered_map <const char*, Ref<StateMachineAsset>> stateMachineList;
+
 	Ref<WallActor> wallActor;
 	const char* scene;
 	void ReadManiFest();
 	XMLDocument doc;
 
-
 	void AddComponentData(XMLElement* componentData);
 	void AddActorData(XMLElement* actorData);
+	void AddStateMachine(XMLElement* stateMachineData);
+	void AddState(XMLElement* stateData);
+	void AddAction(XMLElement* actionData);
+	void AddTransition(XMLElement* stateData);
+	void AddCondtion(XMLElement* stateData);
 	void AddWallData(XMLElement* wallData);
 	void SetAITarget();
 

@@ -8,6 +8,13 @@
 #include "AIComponent.h"
 #include "CollisionComponent.h"
 #include "Node.h"
+#include "AnimationComponent.h"
+#include "State.h"
+#include "StateMachine.h"
+#include "DirectionCondition.h"
+#include "IdleCondition.h"
+#include "AnimationAction.h"
+#include "Transition.h"
 
 using namespace tinyxml2;
 
@@ -40,6 +47,7 @@ void AssetManager::ReadManiFest() {
 	//Loop through document to read data
 	XMLElement* rootData = doc.RootElement();
 	XMLElement* sceneData = rootData->FirstChildElement(scene);
+
 	//Loop through component data to load
 	XMLElement* componentData = sceneData->FirstChildElement("Component");
 	AddComponentData(componentData);
@@ -47,6 +55,10 @@ void AssetManager::ReadManiFest() {
 	//Loop through actor data to load
 	XMLElement* actorData = sceneData->FirstChildElement("Actor");
 	AddActorData(actorData);
+
+	//Loop through state machine data to load
+	XMLElement* stateMachineData = sceneData->FirstChildElement("StateMachine");
+	AddStateMachine(stateMachineData);
 
 	//Loop through wall data to set up scene walls
 	XMLElement* wallData = sceneData->FirstChildElement("Wall");
@@ -78,6 +90,9 @@ void AssetManager::AddComponentData(XMLElement* componentData) {
 					AddComponent<MeshComponent>(componentName, nullptr, filename);
 				}
 			}
+			else if (componentType == "SpriteMesh") {
+				AddComponent<MeshComponent>(componentName, nullptr, "");
+			}
 			else if (componentType == "Material") {
 				const XMLAttribute* filenameAttribute = componentFirstElement->FindAttribute("filename");
 				if (!componentFirstElement->FindAttribute("filename")) {
@@ -87,6 +102,26 @@ void AssetManager::AddComponentData(XMLElement* componentData) {
 					const char* filename = componentFirstElement->FindAttribute("filename")->Value();
 					AddComponent<MaterialComponent>(componentName, nullptr, filename);
 				}
+			}
+			else if (componentType == "Animation") {
+
+				Ref<AnimationComponent> animationComponent = std::make_shared<AnimationComponent>(nullptr);
+				//Find the texture list for the animations
+				const XMLElement* listElement = componentFirstElement->FirstChildElement("List");
+				//Loop through all the texture under the element
+				while (listElement) {
+					const char* listName = listElement->FindAttribute("name")->Value();
+					const XMLElement* materialElement = listElement->FirstChildElement("Material");
+					std::vector <Ref<MaterialComponent>> materialList;
+					while (materialElement) {
+						const char* materialName = materialElement->FindAttribute("componentName")->Value();
+						materialList.push_back(GetComponent<MaterialComponent>(materialName));
+						materialElement = materialElement->NextSiblingElement("Material");
+					}
+					animationComponent->AddAnimation(listName, materialList);
+					listElement = listElement->NextSiblingElement("List");
+				}
+				AddComponent<AnimationComponent>(componentName, animationComponent);
 			}
 			else if (componentType == "Shader") {
 				const XMLAttribute* vertFilenameAttribute = componentFirstElement->FindAttribute("vertFilename");
@@ -223,7 +258,11 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 		XMLElement* componentBodyElement = actorData->FirstChildElement("Body");
 		XMLElement* componentCollisionElement = actorData->FirstChildElement("Collision");
 		XMLElement* componentAIElement = actorData->FirstChildElement("AI");
-		if (!componentMeshElement || !componentMaterialElement || !componentShaderElement) {
+		XMLElement* componentAnimationElement = actorData->FirstChildElement("Animation");
+		//if (!componentMeshElement || !componentMaterialElement || !componentShaderElement) {
+		//	std::cerr << "Component Element not found\n";
+		//}
+		if (!componentMaterialElement || !componentShaderElement) {
 			std::cerr << "Component Element not found\n";
 		}
 		else {
@@ -244,25 +283,35 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 				newActor = std::make_shared<Actor>(GetComponent<Actor>(parentName.c_str()));
 			}
 			//Get components to add to actor
-			const char* meshName = componentMeshElement->FindAttribute("componentName")->Value();
+			const char* meshName;
+			if (componentMeshElement) {
+				meshName = componentMeshElement->FindAttribute("componentName")->Value();
+			}
+			else {
+				meshName = "";
+			}
+
 			const char* materialName = componentMaterialElement->FindAttribute("componentName")->Value();
 			const char* shaderName = componentShaderElement->FindAttribute("componentName")->Value();
 			Ref<MeshComponent> actorMesh = GetComponent<MeshComponent>(meshName);
 			Ref<MaterialComponent> actorMaterial = GetComponent<MaterialComponent>(materialName);
 			Ref<ShaderComponent> actorShader = GetComponent<ShaderComponent>(shaderName);
 
-			if (!actorMesh || !actorMaterial || !actorShader) {
+			if (!actorMaterial || !actorShader) {
 				std::cerr << "Component not found\n";
 			}
+			//if (!actorMesh || !actorMaterial || !actorShader) {
+			//	std::cerr << "Component not found\n";
+			//}
 
 			//Parent components to the actor
-			actorMesh->SetParent(newActor);
+			if (actorMesh) actorMesh->SetParent(newActor);
 			actorMaterial->SetParent(newActor);
 			actorShader->SetParent(newActor);
 
 			//Add all components to actor
 			Ref<TransformComponent> transform = std::make_shared<TransformComponent>(newActor);
-			newActor->AddComponent<MeshComponent>(actorMesh);
+			if (actorMesh) newActor->AddComponent<MeshComponent>(actorMesh);
 			newActor->AddComponent<MaterialComponent>(actorMaterial);
 			newActor->AddComponent<ShaderComponent>(actorShader);
 			newActor->AddComponent<TransformComponent>(transform);
@@ -293,6 +342,13 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 				aiList[actorAI] = targetName;
 				newActor->AddComponent<AIComponent>(actorAI);
 			}
+			//Set animation if exist
+			if (componentAnimationElement) {
+				const char* animationComponentName = componentAnimationElement->FindAttribute("componentName")->Value();
+				Ref<AnimationComponent> actorAnimation = GetComponent<AnimationComponent>(animationComponentName);
+				actorAnimation->SetParent(newActor);
+				newActor->AddComponent<AnimationComponent>(actorAnimation);
+			}
 
 			if (actorName == "Wall") {
 				wallActor = std::dynamic_pointer_cast<WallActor>(newActor);
@@ -303,6 +359,126 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 
 		}
 		actorData = actorData->NextSiblingElement("Actor");
+	}
+}
+
+void AssetManager::AddStateMachine(XMLElement* stateMachineData){
+	while (stateMachineData) {
+		//Get First child element and check if it exists;
+		XMLElement* stateMachineElement = stateMachineData->FirstChildElement();
+		if (!stateMachineElement) {
+			std::cerr << "No First Element \n";
+		}
+		else {
+			//Get name and information for the statemachine
+			const char* stateMachineName = stateMachineData->FindAttribute("name")->Value();
+			const char* initialStateName = stateMachineData->FindAttribute("initialState")->Value();
+			const char* ownerName = stateMachineData->FindAttribute("owner")->Value();
+			Ref<Actor> owner = GetActor(ownerName);
+			//Create a structure for storing information
+			Ref<StateMachineAsset> stateMachineAsset = std::make_shared<StateMachineAsset>();
+			Ref<StateMachine> stateMachine = std::make_shared<StateMachine>();
+
+			//Add Action
+			XMLElement* actionData = stateMachineData->FirstChildElement("Action");
+			if (actionData) {
+				XMLElement* actionElement = actionData->FirstChildElement();
+				while (actionElement) {
+					//Get the type of the action
+					std::string actionType = actionElement->Value();
+					const char* actionName = actionElement->FindAttribute("name")->Value();
+					if (actionType == "AnimationAction") {
+						Ref<AnimationAction> animationAction = std::make_shared<AnimationAction>(owner);
+						const char* animationName = actionElement->FindAttribute("animationName")->Value();
+						animationAction->setAnimationName(animationName);
+						stateMachineAsset->actionList[actionName] = animationAction;
+					}
+					actionElement = actionElement->NextSiblingElement();
+				}
+			}
+
+			//Add Condition
+			XMLElement* conditionData = stateMachineData->FirstChildElement("Condition");
+			if (conditionData) {
+				XMLElement* conditionElement = conditionData->FirstChildElement();
+				while (conditionElement) {
+					//Get the type of the action
+					std::string conditionType = conditionElement->Value();
+					const char* conditionName = conditionElement->FindAttribute("name")->Value();
+					if (conditionType == "IdleCondition") {
+						Ref<IdleCondition> idleCondition = std::make_shared<IdleCondition>(owner);
+						stateMachineAsset->conditionList[conditionName] = idleCondition;
+					}
+					else if (conditionType == "DirectionCondition") {
+						Ref<DirectionCondition> directionCondition = std::make_shared<DirectionCondition>(owner);
+						const float min = conditionElement->FloatAttribute("min");
+						const float max = conditionElement->FloatAttribute("max");
+						directionCondition->setRange(min, max);
+						stateMachineAsset->conditionList[conditionName] = directionCondition;
+					}
+					conditionElement = conditionElement->NextSiblingElement();
+				}
+			}
+			//Create State
+			XMLElement* stateData = stateMachineData->FirstChildElement("State");
+			while (stateData) {
+				const char* stateName = stateData->FindAttribute("name")->Value();
+				const char* actionName = stateData->FindAttribute("action")->Value();
+				Ref<State> state_ = std::make_shared<State>();
+				Ref<Action> action_ = stateMachineAsset->getAction(actionName);
+				if (action_) {
+					state_->setAction(action_);
+				}
+				//Get the transition and store them in a temporarily list
+				Ref<StateTransition> stateTransition_ = std::make_shared<StateTransition>();
+				stateTransition_->state = state_;
+				XMLElement* transitionNameData = stateData->FirstChildElement("Transition");
+				while (transitionNameData) {
+					const char* transitionName = transitionNameData->FindAttribute("name")->Value();
+					stateTransition_->transitionList.push_back(transitionName);
+					transitionNameData = transitionNameData->NextSiblingElement("Transition");
+				}
+				stateMachineAsset->stateList[stateName] = stateTransition_;
+				stateData = stateData->NextSiblingElement("State");
+			}
+
+			//Create transition
+			XMLElement* transitionData = stateMachineData->FirstChildElement("Transition");
+			while (transitionData) {
+				Ref<Transition> transition_ = nullptr;
+				const char* transitionName = transitionData->FindAttribute("name")->Value();
+				const char* stateName = transitionData->FindAttribute("target")->Value();
+				const char* conditionName = transitionData->FindAttribute("condition")->Value();
+				//Get data from the StateMachineAssets
+				Ref<State> state_ = stateMachineAsset->getState(stateName);
+				Ref<Condition> condition_ = stateMachineAsset->getCondition(conditionName);
+				//Only add the data when its valid
+				if (state_ && condition_) {
+					transition_ = std::make_shared<Transition>(state_, condition_);
+				}
+				stateMachineAsset->transitionList[transitionName] = transition_;
+				transitionData = transitionData->NextSiblingElement("Transition");
+			}
+			//Loop through list add transition to State
+			for (auto element_ : stateMachineAsset->stateList) {
+				Ref<State> state_ = element_.second->state;
+				//Loop through transition list
+				for (auto transitionName_ : element_.second->transitionList) {
+					Ref<Transition> transition_ = stateMachineAsset->getTransition(transitionName_);
+					if (transition_) {
+						state_->addTransition(transition_);
+					}
+				}
+			}
+			Ref<State> initialState_ = stateMachineAsset->getState(initialStateName);
+			if (initialState_) {
+				stateMachine->setInitialState(initialState_);
+			}
+			owner->setStateMachine(stateMachine);
+		}
+
+		stateMachineData = stateMachineData->NextSiblingElement("StateMachine");
+
 	}
 }
 

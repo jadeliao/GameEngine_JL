@@ -7,6 +7,7 @@
 using namespace MATH;
 
 union SDL_Event;
+class StateMachine;
 
 class Actor: public Component {
 	/// Unless you know what these do don't allow them
@@ -18,6 +19,7 @@ class Actor: public Component {
 
 protected:
 	std::vector <Ref<Component>> components;
+	Ref<StateMachine> stateMachine;
 private:
 	Matrix4 modelMatrix;
 
@@ -30,7 +32,7 @@ public:
 	void Update(const float deltaTime_);
 	void Render() const;
 	virtual void HandleEvents(const SDL_Event& sdlEvent);
-	
+	void setStateMachine(Ref<StateMachine> stateMachine_) { stateMachine = stateMachine_; }
 	/// Footnote to those who think you can't write code in the header file - this is true
 	/// with a few exceptions. (1) You can't inline code (implicitly or not) unless it is in 
 	/// the header file and (2) templates must be in the header file

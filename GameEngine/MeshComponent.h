@@ -20,6 +20,7 @@ private:
 	GLenum drawmode;
 
 	/// Private helper methods
+	void LoadSprite(const char* filename);
 	void LoadModel(const char* filename);
 	void StoreMeshData(GLenum drawmode_);
 	GLuint vao, vbo;

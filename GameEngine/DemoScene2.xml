@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Root>
+	<DemoScene2>
+		
+	<Component name="MarioMesh">
+		<Mesh filename="meshes/Mario.obj"/>
+	</Component>
+		
+	<Component name="CubeMesh">
+		<Mesh filename="meshes/Cube.obj"/>
+	</Component>
+
+	<Component name="SpriteMesh">
+		<SpriteMesh/>
+	</Component>
+
+		<Component name="MarioTexture">
+		<Material filename="textures/mario_main.png"/>
+	</Component>
+
+	<Component name="MarioBlackTexture">
+		<Material filename="textures/mario_mime.png"/>
+	</Component>
+
+	<Component name="GoalTexture">
+		<Material filename="textures/goal.png"/>
+	</Component>
+
+	<Component name="CubeTexture">
+		<Material filename="textures/8x8_checkered_board.png"/>
+	</Component>
+
+	<Component name="PlayerTexture">
+		<Material filename="animation/Back04.png"/>
+	</Component>
+
+
+	<Component name="AnimationI01">
+		<Material filename="animation/Idle01.png"/>
+	</Component>
+
+	<Component name="AnimationI02">
+		<Material filename="animation/Idle02.png"/>
+	</Component>
+		
+	<Component name="AnimationR01">
+		<Material filename="animation/Right01.png"/>
+	</Component>
+
+	<Component name="AnimationR02">
+		<Material filename="animation/Right02.png"/>
+	</Component>
+
+	<Component name="AnimationL01">
+		<Material filename="animation/Left01.png"/>
+	</Component>
+		
+	<Component name="AnimationL02">
+		<Material filename="animation/Left02.png"/>
+	</Component>
+		
+	<Component name="AnimationF01">
+		<Material filename="animation/Forward01.png"/>
+	</Component>
+		
+	<Component name="AnimationF02">
+		<Material filename="animation/Forward02.png"/>
+	</Component>
+
+	<Component name="AnimationF03">
+		<Material filename="animation/Forward03.png"/>
+	</Component>
+
+	<Component name="AnimationF04">
+		<Material filename="animation/Forward04.png"/>
+	</Component>
+
+	<Component name="AnimationB01">
+		<Material filename="animation/Back01.png"/>
+	</Component>
+		
+	<Component name="AnimationB02">
+		<Material filename="animation/Back02.png"/>
+	</Component>
+
+	<Component name="AnimationB03">
+		<Material filename="animation/Back03.png"/>
+	</Component>
+
+	<Component name="AnimationB04">
+		<Material filename="animation/Back04.png"/>
+	</Component>
+
+	<Component name="PlayerAnimation">
+		<Animation>
+			<List name="Idle">
+				<Material componentName="AnimationI01"/>
+				<Material componentName="AnimationI02"/>
+			</List>
+			<List name="Right">
+				<Material componentName="AnimationR01"/>
+				<Material componentName="AnimationR02"/>
+			</List>
+			<List name="Left">
+				<Material componentName="AnimationL01"/>
+				<Material componentName="AnimationL02"/>
+			</List>
+			<List name="Forward">
+				<Material componentName="AnimationF01"/>
+				<Material componentName="AnimationF02"/>
+				<Material componentName="AnimationF03"/>
+				<Material componentName="AnimationF04"/>
+			</List>
+			<List name="Backward">
+				<Material componentName="AnimationB01"/>
+				<Material componentName="AnimationB02"/>
+				<Material componentName="AnimationB03"/>
+				<Material componentName="AnimationB04"/>
+			</List>
+
+		</Animation>
+	</Component>	
+		
+	<Component name="TextureShader">
+		<Shader vertFilename="shaders/textureVert.glsl" fragFilename="shaders/textureFrag.glsl"/>
+	</Component>
+
+	<Component name="SpriteShader">
+		<Shader vertFilename="shaders/defaultVert.glsl" fragFilename="shaders/defaultFrag.glsl"/>
+	</Component>
+
+	<Component name="MarioBody">
+		<Body	type="Kinematic"
+				posx="-14.0" posy="-8.0" posz="0.0"
+				velx="0.0" vely="0.0" velz="0.0"
+				accelx="0.0" accely="0.0" accelz="0.0"
+				mass="1.0" radius="0.5" orientation="0.0" rotation="0.0" angular="0.0"
+				maxSpeed="3.0" maxAccel="3.0" maxRotation="1.0" maxAngular="1.0"/>
+	</Component>
+
+	<Component name="MarioBlackBody">
+		<Body	type="Base"
+			  	posx="0.0" posy="0.0" posz="-1.0"
+				velx="0.0" vely="0.0" velz="0.0"
+				accelx="0.0" accely="0.0" accelz="0.0"
+				mass="1.0" radius="0.0" orientation="0.0" rotation="0.0" angular="0.0"
+				maxSpeed="0.0" maxAccel="0.0" maxRotation="0.0" maxAngular="0.0"/>
+	</Component>
+	
+	<Component name="MarioCollision">
+		<Collision	shape="sphere"
+			   		posx="0.0" posy="0.0" posz="0.0"
+					radius="1.0"/>
+	</Component>
+		
+	<Component name="MarioBlackCollision">
+		<Collision	shape="sphere"
+					posx="0.0" posy="0.0" posz="0.0"
+					radius="1.0"/>
+	</Component>
+
+	<Component name="WallCollision">
+		<Collision	shape="box"
+					posx="0.0" posy="0.0" posz="0.0"
+					halfExtentX="1.01" halfExtentY="1.01" halfExtentZ="0.9"
+					angleDeg="0.0" axisX="1.0" axisY="0.0" axisZ="0.0"/>
+	</Component>
+
+	<Component name="MarioAI">
+		<AI/>
+		<Steering type="pathfollowing"/>
+		<!-->><Steering type="looking"/><-->
+	</Component>
+
+
+		
+	<Actor name="Mario">
+		<Parent componentName="None"/>
+		<Mesh componentName="SpriteMesh"/>
+		<Material componentName="PlayerTexture"/>
+		<Shader componentName="SpriteShader"/>
+		<Body componentName="MarioBody"/>
+		<Collision componentName="MarioCollision"/>
+		<Animation componentName="PlayerAnimation"/>
+		<AI componentName="MarioAI" targetName="MarioBlack"/>
+	</Actor>
+
+	<Actor name="MarioBlack">
+		<Parent componentName="None"/>
+		<Mesh componentName="SpriteMesh"/>
+		<Material componentName="GoalTexture"/>
+		<Shader componentName="SpriteShader"/>
+		<Body componentName="MarioBlackBody"/>
+		<Collision componentName="MarioBlackCollision"/>
+	</Actor>
+
+	<Actor name="Wall">
+		<Parent componentName="None"/>
+		<Mesh componentName="CubeMesh"/>
+		<Material componentName="CubeTexture"/>
+		<Shader componentName="TextureShader"/>
+		<Collision componentName="WallCollision"/>
+	</Actor>
+		
+	<StateMachine name="PlayerStateMachine" initialState="Idle" owner="Mario">
+
+		<Action>
+			<AnimationAction name="IdleAnimation" animationName="Idle"/>
+			<AnimationAction name="ForwardAnimation" animationName="Forward"/>
+			<AnimationAction name="BackwardAnimation" animationName="Backward"/>
+			<AnimationAction name="RightAnimation" animationName="Right"/>
+			<AnimationAction name="LeftAnimation" animationName="Left"/>
+		</Action>
+
+		<Condition>
+			<IdleCondition name="toIdle"/>
+			<DirectionCondition name="toForward" min="315.0" max="405.0"/>
+			<DirectionCondition name="toBackward" min="135.0" max="225.0"/>
+			<DirectionCondition name="toRight" min="45.0" max="135.0"/>
+			<DirectionCondition name="toLeft" min="225.0" max="315.0"/>
+		</Condition>
+
+		<State name="Idle" action="IdleAnimation">
+			<Transition name="transitForward"/>
+			<Transition name="transitBackward"/>
+			<Transition name="transitRight"/>
+			<Transition name="transitLeft"/>
+		</State>
+		<State name="Forward" action="ForwardAnimation">
+			<Transition name="transitIdle"/>
+			<Transition name="transitBackward"/>
+			<Transition name="transitRight"/>
+			<Transition name="transitLeft"/>
+		</State>
+		<State name="Backward" action="BackwardAnimation">
+			<Transition name="transitForward"/>
+			<Transition name="transitIdle"/>
+			<Transition name="transitRight"/>
+			<Transition name="transitLeft"/>
+		</State>
+		<State name="Right" action="RightAnimation">
+			<Transition name="transitForward"/>
+			<Transition name="transitBackward"/>
+			<Transition name="transitIdle"/>
+			<Transition name="transitLeft"/>
+		</State>
+		<State name="Left" action="LeftAnimation">
+			<Transition name="transitForward"/>
+			<Transition name="transitBackward"/>
+			<Transition name="transitRight"/>
+			<Transition name="transitIdle"/>
+		</State>
+
+		<Transition name="transitIdle" target="Idle" condition="toIdle"/>
+		<Transition name="transitForward" target="Forward" condition="toForward"/>
+		<Transition name="transitBackward" target="Backward" condition="toBackward"/>
+		<Transition name="transitRight" target="Right" condition="toRight"/>
+		<Transition name="transitLeft" target="Left" condition="toLeft"/>
+
+	</StateMachine>
+		
+	<Wall label="32"/>
+	<Wall label="33"/>
+	<Wall label="34"/>
+	<Wall label="35"/>
+	<Wall label="36"/>
+	<Wall label="37"/>
+	<Wall label="38"/>
+	<Wall label="42"/>
+	<Wall label="43"/>
+	<Wall label="44"/>
+	<Wall label="47"/>
+	<Wall label="62"/>
+	
+	<Wall label="75"/>
+	<Wall label="76"/>
+	<Wall label="77"/>
+	<Wall label="78"/>
+	<Wall label="79"/>
+	<Wall label="80"/>
+
+	<Wall label="83"/>
+	<Wall label="84"/>
+	<Wall label="85"/>
+	<Wall label="86"/>
+	<Wall label="87"/>
+	<Wall label="88"/>
+	<Wall label="89"/>
+		
+
+	<Wall label="122"/>
+	<Wall label="123"/>
+	<Wall label="124"/>
+	<Wall label="125"/>
+	<Wall label="126"/>
+	<Wall label="127"/>
+	<Wall label="128"/>
+	<Wall label="129"/>
+	<Wall label="130"/>
+	<Wall label="131"/>
+	<Wall label="132"/>		
+		
+
+	</DemoScene2>
+</Root>

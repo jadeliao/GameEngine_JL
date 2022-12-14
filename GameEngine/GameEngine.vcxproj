@@ -137,9 +137,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AIComponent.cpp" />
     <ClCompile Include="Align.cpp" />
+    <ClCompile Include="AnimationAction.cpp" />
+    <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="Arrive.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Body.cpp" />
@@ -150,9 +153,12 @@
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DemoScene.cpp" />
+    <ClCompile Include="DemoScene2.cpp" />
+    <ClCompile Include="DirectionCondition.cpp" />
     <ClCompile Include="EMath.cpp" />
     <ClCompile Include="FollowPath.cpp" />
     <ClCompile Include="Graph.cpp" />
+    <ClCompile Include="IdleCondition.cpp" />
     <ClCompile Include="KinematicBody.cpp" />
     <ClCompile Include="KinematicSeek.cpp" />
     <ClCompile Include="KinematicSteeringOutput.cpp" />
@@ -176,19 +182,25 @@
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="Sphere.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="SteeringBehaviour.cpp" />
     <ClCompile Include="SteeringOutput.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="Transition.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="WallActor.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="AIComponent.h" />
     <ClInclude Include="Align.h" />
+    <ClInclude Include="AnimationAction.h" />
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="Arrive.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
@@ -198,13 +210,17 @@
     <ClInclude Include="CameraActor.h" />
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Condition.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="DemoScene.h" />
+    <ClInclude Include="DemoScene2.h" />
+    <ClInclude Include="DirectionCondition.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="Euler.h" />
     <ClInclude Include="FollowPath.h" />
     <ClInclude Include="Graph.h" />
+    <ClInclude Include="IdleCondition.h" />
     <ClInclude Include="KinematicBody.h" />
     <ClInclude Include="KinematicSeek.h" />
     <ClInclude Include="KinematicSteeringOutput.h" />
@@ -234,12 +250,15 @@
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="SteeringBehaviour.h" />
     <ClInclude Include="SteeringOutput.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="Transition.h" />
     <ClInclude Include="UBO_Padding.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VMath.h" />
@@ -248,10 +267,17 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="DemoScene.xml" />
+    <Xml Include="DemoScene2.xml" />
     <Xml Include="Scene2.xml" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\defaultFrag.glsl" />
+    <None Include="shaders\defaultVert.glsl" />
+    <None Include="shaders\textureFrag.glsl" />
+    <None Include="shaders\textureVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

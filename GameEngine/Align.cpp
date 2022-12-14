@@ -12,8 +12,7 @@ Align::~Align(){}
 
 Ref<SteeringOutput> Align::getSteering() {
 	float rotation = target->getOrientation() - character->getOrientation();
-	//cout << "targetOri " << target->getOrientation() << endl;
-	//cout << "charcterOri " << character->getOrientation() << endl;
+
 	//map to range to rotate with a smaller angle
 	rotation = mapToRange(rotation);
 	float rotationSize = abs(rotation);

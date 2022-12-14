@@ -64,6 +64,12 @@
     <Filter Include="Source Files\Math\Geometry">
       <UniqueIdentifier>{c45d8b04-4bf7-4683-b978-b24702b3004e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\StateMachine">
+      <UniqueIdentifier>{c1ab515f-d6fe-47fa-8c21-8576bcedb484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\StateMachine">
+      <UniqueIdentifier>{aa29f729-e658-4af7-99b4-0156f2415fb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp">
@@ -206,6 +212,33 @@
     </ClCompile>
     <ClCompile Include="Path.cpp">
       <Filter>Source Files\Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Transition.cpp">
+      <Filter>Source Files\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="DemoScene2.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Source Files\Actor\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionCondition.cpp">
+      <Filter>Source Files\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleCondition.cpp">
+      <Filter>Source Files\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.cpp">
+      <Filter>Source Files\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationAction.cpp">
+      <Filter>Source Files\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +419,36 @@
     <ClInclude Include="Path.h">
       <Filter>Header Files\Pathfinding</Filter>
     </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Transition.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoScene2.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Header Files\Actor\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionCondition.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleCondition.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationAction.h">
+      <Filter>Header Files\StateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Scene2.xml">
@@ -394,10 +457,27 @@
     <Xml Include="DemoScene.xml">
       <Filter>XML</Filter>
     </Xml>
+    <Xml Include="DemoScene2.xml">
+      <Filter>XML</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameEngine.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\defaultFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\defaultVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\textureFrag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shaders\textureVert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

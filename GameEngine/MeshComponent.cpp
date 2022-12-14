@@ -14,13 +14,51 @@ MeshComponent::~MeshComponent() {
 
 bool MeshComponent::OnCreate() {
     if (isCreated) return isCreated;
-	LoadModel(filename);
+    if (filename == "") {
+        LoadSprite("");
+    }
+    else {
+        LoadModel(filename);
+    }
+
     StoreMeshData(GL_TRIANGLES);
     isCreated = true;
     return isCreated;
 }
 
 
+
+void MeshComponent::LoadSprite(const char* filename) {
+
+    vertices.clear();
+    normals.clear();
+    uvCoords.clear();
+
+    //Draw 2 triangles, so 6 verticies are needed
+    //Vertex for first triangle
+    float width = 1.0f;
+    float uvSize = 1.0f;
+    vertices.push_back(Vec3(width, width, 0.0f));
+    vertices.push_back(Vec3(-width, width, 0.0f));
+    vertices.push_back(Vec3(-width, -width, 0.0f));
+    //UVCoords value should be related to the sprite, but for hard coding, leave it as 0.5f
+    uvCoords.push_back({ width, -width });
+    uvCoords.push_back({ -width, -width });
+    uvCoords.push_back({ -width, width });
+    //Vertex for second triangle
+    vertices.push_back(Vec3(width, width, 0.0f));
+    vertices.push_back(Vec3(width, -width, 0.0f));
+    vertices.push_back(Vec3(-width, -width, 0.0f));
+    uvCoords.push_back({ width, -width });
+    uvCoords.push_back({ width, width });
+    uvCoords.push_back({ -width, width });
+
+    for (int i = 0; i < 6; i++) {
+        normals.push_back(Vec3(0.0f, 0.0f, 1.0f));
+
+    }
+
+}
 
 void MeshComponent::LoadModel(const char* filename) {
     tinyobj::attrib_t attrib;
