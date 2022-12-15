@@ -200,6 +200,7 @@
     <ClInclude Include="BodyComponent.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="CameraActor.h" />
+    <ClInclude Include="Client.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Debug.h" />
