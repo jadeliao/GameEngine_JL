@@ -38,20 +38,19 @@ void MeshComponent::LoadSprite(const char* filename) {
     //Vertex for first triangle
     float width = 1.0f;
     float uvSize = 1.0f;
-    vertices.push_back(Vec3(width, width, 0.0f));
-    vertices.push_back(Vec3(-width, width, 0.0f));
-    vertices.push_back(Vec3(-width, -width, 0.0f));
-    //UVCoords value should be related to the sprite, but for hard coding, leave it as 0.5f
-    uvCoords.push_back({ width, -width });
-    uvCoords.push_back({ -width, -width });
-    uvCoords.push_back({ -width, width });
+    vertices.push_back(Vec3(0.0f, 0.0f, 0.0f));
+    vertices.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    vertices.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    uvCoords.push_back({ 0.0f, 0.0f });
+    uvCoords.push_back({ 1.0f, 0.0f });
+    uvCoords.push_back({ 0.0f, 1.0f });
     //Vertex for second triangle
-    vertices.push_back(Vec3(width, width, 0.0f));
-    vertices.push_back(Vec3(width, -width, 0.0f));
-    vertices.push_back(Vec3(-width, -width, 0.0f));
-    uvCoords.push_back({ width, -width });
-    uvCoords.push_back({ width, width });
-    uvCoords.push_back({ -width, width });
+    vertices.push_back(Vec3(1.0f, -1.0f, 0.0f));
+    vertices.push_back(Vec3(1.0f, 0.0f, 0.0f));
+    vertices.push_back(Vec3(0.0f, -1.0f, 0.0f));
+    uvCoords.push_back({ 1.0f, 1.0f });
+    uvCoords.push_back({ 1.0f, 0.0f });
+    uvCoords.push_back({ 0.0f, 1.0f });
 
     for (int i = 0; i < 6; i++) {
         normals.push_back(Vec3(0.0f, 0.0f, 1.0f));

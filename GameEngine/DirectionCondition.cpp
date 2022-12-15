@@ -8,6 +8,7 @@ bool DirectionCondition::test(){
     Ref<Body> body_ = owner->GetComponent<BodyComponent>()->getBody();
 
     float angle = body_->getRotation();
+
     Vec3 ownerDirection = body_->getVel();
 
     float magDirection = VMath::mag(ownerDirection);
@@ -20,12 +21,17 @@ bool DirectionCondition::test(){
         //Calculate the angle, assuming the y axis is the origin
         Vec3 origin = Vec3(0.0f, 1.0f, 0.0f);
         float dot = VMath::dot(ownerDirection, origin);
-        float denominator = VMath::mag(origin) * magDirection;
-        angle = acos(dot / denominator) * RADIANS_TO_DEGREES;
+        float denominator = VMath::mag(origin) * VMath::mag(ownerDirection);
+        float value = dot / denominator;
+        //std::cout << "value: " << value << "\n";
+        angle = acos(value);
+        //std::cout << "angleRadian: " << angle << "\n";
+        angle *= RADIANS_TO_DEGREES;
+        //std::cout << "angleDegree: " << angle << "\n";
 
     }
     //ownerDirection.print();
-    //std::cout << "angle: " << angle << "\n";
+
 
     //Map the angle into correct section
     //When using cos to find angle between two vectors, the range will be [0, 180]
@@ -38,6 +44,7 @@ bool DirectionCondition::test(){
     //If the max range is greater than 360.0f
     if (maxRange >= 360.0f && angle < minRange) {
         angle += 360.0f;
+
     }
 
     //Check if the direction is within the range given

@@ -12,7 +12,7 @@ void StateMachine::Update(){
 	for (Ref<Transition> transition_ : currentState->getTransitions()) {
 		if (transition_->isTriggered()) {
 			triggered = transition_;
-			//break;
+			break;
 		}
 	}
 	//Perform actions when the transition is triggered

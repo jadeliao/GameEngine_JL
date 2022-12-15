@@ -18,5 +18,6 @@ layout(location = 0) out vec2 texCoord;
 
 void main() {
     texCoord = uvCoord;
-    gl_Position = projection * view * modelMatrix * vec4(inVertex.xy, 0.0, 1.0);
+    vec4 vectexPos = vec4(inVertex.x - 0.5, inVertex.y + 0.5, 0.0, 1.0);
+    gl_Position = projection * view * modelMatrix * vectexPos;
 }

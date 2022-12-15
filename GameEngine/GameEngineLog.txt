@@ -1,9 +1,16 @@
-Wed Dec 14 14:58:04 2022
+Wed Dec 14 17:19:14 2022
 [INFO]: Starting the SceneManager
 [INFO]: OpenGL version: 4.6.14802 Compatibility Profile Context 21.12.1 30.0.14011.3017
 [INFO]: Graphics card vendor ATI Technologies Inc.
 [INFO]: Graphics card name Radeon RX 570 Series
 [INFO]: GLSL Version 4.60
+[ERROR]: Loading assets for Actor/Components:  in file: D:\Documents\Documents\Humber\Semester5\Git\GameEngine_JL\GameEngine\Actor.cpp on line: 34
+[INFO]: Uniforms:
+"projection" loc:-1
+"view" loc:-1
+"modelMatrix" loc:1
+"myTexture" loc:2
+
 [INFO]: Uniforms:
 "projection" loc:-1
 "view" loc:-1
@@ -11,12 +18,6 @@ Wed Dec 14 14:58:04 2022
 "colour" loc:-1
 "modelMatrix" loc:2
 "myTexture" loc:3
-
-[INFO]: Uniforms:
-"projection" loc:-1
-"view" loc:-1
-"modelMatrix" loc:1
-"myTexture" loc:2
 
 [INFO]: Created DemoScene2: 
 [INFO]: Loading assets DemoScene2: 

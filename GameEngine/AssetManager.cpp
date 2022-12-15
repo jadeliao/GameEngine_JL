@@ -354,6 +354,7 @@ void AssetManager::AddActorData(XMLElement* actorData) {
 				wallActor = std::dynamic_pointer_cast<WallActor>(newActor);
 			}
 			else {
+				newActor->OnCreate();
 				AddActor(actorName.c_str(), newActor);
 			}
 
@@ -523,7 +524,7 @@ void AssetManager::AddWallData(XMLElement* wallData){
 			if (std::find(wallLocation.begin(), wallLocation.end(), label) != wallLocation.end()) {
 				wall_->setVisible(true);
 			}
-			
+			wall_->OnCreate();
 			//Create node
 			Ref<Node> node_ = std::make_shared<Node>(label, pos);
 			node_->setTile(wall_);

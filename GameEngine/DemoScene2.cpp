@@ -25,7 +25,7 @@
 #include "AnimationComponent.h"
 
 #define START 0
-#define GOAL 118 //133
+#define GOAL 119 //133
 
 DemoScene2::DemoScene2() : SceneActor(nullptr) {
 	assetManager = new AssetManager("DemoScene2");
@@ -46,12 +46,16 @@ bool DemoScene2::OnCreate() {
 	//Set black mario to goal location
 	Ref<Actor> marioblack = GetComponent<Actor>("MarioBlack");
 	Vec3 newPos = graph->getNode(GOAL)->getPos();
+	Ref<TransformComponent> blackTransform_ = marioblack->GetComponent<TransformComponent>();
+	blackTransform_->SetTransform(blackTransform_->GetPosition(), blackTransform_->GetQuaternion(), Vec3(2.0f, 2.0f, 2.0f));
 	Ref<BodyComponent> blackBody_ = marioblack->GetComponent<BodyComponent>();
 	blackBody_->setPos(newPos);
 
 	//Set mario to start location
 	Ref<Actor> mario = GetComponent<Actor>("Mario");
 	newPos = graph->getNode(START)->getPos();
+	Ref<TransformComponent> transform_ = mario->GetComponent<TransformComponent>();
+	transform_->SetTransform(transform_->GetPosition(), transform_->GetQuaternion(), Vec3(2.0f, 2.0f, 2.0f));
 	Ref<BodyComponent> body_ = mario->GetComponent<BodyComponent>();
 	body_->setPos(newPos);
 
@@ -253,18 +257,19 @@ void DemoScene2::HandleEvents(const SDL_Event& sdlEvent){
 
 			//Tranform mouse coordinates into world coorinates using above matrix
 			//Then normalize the vector to get the ray direction in world space
+			Vec3 cameraPos = rayTransform * camera->GetComponent<TransformComponent>()->GetPosition();
+			Vec3 rayWorldStart(0.0f, 0.0f, -1.0f);
+			Vec3 mouseWorldCoords = rayTransform * (Vec3(mouseCoords.x, mouseCoords.y, 1.0f));
 
-			Vec3 mouseWorldCoords = rayTransform * Vec3(mouseCoords.x, mouseCoords.y, 1.0f);
 			//Set ray
-			//Vec3 rayWorldStart = camera->GetComponent<TransformComponent>()->GetPosition() * -1.0f;
-			Vec3 rayWorldStart(0.0f, 0.0f, 0.0f);
 			Vec3 rayWorldDir = VMath::normalize(mouseWorldCoords);
-			Ray ray(rayWorldStart, rayWorldDir);
+			Ray ray(rayTransform * rayWorldStart, rayWorldDir);
 
 			// Loop through all the actors and check if the ray has collided with them
 			// Pick the one with the smallest positive t value
 			int rows = wallList.size();
 			int columns = wallList[0].size();
+			bool intersected = false;
 			for (int i = 0; i < rows; i++) {
 				for (int j = 0; j < columns; j++) {
 
@@ -278,21 +283,24 @@ void DemoScene2::HandleEvents(const SDL_Event& sdlEvent){
 						) {
 						// Transform the ray into the local space of the object and check if a collision occured
 						Vec3 rayLocalStart = MMath::inverse(actor->GetModelMatrix()) * ray.start;
-						Vec3 rayLocalDir = MMath::inverse(actor->GetModelMatrix()) * (Vec4(ray.dir, 1.0f));
+						Vec3 rayLocalDir = MMath::inverse(actor->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(ray.dir, 0.0f));
 						Ray rayLocal(rayLocalStart, rayLocalDir);
 						RayIntersectionInfo rayInfo = collisionComponent->shape->rayIntersectionInfo(rayLocal);
 
 						if (rayInfo.isIntersected) {
 							//Transform world intersection point into object related coordinates
+							rayInfo.intersectionPoint.print();
 							actor->setVisible(!actor->getVisible());
 							std::cout << "Intersect: " << wallList[i][j]->getLabel() << endl;
-			
+							intersected = true;
+							break;
 						}
 						else {
 							//std::cout << "You picked nothing\n";
 						}
 					}
 				}
+				if (intersected) break;
 			}
 		}
 		break;

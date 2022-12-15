@@ -76,19 +76,19 @@
 	</Component>
 
 	<Component name="AnimationB01">
-		<Material filename="animation/Back01.png"/>
+		<Material filename="animation/Backward01.png"/>
 	</Component>
 		
 	<Component name="AnimationB02">
-		<Material filename="animation/Back02.png"/>
+		<Material filename="animation/Backward02.png"/>
 	</Component>
 
 	<Component name="AnimationB03">
-		<Material filename="animation/Back03.png"/>
+		<Material filename="animation/Backward03.png"/>
 	</Component>
 
 	<Component name="AnimationB04">
-		<Material filename="animation/Back04.png"/>
+		<Material filename="animation/Backward04.png"/>
 	</Component>
 
 	<Component name="PlayerAnimation">
@@ -162,7 +162,7 @@
 	<Component name="WallCollision">
 		<Collision	shape="box"
 					posx="0.0" posy="0.0" posz="0.0"
-					halfExtentX="1.01" halfExtentY="1.01" halfExtentZ="0.9"
+					halfExtentX="0.9" halfExtentY="0.9" halfExtentZ="0.9"
 					angleDeg="0.0" axisX="1.0" axisY="0.0" axisZ="0.0"/>
 	</Component>
 

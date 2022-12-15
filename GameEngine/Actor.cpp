@@ -21,6 +21,7 @@ Actor::Actor(const Actor& actor_){
 	parent = actor_.GetParent();
 	//Remove the transform component
 	RemoveComponent<TransformComponent>();
+	isCreated = false;
 
 }
 
