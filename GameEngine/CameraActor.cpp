@@ -117,7 +117,7 @@ void CameraActor::UpdateViewMatrix() {
 	else {
 		Quaternion orientation = transformComponent->GetQuaternion();
 		Vec3 position = transformComponent->GetPosition();
-		viewMatrix = MMath::translate(position) * QMath::toMatrix4(orientation);
+		viewMatrix = QMath::toMatrix4(orientation) * MMath::translate(position);
 	}
 	size_t offset = sizeof(Matrix4);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMatriciesID);
